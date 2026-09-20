@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SpaedrNG Panel</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Tahoma, Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(255, 20, 55, .14), transparent 25%),
+        radial-gradient(circle at 85% 85%, rgba(30, 80, 255, .10), transparent 30%),
+        linear-gradient(135deg, #08080d, #120910 50%, #07080d);
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    /* =========================
+       تار عنکبوت گوشه بالا راست
+       ========================= */
+
+    .web-top-right {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 270px;
+      height: 270px;
+      pointer-events: none;
+      z-index: 1;
+      opacity: .55;
+    }
+
+    .web-top-right::before,
+    .web-top-right::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 50%;
+      transform-origin: 100% 0;
+    }
+
+    .web-top-right::before {
+      transform: scale(.65);
+    }
+
+    .web-top-right::after {
+      transform: scale(.9);
+    }
+
+    .web-lines {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      right: 0;
+      top: 0;
+      overflow: hidden;
+    }
+
+    .web-lines span {
+      position: absolute;
+      width: 1px;
+      height: 100%;
+      right: 0;
+      top: 0;
+      background: rgba(255,255,255,.12);
+      transform-origin: top right;
+    }
+
+    .web-lines span:nth-child(1) { transform: rotate(15deg); }
+    .web-lines span:nth-child(2) { transform: rotate(30deg); }
+    .web-lines span:nth-child(3) { transform: rotate(45deg); }
+    .web-lines span:nth-child(4) { transform: rotate(60deg); }
+    .web-lines span:nth-child(5) { transform: rotate(75deg); }
+    .web-lines span:nth-child(6) { transform: rotate(90deg); }
+    .web-lines span:nth-child(7) { transform: rotate(105deg); }
+    .web-lines span:nth-child(8) { transform: rotate(120deg); }
+
+    /* تار پایین چپ */
+
+    .web-bottom-left {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 220px;
+      height: 220px;
+      pointer-events: none;
+      opacity: .4;
+      z-index: 1;
+    }
+
+    .web-bottom-left::before,
+    .web-bottom-left::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 50%;
+      transform-origin: 0 100%;
+    }
+
+    .web-bottom-left::before {
+      transform: scale(.55);
+    }
+
+    .web-bottom-left::after {
+      transform: scale(.85);
+    }
+
+    /* =========================
+       عنکبوت
+       ========================= */
+
+    .spider-container {
+      position: fixed;
+      top: -130px;
+      right: 75px;
+      width: 80px;
+      height: 130px;
+      z-index: 20;
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    .spider-container.show {
+      animation: spiderDrop 6s ease-in-out forwards;
+    }
+
+    .spider-line {
+      position: absolute;
+      width: 1px;
+      height: 75px;
+      background: rgba(255,255,255,.45);
+      top: 0;
+      left: 39px;
+    }
+
+    .spider {
+      position: absolute;
+      top: 70px;
+      left: 20px;
+      width: 40px;
+      height: 40px;
+      animation: spiderSwing .8s ease-in-out infinite alternate;
+    }
+
+    .spider-body {
+      position: absolute;
+      width: 25px;
+      height: 30px;
+      border-radius: 50%;
+      background: #090909;
+      border: 2px solid #ff3154;
+      box-shadow:
+        0 0 8px rgba(255,49,84,.7),
+        0 0 20px rgba(255,49,84,.25);
+      left: 8px;
+      top: 5px;
+    }
+
+    .spider-body::before {
+      content: "";
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: #ff3154;
+      border-radius: 50%;
+      left: 6px;
+      top: 7px;
+      box-shadow:
+        0 0 5px #ff3154,
+        0 0 0 2px rgba(255,255,255,.1);
+    }
+
+    .leg {
+      position: absolute;
+      width: 22px;
+      height: 2px;
+      background: #111;
+      border-top: 1px solid #ff3154;
+      transform-origin: right center;
+    }
+
+    .leg.l1 { left: -8px; top: 8px; transform: rotate(25deg); }
+    .leg.l2 { left: -10px; top: 17px; transform: rotate(0deg); }
+    .leg.l3 { left: -8px; top: 27px; transform: rotate(-25deg); }
+
+    .leg.r1 { right: -8px; top: 8px; transform: rotate(-25deg); }
+    .leg.r2 { right: -10px; top: 17px; transform: rotate(0deg); }
+    .leg.r3 { right: -8px; top: 27px; transform: rotate(25deg); }
+
+    @keyframes spiderDrop {
+      0% {
+        top: -130px;
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 1;
+      }
+
+      35% {
+        top: 130px;
+        opacity: 1;
+      }
+
+      65% {
+        top: 40px;
+        opacity: 1;
+      }
+
+      90% {
+        top: 160px;
+        opacity: 1;
+      }
+
+      100% {
+        top: -130px;
+        opacity: 0;
+      }
+    }
+
+    @keyframes spiderSwing {
+      from {
+        transform: rotate(-4deg);
+      }
+
+      to {
+        transform: rotate(4deg);
+      }
+    }
+
+    /* =========================
+       Layout
+       ========================= */
+
+    .container {
+      width: min(1100px, 94%);
+      margin: auto;
+      padding: 25px 0 50px;
+      position: relative;
+      z-index: 5;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 22px;
+      margin-bottom: 25px;
+      border: 1px solid rgba(255, 40, 70, .25);
+      border-radius: 20px;
+      background: rgba(15, 12, 18, .78);
+      backdrop-filter: blur(18px);
+      box-shadow:
+        0 10px 40px rgba(0,0,0,.35),
+        inset 0 0 30px rgba(255,30,60,.025);
+    }
+
+    .logo {
+      font-size: 27px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: #fff;
+      text-shadow:
+        0 0 10px rgba(255, 40, 70, .8),
+        0 0 25px rgba(255, 40, 70, .4);
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #bcbcbc;
+      font-size: 13px;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #20e070;
+      box-shadow: 0 0 12px #20e070;
+      animation: pulse 1.7s infinite;
+    }
+
+    @keyframes pulse {
+      50% {
+        opacity: .4;
+        transform: scale(.75);
+      }
+    }
+
+    .hero {
+      text-align: center;
+      padding: 40px 15px 35px;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: clamp(30px, 7vw, 55px);
+      font-weight: 900;
+      margin-bottom: 12px;
+      background: linear-gradient(
+        90deg,
+        #fff,
+        #ff3154,
+        #fff,
+        #4388ff,
+        #fff
+      );
+      background-size: 250%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine 5s linear infinite;
+    }
+
+    @keyframes shine {
+      from {
+        background-position: 0%;
+      }
+      to {
+        background-position: 250%;
+      }
+    }
+
+    .hero p {
+      color: #aaa;
+      font-size: 15px;
+    }
+
+    /* =========================
+       Cards
+       ========================= */
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(
+          145deg,
+          rgba(27,18,26,.92),
+          rgba(10,11,17,.92)
+        );
+      border: 1px solid rgba(255, 35, 65, .20);
+      border-radius: 24px;
+      padding: 25px;
+      box-shadow:
+        0 15px 50px rgba(0,0,0,.30),
+        inset 0 1px rgba(255,255,255,.025);
+      backdrop-filter: blur(18px);
+      transition: .3s;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      width: 90px;
+      height: 90px;
+      right: -45px;
+      top: -45px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,49,84,.20);
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      width: 70px;
+      height: 70px;
+      left: -35px;
+      bottom: -35px;
+      border-radius: 50%;
+      border: 1px solid rgba(60,120,255,.12);
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 40, 70, .45);
+      box-shadow:
+        0 20px 60px rgba(0,0,0,.4),
+        0 0 30px rgba(255,30,60,.06);
+    }
+
+    .card.full {
+      grid-column: 1 / -1;
+    }
+
+    .card h2 {
+      font-size: 19px;
+      margin-bottom: 9px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .card-desc {
+      color: #8f8f8f;
+      font-size: 13px;
+      line-height: 1.8;
+      margin-bottom: 18px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .count {
+      font-size: 50px;
+      font-weight: 900;
+      color: #ff3154;
+      text-shadow: 0 0 20px rgba(255,49,84,.35);
+    }
+
+    label {
+      display: block;
+      color: #c8c8c8;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    input {
+      width: 100%;
+      padding: 15px;
+      border: 1px solid #30252c;
+      outline: none;
+      border-radius: 13px;
+      color: white;
+      background: #0c0a0f;
+      transition: .2s;
+      margin-bottom: 12px;
+    }
+
+    input:focus {
+      border-color: #ff3154;
+      box-shadow: 0 0 0 3px rgba(255,49,84,.08);
+    }
+
+    button {
+      width: 100%;
+      border: 0;
+      padding: 14px;
+      border-radius: 13px;
+      cursor: pointer;
+      color: #fff;
+      font-size: 14px;
+      font-weight: bold;
+      background: linear-gradient(135deg, #ff1f47, #b8002c);
+      box-shadow: 0 8px 25px rgba(255, 20, 60, .2);
+      transition: .2s;
+      position: relative;
+      z-index: 3;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(255, 20, 60, .35);
+    }
+
+    .telegram-btn {
+      background: linear-gradient(135deg, #168dd8, #075d99);
+    }
+
+    .config-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .config-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 15px;
+      border-radius: 15px;
+      background:
+        linear-gradient(100deg, #0d0b10, #111018);
+      border: 1px solid #292129;
+      transition: .2s;
+    }
+
+    .config-item:hover {
+      border-color: rgba(255,49,84,.3);
+    }
+
+    .config-info {
+      min-width: 0;
+    }
+
+    .config-name {
+      font-weight: bold;
+      margin-bottom: 5px;
+      word-break: break-word;
+    }
+
+    .config-date {
+      color: #777;
+      font-size: 11px;
+    }
+
+    .copy-btn {
+      width: auto;
+      min-width: 100px;
+      padding: 10px 15px;
+      flex-shrink: 0;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 25px;
+      color: #777;
+      font-size: 13px;
+      border: 1px dashed #292129;
+      border-radius: 15px;
+    }
+
+    .notice {
+      color: #aaa;
+      font-size: 12px;
+      line-height: 2;
+      padding: 15px;
+      border-radius: 13px;
+      background: rgba(255,255,255,.025);
+      border: 1px solid rgba(255,255,255,.05);
+    }
+
+    .success {
+      display: none;
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 12px;
+      color: #65f09a;
+      background: rgba(40, 220, 110, .07);
+      border: 1px solid rgba(40, 220, 110, .18);
+      font-size: 13px;
+    }
+
+    footer {
+      text-align: center;
+      color: #555;
+      font-size: 11px;
+      margin-top: 30px;
+    }
+
+    /* =========================
+       Login
+       ========================= */
+
+    #loginPage {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      position: relative;
+      z-index: 5;
+    }
+
+    .login-box {
+      width: min(430px, 100%);
+      padding: 32px;
+      border-radius: 26px;
+      background: rgba(17, 13, 20, .92);
+      border: 1px solid rgba(255, 40, 70, .25);
+      box-shadow:
+        0 25px 80px rgba(0,0,0,.5),
+        0 0 50px rgba(255,30,60,.05);
+      text-align: center;
+      backdrop-filter: blur(18px);
+    }
+
+    .login-logo {
+      font-size: 35px;
+      font-weight: 900;
+      margin-bottom: 8px;
+      color: #fff;
+      text-shadow: 0 0 20px rgba(255,40,70,.5);
+    }
+
+    .login-box p {
+      color: #777;
+      font-size: 13px;
+      margin-bottom: 25px;
+    }
+
+    #panel {
+      display: none;
+    }
+
+    @media(max-width: 750px) {
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card.full {
+        grid-column: auto;
+      }
+
+      header {
+        padding: 15px;
+      }
+
+      .logo {
+        font-size: 21px;
+      }
+
+      .config-item {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .copy-btn {
+        width: 100%;
+      }
+
+      .web-top-right {
+        width: 180px;
+        height: 180px;
+      }
+
+      .web-bottom-left {
+        width: 150px;
+        height: 150px;
+      }
+
+      .spider-container {
+        right: 25px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- تارهای عنکبوت -->
+
+<div class="web-top-right">
+  <div class="web-lines">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<div class="web-bottom-left"></div>
+
+
+<!-- عنکبوت -->
+
+<div class="spider-container" id="spider">
+
+  <div class="spider-line"></div>
+
+  <div class="spider">
+
+    <div class="spider-body"></div>
+
+    <div class="leg l1"></div>
+    <div class="leg l2"></div>
+    <div class="leg l3"></div>
+
+    <div class="leg r1"></div>
+    <div class="leg r2"></div>
+    <div class="leg r3"></div>
+
+  </div>
+
+</div>
+
+
+<!-- Login -->
+
+<div id="loginPage">
+
+  <div class="login-box">
+
+    <div class="login-logo">
+      ＳｐａｅｄｒＮＧ
+    </div>
+
+    <p>
+      برای ورود به پنل رمز عبور را وارد کنید
+    </p>
+
+    <input
+      type="password"
+      id="password"
+      placeholder="رمز ورود"
+      autocomplete="off"
+      onkeydown="if(event.key === 'Enter') login()"
+    >
+
+    <button onclick="login()">
+      ورود به پنل
+    </button>
+
+    <div
+      id="loginError"
+      style="
+        display:none;
+        color:#ff536f;
+        font-size:12px;
+        margin-top:12px;
+      "
+    >
+      رمز عبور اشتباه است
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- Panel -->
+
+<div id="panel">
+
+  <div class="container">
+
+    <header>
+
+      <div class="logo">
+        ＳｐａｅｄｒＮＧ
+      </div>
+
+      <div class="status">
+        <span class="dot"></span>
+        آنلاین
+      </div>
+
+    </header>
+
+
+    <section class="hero">
+
+      <h1>SpaedrNG</h1>
+
+      <p>
+        با ما وصل بمانید
+      </p>
+
+    </section>
+
+
+    <div class="grid">
+
+
+      <!-- Count -->
+
+      <div class="card">
+
+        <h2>
+          کانفیگ‌های ساخته شده
+        </h2>
+
+        <div class="count" id="configCount">
+          0
+        </div>
+
+        <div class="card-desc">
+          تعداد کانفیگ‌های ذخیره شده در این دستگاه
+        </div>
+
+      </div>
+
+
+      <!-- Create -->
+
+      <div class="card">
+
+        <h2>
+          ساخت کانفیگ جدید
+        </h2>
+
+        <div class="card-desc">
+          نام کاربر را وارد کنید تا کانفیگ اختصاصی ساخته شود.
+        </div>
+
+        <label>
+          نام کاربر
+        </label>
+
+        <input
+          id="userName"
+          type="text"
+          placeholder="مثلاً Ali"
+          maxlength="40"
+        >
+
+        <button onclick="createConfig()">
+          ＋ ساخت کانفیگ
+        </button>
+
+        <div id="success" class="success">
+          ✓ کانفیگ با موفقیت ساخته شد.
+        </div>
+
+      </div>
+
+
+      <!-- Config list -->
+
+      <div class="card full">
+
+        <h2>
+          کانفیگ‌های ساخته شده
+        </h2>
+
+        <div class="card-desc">
+          کانفیگ‌ها در این دستگاه ذخیره می‌شوند و لینک مستقیم نمایش داده نمی‌شود.
+        </div>
+
+        <div
+          id="configList"
+          class="config-list"
+        ></div>
+
+      </div>
+
+
+      <!-- Telegram -->
+
+      <div class="card">
+
+        <h2>
+          کانال تلگرام
+        </h2>
+
+        <div class="card-desc">
+          برای دریافت اطلاعیه‌ها و نسخه‌های جدید به کانال ما بپیوندید.
+        </div>
+
+        <button
+          class="telegram-btn"
+          onclick="openTelegram()"
+        >
+          ورود به کانال
+        </button>
+
+      </div>
+
+
+      <!-- About -->
+
+      <div class="card">
+
+        <h2>
+          درباره SpaedrNG
+        </h2>
+
+        <div class="notice">
+          این پنل برای کاربرانی ساخته شده که در اتصال
+          مشکل دارند و هدف آن مدیریت ساده کانفیگ‌ها است.
+        </div>
+
+      </div>
+
+
+      <!-- Warning -->
+
+      <div class="card full">
+
+        <h2>
+          توجه
+        </h2>
+
+        <div class="notice">
+          این پنل برای کسایی که مشکل وصل شدن دارند درست شده.
+          فروش آن کار غیر اخلاقی میباشد.
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <footer>
+      © 2026 SpaedrNG
+    </footer>
+
+  </div>
+
+</div>
+
+
+<script>
+
+const PANEL_PASSWORD = "SpaedrNG";
+
+
+const BASE_CONFIG =
+  "vless://3b459896-10b1-4e10-a61b-a126c968d64e@" +
+  "main-thunder-e86ba2-mlm.prod-relay-2ffb0d.workers.dev:443" +
+  "?encryption=none" +
+  "&type=ws" +
+  "&path=/" +
+  "&host=main-thunder-e86ba2-mlm.prod-relay-2ffb0d.workers.dev" +
+  "&security=tls" +
+  "&sni=main-thunder-e86ba2-mlm.prod-relay-2ffb0d.workers.dev" +
+  "&fp=chrome";
+
+
+const TELEGRAM =
+  "https://t.me/spaedrNG";
+
+
+function login() {
+
+  const password =
+    document.getElementById("password").value.trim();
+
+  if (password === PANEL_PASSWORD) {
+
+    document.getElementById("loginPage").style.display =
+      "none";
+
+    document.getElementById("panel").style.display =
+      "block";
+
+    document.getElementById("loginError").style.display =
+      "none";
+
+    renderConfigs();
+
+  } else {
+
+    document.getElementById("loginError").style.display =
+      "block";
+
+    document.getElementById("password").value =
+      "";
+
+    document.getElementById("password").focus();
+
+  }
+
+}
+
+
+function createConfig() {
+
+  const input =
+    document.getElementById("userName");
+
+  const name =
+    input.value.trim();
+
+  if (!name) {
+
+    alert("لطفاً نام کاربر را وارد کنید.");
+
+    input.focus();
+
+    return;
+  }
+
+
+  const finalName =
+    name + " - " + TELEGRAM;
+
+
+  const config =
+    BASE_CONFIG +
+    "#" +
+    encodeURIComponent(finalName);
+
+
+  const configs =
+    JSON.parse(
+      localStorage.getItem("spaedrng_configs") || "[]"
+    );
+
+
+  configs.push({
+
+    id: Date.now(),
+
+    name: name,
+
+    config: config,
+
+    date: new Date().toLocaleString("fa-IR")
+
+  });
+
+
+  localStorage.setItem(
+    "spaedrng_configs",
+    JSON.stringify(configs)
+  );
+
+
+  input.value = "";
+
+
+  const success =
+    document.getElementById("success");
+
+  success.style.display =
+    "block";
+
+
+  setTimeout(() => {
+
+    success.style.display =
+      "none";
+
+  }, 2500);
+
+
+  renderConfigs();
+
+}
+
+
+function renderConfigs() {
+
+  const configs =
+    JSON.parse(
+      localStorage.getItem("spaedrng_configs") || "[]"
+    );
+
+
+  document.getElementById("configCount").innerText =
+    configs.length;
+
+
+  const list =
+    document.getElementById("configList");
+
+
+  if (!configs.length) {
+
+    list.innerHTML =
+      '<div class="empty">هنوز کانفیگی ساخته نشده است.</div>';
+
+    return;
+
+  }
+
+
+  list.innerHTML =
+    configs.map((item, index) => `
+
+      <div class="config-item">
+
+        <div class="config-info">
+
+          <div class="config-name">
+            ${escapeHTML(item.name)}
+          </div>
+
+          <div class="config-date">
+            ${escapeHTML(item.date)}
+          </div>
+
+        </div>
+
+        <button
+          class="copy-btn"
+          onclick="copyConfig(${index})"
+        >
+          کپی کانفیگ
+        </button>
+
+      </div>
+
+    `).join("");
+
+}
+
+
+async function copyConfig(index) {
+
+  const configs =
+    JSON.parse(
+      localStorage.getItem("spaedrng_configs") || "[]"
+    );
+
+
+  if (!configs[index]) {
+    return;
+  }
+
+
+  try {
+
+    await navigator.clipboard.writeText(
+      configs[index].config
+    );
+
+    alert("کانفیگ کپی شد.");
+
+  } catch (error) {
+
+    const textarea =
+      document.createElement("textarea");
+
+    textarea.value =
+      configs[index].config;
+
+    document.body.appendChild(textarea);
+
+    textarea.select();
+
+    document.execCommand("copy");
+
+    textarea.remove();
+
+    alert("کانفیگ کپی شد.");
+
+  }
+
+}
+
+
+function openTelegram() {
+
+  window.open(
+    TELEGRAM,
+    "_blank"
+  );
+
+}
+
+
+function escapeHTML(value) {
+
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+
+}
+
+
+/* =========================
+   عنکبوت هر ۱۰ ثانیه
+   ========================= */
+
+function showSpider() {
+
+  const spider =
+    document.getElementById("spider");
+
+  spider.classList.remove("show");
+
+  void spider.offsetWidth;
+
+  spider.classList.add("show");
+
+}
+
+
+/* اولین نمایش */
+
+setTimeout(showSpider, 2000);
+
+
+/* هر ۱۰ ثانیه */
+
+setInterval(showSpider, 10000);
+
+</script>
+
+</body>
+  </html>
