@@ -1,1751 +1,1694 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>SpaedrNG Panel</title>
-
-  <style>
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Tahoma, Arial, sans-serif;
-    }
-
-    body {
-      min-height: 100vh;
-
-      background:
-        radial-gradient(
-          circle at 15% 10%,
-          rgba(255, 20, 55, .14),
-          transparent 25%
-        ),
-        radial-gradient(
-          circle at 85% 85%,
-          rgba(30, 80, 255, .10),
-          transparent 30%
-        ),
-        linear-gradient(
-          135deg,
-          #08080d,
-          #120910 50%,
-          #07080d
-        );
-
-      color: #fff;
-      overflow-x: hidden;
-    }
-
-
-    /* =================================
-       تار عنکبوت بالا سمت راست
-       ================================= */
-
-    .web-top-right {
-      position: fixed;
-      top: 0;
-      right: 0;
-
-      width: 270px;
-      height: 270px;
-
-      pointer-events: none;
-
-      z-index: 1;
-
-      opacity: .55;
-    }
-
-    .web-top-right::before,
-    .web-top-right::after {
-
-      content: "";
-
-      position: absolute;
-
-      inset: 0;
-
-      border: 1px solid rgba(255,255,255,.12);
-
-      border-radius: 50%;
-
-      transform-origin: 100% 0;
-    }
-
-    .web-top-right::before {
-      transform: scale(.65);
-    }
-
-    .web-top-right::after {
-      transform: scale(.9);
-    }
-
-
-    .web-lines {
-
-      position: absolute;
-
-      width: 100%;
-      height: 100%;
-
-      right: 0;
-      top: 0;
-
-      overflow: hidden;
-    }
-
-
-    .web-lines span {
-
-      position: absolute;
-
-      width: 1px;
-      height: 100%;
-
-      right: 0;
-      top: 0;
-
-      background: rgba(255,255,255,.12);
-
-      transform-origin: top right;
-    }
-
-
-    .web-lines span:nth-child(1) {
-      transform: rotate(15deg);
-    }
-
-    .web-lines span:nth-child(2) {
-      transform: rotate(30deg);
-    }
-
-    .web-lines span:nth-child(3) {
-      transform: rotate(45deg);
-    }
-
-    .web-lines span:nth-child(4) {
-      transform: rotate(60deg);
-    }
-
-    .web-lines span:nth-child(5) {
-      transform: rotate(75deg);
-    }
-
-    .web-lines span:nth-child(6) {
-      transform: rotate(90deg);
-    }
-
-    .web-lines span:nth-child(7) {
-      transform: rotate(105deg);
-    }
-
-    .web-lines span:nth-child(8) {
-      transform: rotate(120deg);
-    }
-
-
-    /* =================================
-       تار پایین سمت چپ
-       ================================= */
-
-    .web-bottom-left {
-
-      position: fixed;
-
-      bottom: 0;
-      left: 0;
-
-      width: 220px;
-      height: 220px;
-
-      pointer-events: none;
-
-      opacity: .4;
-
-      z-index: 1;
-    }
-
-
-    .web-bottom-left::before,
-    .web-bottom-left::after {
-
-      content: "";
-
-      position: absolute;
-
-      inset: 0;
-
-      border: 1px solid rgba(255,255,255,.10);
-
-      border-radius: 50%;
-
-      transform-origin: 0 100%;
-    }
-
-
-    .web-bottom-left::before {
-      transform: scale(.55);
-    }
-
-    .web-bottom-left::after {
-      transform: scale(.85);
-    }
-
-
-    /* =================================
-       عنکبوت متحرک
-       ================================= */
-
-    .spider-container {
-
-      position: fixed;
-
-      top: -130px;
-      right: 75px;
-
-      width: 80px;
-      height: 130px;
-
-      z-index: 20;
-
-      pointer-events: none;
-
-      opacity: 0;
-    }
-
-
-    .spider-container.show {
-
-      animation:
-        spiderDrop
-        6s
-        ease-in-out
-        forwards;
-    }
-
-
-    .spider-line {
-
-      position: absolute;
-
-      width: 1px;
-      height: 75px;
-
-      background:
-        rgba(255,255,255,.45);
-
-      top: 0;
-      left: 39px;
-    }
-
-
-    .spider {
-
-      position: absolute;
-
-      top: 70px;
-      left: 20px;
-
-      width: 40px;
-      height: 40px;
-
-      animation:
-        spiderSwing
-        .8s
-        ease-in-out
-        infinite alternate;
-    }
-
-
-    .spider-body {
-
-      position: absolute;
-
-      width: 25px;
-      height: 30px;
-
-      border-radius: 50%;
-
-      background: #090909;
-
-      border: 2px solid #ff3154;
-
-      box-shadow:
-        0 0 8px rgba(255,49,84,.7),
-        0 0 20px rgba(255,49,84,.25);
-
-      left: 8px;
-      top: 5px;
-    }
-
-
-    .spider-body::before {
-
-      content: "";
-
-      position: absolute;
-
-      width: 8px;
-      height: 8px;
-
-      background: #ff3154;
-
-      border-radius: 50%;
-
-      left: 6px;
-      top: 7px;
-
-      box-shadow:
-        0 0 5px #ff3154,
-        0 0 0 2px rgba(255,255,255,.1);
-    }
-
-
-    .leg {
-
-      position: absolute;
-
-      width: 22px;
-      height: 2px;
-
-      background: #111;
-
-      border-top: 1px solid #ff3154;
-
-      transform-origin: right center;
-    }
-
-
-    .leg.l1 {
-      left: -8px;
-      top: 8px;
-      transform: rotate(25deg);
-    }
-
-    .leg.l2 {
-      left: -10px;
-      top: 17px;
-      transform: rotate(0deg);
-    }
-
-    .leg.l3 {
-      left: -8px;
-      top: 27px;
-      transform: rotate(-25deg);
-    }
-
-
-    .leg.r1 {
-      right: -8px;
-      top: 8px;
-      transform: rotate(-25deg);
-    }
-
-    .leg.r2 {
-      right: -10px;
-      top: 17px;
-      transform: rotate(0deg);
-    }
-
-    .leg.r3 {
-      right: -8px;
-      top: 27px;
-      transform: rotate(25deg);
-    }
-
-
-    @keyframes spiderDrop {
-
-      0% {
-        top: -130px;
-        opacity: 0;
-      }
-
-      10% {
-        opacity: 1;
-      }
-
-      35% {
-        top: 130px;
-        opacity: 1;
-      }
-
-      65% {
-        top: 40px;
-        opacity: 1;
-      }
-
-      90% {
-        top: 160px;
-        opacity: 1;
-      }
-
-      100% {
-        top: -130px;
-        opacity: 0;
-      }
-    }
-
-
-    @keyframes spiderSwing {
-
-      from {
-        transform: rotate(-4deg);
-      }
-
-      to {
-        transform: rotate(4deg);
-      }
-    }
-
-
-    /* =================================
-       Container
-       ================================= */
-
-    .container {
-
-      width: min(1100px, 94%);
-
-      margin: auto;
-
-      padding:
-        25px
-        0
-        50px;
-
-      position: relative;
-
-      z-index: 5;
-    }
-
-
-    /* =================================
-       Header
-       ================================= */
-
-    header {
-
-      display: flex;
-
-      justify-content: space-between;
-
-      align-items: center;
-
-      padding: 18px 22px;
-
-      margin-bottom: 25px;
-
-      border:
-        1px solid
-        rgba(255, 40, 70, .25);
-
-      border-radius: 20px;
-
-      background:
-        rgba(15, 12, 18, .78);
-
-      backdrop-filter: blur(18px);
-
-      box-shadow:
-        0 10px 40px rgba(0,0,0,.35),
-        inset 0 0 30px rgba(255,30,60,.025);
-    }
-
-
-    .logo {
-
-      font-size: 27px;
-
-      font-weight: 900;
-
-      letter-spacing: 2px;
-
-      color: #fff;
-
-      text-shadow:
-        0 0 10px rgba(255,40,70,.8),
-        0 0 25px rgba(255,40,70,.4);
-    }
-
-
-    .status {
-
-      display: flex;
-
-      align-items: center;
-
-      gap: 8px;
-
-      color: #bcbcbc;
-
-      font-size: 13px;
-    }
-
-
-    .dot {
-
-      width: 9px;
-      height: 9px;
-
-      border-radius: 50%;
-
-      background: #20e070;
-
-      box-shadow:
-        0 0 12px #20e070;
-
-      animation:
-        pulse
-        1.7s
-        infinite;
-    }
-
-
-    @keyframes pulse {
-
-      50% {
-
-        opacity: .4;
-
-        transform:
-          scale(.75);
-      }
-    }
-
-
-    /* =================================
-       Hero
-       ================================= */
-
-    .hero {
-
-      text-align: center;
-
-      padding:
-        40px
-        15px
-        35px;
-
-      margin-bottom: 20px;
-    }
-
-
-    .hero h1 {
-
-      font-size:
-        clamp(
-          30px,
-          7vw,
-          55px
-        );
-
-      font-weight: 900;
-
-      margin-bottom: 12px;
-
-      background:
-        linear-gradient(
-          90deg,
-          #fff,
-          #ff3154,
-          #fff,
-          #4388ff,
-          #fff
-        );
-
-      background-size: 250%;
-
-      -webkit-background-clip: text;
-
-      -webkit-text-fill-color: transparent;
-
-      animation:
-        shine
-        5s
-        linear
-        infinite;
-    }
-
-
-    @keyframes shine {
-
-      from {
-        background-position: 0%;
-      }
-
-      to {
-        background-position: 250%;
-      }
-    }
-
-
-    .hero p {
-
-      color: #aaa;
-
-      font-size: 15px;
-    }
-
-
-    /* =================================
-       Cards
-       ================================= */
-
-    .grid {
-
-      display: grid;
-
-      grid-template-columns:
-        repeat(2, 1fr);
-
-      gap: 18px;
-    }
-
-
-    .card {
-
-      position: relative;
-
-      overflow: hidden;
-
-      background:
-        linear-gradient(
-          145deg,
-          rgba(27,18,26,.92),
-          rgba(10,11,17,.92)
-        );
-
-      border:
-        1px solid
-        rgba(255,35,65,.20);
-
-      border-radius: 24px;
-
-      padding: 25px;
-
-      box-shadow:
-        0 15px 50px rgba(0,0,0,.30),
-        inset 0 1px
-        rgba(255,255,255,.025);
-
-      backdrop-filter:
-        blur(18px);
-
-      transition: .3s;
-    }
-
-
-    .card::before {
-
-      content: "";
-
-      position: absolute;
-
-      width: 90px;
-      height: 90px;
-
-      right: -45px;
-      top: -45px;
-
-      border-radius: 50%;
-
-      border:
-        1px solid
-        rgba(255,49,84,.20);
-    }
-
-
-    .card::after {
-
-      content: "";
-
-      position: absolute;
-
-      width: 70px;
-      height: 70px;
-
-      left: -35px;
-      bottom: -35px;
-
-      border-radius: 50%;
-
-      border:
-        1px solid
-        rgba(60,120,255,.12);
-    }
-
-
-    .card:hover {
-
-      transform:
-        translateY(-4px);
-
-      border-color:
-        rgba(255,40,70,.45);
-
-      box-shadow:
-        0 20px 60px rgba(0,0,0,.4),
-        0 0 30px
-        rgba(255,30,60,.06);
-    }
-
-
-    .card.full {
-
-      grid-column:
-        1 / -1;
-    }
-
-
-    .card h2 {
-
-      font-size: 19px;
-
-      margin-bottom: 9px;
-
-      position: relative;
-
-      z-index: 2;
-    }
-
-
-    .card-desc {
-
-      color: #8f8f8f;
-
-      font-size: 13px;
-
-      line-height: 1.8;
-
-      margin-bottom: 18px;
-
-      position: relative;
-
-      z-index: 2;
-    }
-
-
-    .count {
-
-      font-size: 50px;
-
-      font-weight: 900;
-
-      color: #ff3154;
-
-      text-shadow:
-        0 0 20px
-        rgba(255,49,84,.35);
-    }
-
-
-    label {
-
-      display: block;
-
-      color: #c8c8c8;
-
-      margin-bottom: 8px;
-
-      font-size: 13px;
-    }
-
-
-    input {
-
-      width: 100%;
-
-      padding: 15px;
-
-      border:
-        1px solid
-        #30252c;
-
-      outline: none;
-
-      border-radius: 13px;
-
-      color: white;
-
-      background: #0c0a0f;
-
-      transition: .2s;
-
-      margin-bottom: 12px;
-    }
-
-
-    input:focus {
-
-      border-color: #ff3154;
-
-      box-shadow:
-        0 0 0 3px
-        rgba(255,49,84,.08);
-    }
-
-
-    button {
-
-      width: 100%;
-
-      border: 0;
-
-      padding: 14px;
-
-      border-radius: 13px;
-
-      cursor: pointer;
-
-      color: #fff;
-
-      font-size: 14px;
-
-      font-weight: bold;
-
-      background:
-        linear-gradient(
-          135deg,
-          #ff1f47,
-          #b8002c
-        );
-
-      box-shadow:
-        0 8px 25px
-        rgba(255,20,60,.2);
-
-      transition: .2s;
-
-      position: relative;
-
-      z-index: 3;
-    }
-
-
-    button:hover {
-
-      transform:
-        translateY(-2px);
-
-      box-shadow:
-        0 12px 30px
-        rgba(255,20,60,.35);
-    }
-
-
-    .telegram-btn {
-
-      background:
-        linear-gradient(
-          135deg,
-          #168dd8,
-          #075d99
-        );
-    }
-
-
-    /* =================================
-       Config List
-       ================================= */
-
-    .config-list {
-
-      display: flex;
-
-      flex-direction: column;
-
-      gap: 12px;
-    }
-
-
-    .config-item {
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: space-between;
-
-      gap: 15px;
-
-      padding: 15px;
-
-      border-radius: 15px;
-
-      background:
-        linear-gradient(
-          100deg,
-          #0d0b10,
-          #111018
-        );
-
-      border:
-        1px solid
-        #292129;
-
-      transition: .2s;
-    }
-
-
-    .config-item:hover {
-
-      border-color:
-        rgba(255,49,84,.3);
-    }
-
-
-    .config-info {
-
-      min-width: 0;
-    }
-
-
-    .config-name {
-
-      font-weight: bold;
-
-      margin-bottom: 5px;
-
-      word-break: break-word;
-    }
-
-
-    .config-date {
-
-      color: #777;
-
-      font-size: 11px;
-    }
-
-
-    .copy-btn {
-
-      width: auto;
-
-      min-width: 100px;
-
-      padding:
-        10px
-        15px;
-
-      flex-shrink: 0;
-    }
-
-
-    .empty {
-
-      text-align: center;
-
-      padding: 25px;
-
-      color: #777;
-
-      font-size: 13px;
-
-      border:
-        1px dashed
-        #292129;
-
-      border-radius: 15px;
-    }
-
-
-    .notice {
-
-      color: #aaa;
-
-      font-size: 12px;
-
-      line-height: 2;
-
-      padding: 15px;
-
-      border-radius: 13px;
-
-      background:
-        rgba(255,255,255,.025);
-
-      border:
-        1px solid
-        rgba(255,255,255,.05);
-    }
-
-
-    .success {
-
-      display: none;
-
-      margin-top: 12px;
-
-      padding: 12px;
-
-      border-radius: 12px;
-
-      color: #65f09a;
-
-      background:
-        rgba(40,220,110,.07);
-
-      border:
-        1px solid
-        rgba(40,220,110,.18);
-
-      font-size: 13px;
-    }
-
-
-    footer {
-
-      text-align: center;
-
-      color: #555;
-
-      font-size: 11px;
-
-      margin-top: 30px;
-    }
-
-
-    /* =================================
-       Mobile
-       ================================= */
-
-    @media(max-width:750px) {
-
-      .grid {
-
-        grid-template-columns: 1fr;
-      }
-
-
-      .card.full {
-
-        grid-column: auto;
-      }
-
-
-      header {
-
-        padding: 15px;
-      }
-
-
-      .logo {
-
-        font-size: 21px;
-      }
-
-
-      .config-item {
-
-        align-items:
-          flex-start;
-
-        flex-direction:
-          column;
-      }
-
-
-      .copy-btn {
-
-        width: 100%;
-      }
-
-
-      .web-top-right {
-
-        width: 180px;
-        height: 180px;
-      }
-
-
-      .web-bottom-left {
-
-        width: 150px;
-        height: 150px;
-      }
-
-
-      .spider-container {
-
-        right: 25px;
-      }
-
-    }
-
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
+<title>SpaedrNG</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+  margin:0;
+  padding:0;
+  min-height:100%;
+  font-family:
+    Tahoma,
+    Arial,
+    sans-serif;
+  background:#02050a;
+  color:#fff;
+}
+
+body{
+  overflow-x:hidden;
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 15% 20%,rgba(0,90,255,.18),transparent 25%),
+    radial-gradient(circle at 85% 35%,rgba(255,0,40,.18),transparent 25%),
+    radial-gradient(circle at 50% 90%,rgba(0,130,255,.13),transparent 30%),
+    #02050a;
+}
+
+/* نورهای پس زمینه */
+.bg-light{
+  position:fixed;
+  width:260px;
+  height:260px;
+  border-radius:50%;
+  filter:blur(80px);
+  opacity:.22;
+  pointer-events:none;
+  z-index:0;
+}
+
+.bg-light.red{
+  background:#e50914;
+  top:18%;
+  right:-100px;
+}
+
+.bg-light.blue{
+  background:#087cff;
+  bottom:5%;
+  left:-100px;
+}
+
+/* تار عنکبوت */
+.web{
+  position:fixed;
+  width:220px;
+  height:220px;
+  opacity:.15;
+  pointer-events:none;
+  z-index:0;
+}
+
+.web.top{
+  top:-60px;
+  right:-45px;
+}
+
+.web.bottom{
+  bottom:-70px;
+  left:-50px;
+  transform:rotate(180deg);
+}
+
+.web span{
+  position:absolute;
+  inset:50%;
+  width:2px;
+  height:125px;
+  background:#fff;
+  transform-origin:top;
+}
+
+.web span:nth-child(1){transform:rotate(0deg)}
+.web span:nth-child(2){transform:rotate(30deg)}
+.web span:nth-child(3){transform:rotate(60deg)}
+.web span:nth-child(4){transform:rotate(90deg)}
+.web span:nth-child(5){transform:rotate(120deg)}
+.web span:nth-child(6){transform:rotate(150deg)}
+
+/* اپ */
+.app{
+  position:relative;
+  z-index:2;
+  width:min(100%,520px);
+  min-height:100vh;
+  margin:auto;
+  padding:18px 18px 115px;
+}
+
+/* هدر */
+.header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:20px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.logo{
+  width:45px;
+  height:45px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:
+    linear-gradient(145deg,#ff3b45,#b80009);
+  box-shadow:
+    0 8px 25px rgba(229,9,20,.35);
+}
+
+.logo svg{
+  width:27px;
+  height:27px;
+  fill:#fff;
+}
+
+.brand-name{
+  font-size:19px;
+  font-weight:900;
+}
+
+.brand-sub{
+  font-size:10px;
+  color:#7d8491;
+  margin-top:3px;
+}
+
+.status{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:#9ca3af;
+  font-size:11px;
+}
+
+.status-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#35df70;
+  box-shadow:0 0 12px #35df70;
+}
+
+/* داشبورد */
+.dashboard{
+  position:relative;
+  overflow:hidden;
+  padding:22px;
+  min-height:145px;
+  border-radius:27px;
+  border:1px solid rgba(255,255,255,.08);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(35,39,52,.88),
+      rgba(12,15,23,.94)
+    );
+  box-shadow:
+    0 20px 50px rgba(0,0,0,.35),
+    inset 0 1px rgba(255,255,255,.04);
+}
+
+.dashboard:before{
+  content:"";
+  position:absolute;
+  width:190px;
+  height:190px;
+  border-radius:50%;
+  background:#e50914;
+  filter:blur(70px);
+  opacity:.13;
+  top:-110px;
+  left:-70px;
+}
+
+.dashboard-title{
+  position:relative;
+  font-size:13px;
+  color:#aab0bb;
+}
+
+.dashboard-main{
+  position:relative;
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  margin-top:10px;
+}
+
+.dashboard-number{
+  font-size:42px;
+  font-weight:900;
+  line-height:1;
+}
+
+.dashboard-label{
+  margin-top:7px;
+  color:#9299a6;
+  font-size:12px;
+}
+
+.dashboard-badge{
+  padding:9px 12px;
+  border-radius:13px;
+  background:rgba(229,9,20,.12);
+  border:1px solid rgba(229,9,20,.25);
+  color:#ff5660;
+  font-size:10px;
+}
+
+/* عنوان */
+.section-title{
+  margin:27px 4px 14px;
+  font-size:14px;
+  font-weight:bold;
+  color:#e7e9ed;
+}
+
+/* آیکون‌ها */
+.app-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:20px 13px;
+}
+
+.app-item{
+  border:0;
+  background:none;
+  color:#fff;
+  padding:0;
+  cursor:pointer;
+  text-align:center;
+}
+
+.app-icon{
+  position:relative;
+  width:66px;
+  height:66px;
+  margin:auto;
+  border-radius:20px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:
+    0 12px 25px rgba(0,0,0,.3),
+    inset 0 1px rgba(255,255,255,.18);
+  transition:.18s;
+}
+
+.app-item:active .app-icon{
+  transform:scale(.91);
+}
+
+.app-icon svg{
+  width:31px;
+  height:31px;
+  fill:none;
+  stroke:#fff;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.icon-red{
+  background:linear-gradient(145deg,#ff3d48,#c6000b);
+}
+
+.icon-blue{
+  background:linear-gradient(145deg,#4b9cff,#0667d9);
+}
+
+.icon-green{
+  background:linear-gradient(145deg,#55d879,#10a744);
+}
+
+.icon-purple{
+  background:linear-gradient(145deg,#bb69e9,#7835b7);
+}
+
+.icon-orange{
+  background:linear-gradient(145deg,#ffb04c,#e87900);
+}
+
+.icon-cyan{
+  background:linear-gradient(145deg,#62d4ef,#178fc2);
+}
+
+.icon-yellow{
+  background:linear-gradient(145deg,#ffd84a,#d6a600);
+}
+
+.icon-pink{
+  background:linear-gradient(145deg,#ff6070,#d51c45);
+}
+
+.app-name{
+  display:block;
+  margin-top:8px;
+  font-size:11px;
+  line-height:1.4;
+  color:#e1e3e7;
+}
+
+/* صفحات داخلی */
+.screen{
+  display:none;
+}
+
+.screen.active{
+  display:block;
+}
+
+.screen-header{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:20px;
+}
+
+.back{
+  width:40px;
+  height:40px;
+  border:0;
+  border-radius:13px;
+  background:#141923;
+  color:#fff;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.back svg{
+  width:21px;
+  height:21px;
+  stroke:#fff;
+  fill:none;
+  stroke-width:2;
+}
+
+.screen-title{
+  font-size:17px;
+  font-weight:bold;
+}
+
+/* فرم */
+.form-card{
+  padding:20px;
+  border-radius:25px;
+  background:rgba(16,20,29,.9);
+  border:1px solid rgba(255,255,255,.07);
+  box-shadow:0 18px 40px rgba(0,0,0,.25);
+}
+
+label{
+  display:block;
+  margin-bottom:8px;
+  font-size:12px;
+  color:#aeb4c0;
+}
+
+input,select{
+  width:100%;
+  height:52px;
+  border:1px solid #272d39;
+  border-radius:15px;
+  outline:none;
+  background:#090d14;
+  color:#fff;
+  padding:0 15px;
+  font-family:inherit;
+  font-size:13px;
+  margin-bottom:16px;
+}
+
+input:focus,
+select:focus{
+  border-color:#e50914;
+  box-shadow:0 0 0 3px rgba(229,9,20,.08);
+}
+
+.main-btn{
+  width:100%;
+  height:53px;
+  border:0;
+  border-radius:16px;
+  color:#fff;
+  font-family:inherit;
+  font-size:13px;
+  font-weight:bold;
+  cursor:pointer;
+  background:linear-gradient(135deg,#ed1824,#a80008);
+  box-shadow:0 12px 25px rgba(229,9,20,.2);
+}
+
+.main-btn:active{
+  transform:scale(.98);
+}
+
+/* لیست */
+.config-list{
+  display:flex;
+  flex-direction:column;
+  gap:11px;
+}
+
+.config-item{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:13px;
+  border-radius:19px;
+  background:#10141d;
+  border:1px solid rgba(255,255,255,.06);
+}
+
+.config-icon{
+  flex:0 0 43px;
+  width:43px;
+  height:43px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(145deg,#e51c28,#920009);
+}
+
+.config-icon svg{
+  width:21px;
+  height:21px;
+  stroke:#fff;
+  fill:none;
+  stroke-width:2;
+}
+
+.config-info{
+  min-width:0;
+  flex:1;
+}
+
+.config-name{
+  font-size:12px;
+  font-weight:bold;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+
+.config-meta{
+  color:#747c89;
+  font-size:9px;
+  margin-top:5px;
+}
+
+.config-actions{
+  display:flex;
+  gap:6px;
+}
+
+.action-btn{
+  width:36px;
+  height:36px;
+  border:0;
+  border-radius:11px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+}
+
+.action-btn svg{
+  width:17px;
+  height:17px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.copy-btn{
+  background:#17355a;
+}
+
+.delete-btn{
+  background:#40151b;
+  color:#ff6470;
+}
+
+/* اطلاعات */
+.info-card{
+  padding:20px;
+  border-radius:23px;
+  background:#10141d;
+  border:1px solid rgba(255,255,255,.06);
+  line-height:2;
+  font-size:12px;
+  color:#aab0bb;
+}
+
+.telegram-btn{
+  margin-top:13px;
+  width:100%;
+  height:50px;
+  border:0;
+  border-radius:15px;
+  color:#fff;
+  font-family:inherit;
+  font-weight:bold;
+  background:linear-gradient(135deg,#249bd7,#0875b5);
+  cursor:pointer;
+}
+
+/* پیام */
+.empty{
+  padding:45px 20px;
+  text-align:center;
+  border-radius:23px;
+  background:#0d1118;
+  border:1px dashed #282e39;
+  color:#707784;
+  font-size:12px;
+}
+
+.toast{
+  position:fixed;
+  z-index:100;
+  bottom:95px;
+  left:50%;
+  transform:translateX(-50%) translateY(20px);
+  opacity:0;
+  pointer-events:none;
+  padding:11px 17px;
+  border-radius:13px;
+  background:#171c26;
+  border:1px solid rgba(255,255,255,.1);
+  box-shadow:0 10px 30px rgba(0,0,0,.4);
+  color:#fff;
+  font-size:11px;
+  transition:.25s;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+/* داک پایین */
+.dock{
+  position:fixed;
+  z-index:50;
+  bottom:15px;
+  left:50%;
+  transform:translateX(-50%);
+  width:min(calc(100% - 30px),490px);
+  height:72px;
+  padding:7px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  border-radius:25px;
+  background:rgba(17,21,29,.91);
+  border:1px solid rgba(255,255,255,.1);
+  backdrop-filter:blur(20px);
+  box-shadow:
+    0 15px 40px rgba(0,0,0,.5),
+    inset 0 1px rgba(255,255,255,.04);
+}
+
+.dock-btn{
+  border:0;
+  background:none;
+  color:#747c88;
+  border-radius:18px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  font-family:inherit;
+  cursor:pointer;
+}
+
+.dock-btn.active{
+  color:#fff;
+  background:rgba(229,9,20,.14);
+}
+
+.dock-btn svg{
+  width:20px;
+  height:20px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.dock-btn span{
+  font-size:8px;
+}
+
+/* اسپایدر */
+.spider{
+  position:fixed;
+  z-index:10;
+  top:-70px;
+  right:25%;
+  width:28px;
+  height:28px;
+  opacity:0;
+  pointer-events:none;
+}
+
+.spider:before{
+  content:"";
+  position:absolute;
+  width:15px;
+  height:15px;
+  border-radius:50%;
+  background:#090b10;
+  border:1px solid #fff;
+  left:7px;
+  top:9px;
+}
+
+.spider:after{
+  content:"";
+  position:absolute;
+  width:1px;
+  height:80px;
+  background:rgba(255,255,255,.7);
+  left:14px;
+  bottom:18px;
+}
+
+.spider.show{
+  animation:spiderMove 3s ease-in-out;
+}
+
+@keyframes spiderMove{
+  0%{
+    opacity:0;
+    transform:translateY(-20px);
+  }
+  15%{
+    opacity:1;
+  }
+  50%{
+    transform:translateY(280px);
+    opacity:1;
+  }
+  85%{
+    opacity:1;
+  }
+  100%{
+    transform:translateY(500px);
+    opacity:0;
+  }
+}
+
+/* دسکتاپ */
+@media(min-width:700px){
+  .app{
+    padding-top:30px;
+  }
+
+  .app-grid{
+    gap:25px 18px;
+  }
+
+  .app-icon{
+    width:76px;
+    height:76px;
+  }
+
+  .app-name{
+    font-size:12px;
+  }
+}
+</style>
 </head>
-
 
 <body>
 
-
-  <!-- =================================
-       تارهای عنکبوت
-       ================================= -->
-
-  <div class="web-top-right">
-
-    <div class="web-lines">
-
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-
-    </div>
-
-  </div>
-
-
-  <div class="web-bottom-left"></div>
-
-
-  <!-- =================================
-       عنکبوت
-       ================================= -->
-
-  <div
-    class="spider-container"
-    id="spider"
-  >
-
-    <div class="spider-line"></div>
-
-
-    <div class="spider">
-
-      <div class="spider-body"></div>
-
-      <div class="leg l1"></div>
-      <div class="leg l2"></div>
-      <div class="leg l3"></div>
-
-      <div class="leg r1"></div>
-      <div class="leg r2"></div>
-      <div class="leg r3"></div>
-
-    </div>
-
-  </div>
-
-
-  <!-- =================================
-       پنل اصلی
-       ================================= -->
-
-  <div id="panel">
-
-    <div class="container">
-
-
-      <!-- Header -->
-
-      <header>
-
-        <div class="logo">
-          ＳｐａｅｄｒＮＧ
-        </div>
-
-
-        <div class="status">
-
-          <span class="dot"></span>
-
-          آنلاین
-
-        </div>
-
-      </header>
-
-
-      <!-- Hero -->
-
-      <section class="hero">
-
-        <h1>
-          SpaedrNG
-        </h1>
-
-        <p>
-          با ما وصل بمانید
-        </p>
-
-      </section>
-
-
-      <!-- Cards -->
-
-      <div class="grid">
-
-
-        <!-- تعداد کانفیگ -->
-
-        <div class="card">
-
-          <h2>
-            کانفیگ‌های ساخته شده
-          </h2>
-
-
-          <div
-            class="count"
-            id="configCount"
-          >
-            0
-          </div>
-
-
-          <div class="card-desc">
-
-            تعداد کانفیگ‌های ذخیره شده
-            در این دستگاه
-
-          </div>
-
-        </div>
-
-
-        <!-- ساخت کانفیگ -->
-
-        <div class="card">
-
-          <h2>
-            ساخت کانفیگ جدید
-          </h2>
-
-
-          <div class="card-desc">
-
-            نام کاربر را وارد کنید
-            تا کانفیگ اختصاصی ساخته شود.
-
-          </div>
-
-
-          <label>
-            نام کاربر
-          </label>
-
-
-          <input
-            id="userName"
-            type="text"
-            placeholder="مثلاً Ali"
-            maxlength="40"
-          >
-
-
-          <button
-            onclick="createConfig()"
-          >
-            ＋ ساخت کانفیگ
-          </button>
-
-
-          <div
-            id="success"
-            class="success"
-          >
-            ✓ کانفیگ با موفقیت ساخته شد.
-          </div>
-
-        </div>
-
-
-        <!-- لیست کانفیگ -->
-
-        <div class="card full">
-
-          <h2>
-            کانفیگ‌های ساخته شده
-          </h2>
-
-
-          <div class="card-desc">
-
-            کانفیگ‌ها در این دستگاه
-            ذخیره می‌شوند و لینک مستقیم
-            نمایش داده نمی‌شود.
-
-          </div>
-
-
-          <div
-            id="configList"
-            class="config-list"
-          ></div>
-
-        </div>
-
-
-        <!-- تلگرام -->
-
-        <div class="card">
-
-          <h2>
-            کانال تلگرام
-          </h2>
-
-
-          <div class="card-desc">
-
-            برای دریافت اطلاعیه‌ها
-            و نسخه‌های جدید به کانال ما بپیوندید.
-
-          </div>
-
-
-          <button
-            class="telegram-btn"
-            onclick="openTelegram()"
-          >
-            ورود به کانال
-          </button>
-
-        </div>
-
-
-        <!-- درباره -->
-
-        <div class="card">
-
-          <h2>
-            درباره SpaedrNG
-          </h2>
-
-
-          <div class="notice">
-
-            این پنل برای کاربرانی ساخته شده
-            که در اتصال مشکل دارند و هدف آن
-            مدیریت ساده کانفیگ‌ها است.
-
-          </div>
-
-        </div>
-
-
-        <!-- توجه -->
-
-        <div class="card full">
-
-          <h2>
-            توجه
-          </h2>
-
-
-          <div class="notice">
-
-            این پنل برای کسایی که مشکل
-            وصل شدن دارند درست شده.
-            فروش آن کار غیر اخلاقی میباشد.
-
-          </div>
-
-        </div>
-
-
+<div class="bg-light red"></div>
+<div class="bg-light blue"></div>
+
+<div class="web top">
+  <span></span><span></span><span></span>
+  <span></span><span></span><span></span>
+</div>
+
+<div class="web bottom">
+  <span></span><span></span><span></span>
+  <span></span><span></span><span></span>
+</div>
+
+<div class="spider" id="spider"></div>
+
+<main class="app">
+
+  <!-- هدر -->
+  <header class="header">
+    <div class="brand">
+      <div class="logo">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2l2.1 5.4L20 9l-5.9 1.7L12 16l-2.1-5.3L4 9l5.9-1.6L12 2z"/>
+          <path d="M12 16v6"/>
+        </svg>
       </div>
 
+      <div>
+        <div class="brand-name">ＳｐａｅｄｒＮＧ</div>
+        <div class="brand-sub">پنل مدیریت کانفیگ</div>
+      </div>
+    </div>
 
-      <footer>
+    <div class="status">
+      <span class="status-dot"></span>
+      آنلاین
+    </div>
+  </header>
 
-        © 2026 SpaedrNG
+  <!-- صفحه اصلی -->
+  <section id="homeScreen" class="screen active">
 
-      </footer>
+    <div class="dashboard">
+      <div class="dashboard-title">
+        خوش آمدید به SpaedrNG
+      </div>
 
+      <div class="dashboard-main">
+        <div>
+          <div class="dashboard-number" id="configCount">0</div>
+          <div class="dashboard-label">کانفیگ‌های ساخته شده</div>
+        </div>
+
+        <div class="dashboard-badge">
+          مدیریت کانفیگ
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">
+      امکانات
+    </div>
+
+    <div class="app-grid">
+
+      <!-- ساخت کانفیگ -->
+      <button class="app-item" onclick="openScreen('createScreen','create')">
+        <div class="app-icon icon-red">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 5v14M5 12h14"/>
+          </svg>
+        </div>
+        <span class="app-name">ساخت کانفیگ</span>
+      </button>
+
+      <!-- IP ثابت -->
+      <button class="app-item" onclick="openScreen('fixedScreen','fixed')">
+        <div class="app-icon icon-blue">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 21s7-6.1 7-12a7 7 0 0 0-14 0c0 5.9 7 12 7 12z"/>
+            <circle cx="12" cy="9" r="2.2"/>
+          </svg>
+        </div>
+        <span class="app-name">IP ثابت</span>
+      </button>
+
+      <!-- کانفیگ های من -->
+      <button class="app-item" onclick="openScreen('configsScreen','configs')">
+        <div class="app-icon icon-purple">
+          <svg viewBox="0 0 24 24">
+            <path d="M8 6h12M8 12h12M8 18h12"/>
+            <circle cx="4" cy="6" r="1"/>
+            <circle cx="4" cy="12" r="1"/>
+            <circle cx="4" cy="18" r="1"/>
+          </svg>
+        </div>
+        <span class="app-name">کانفیگ‌های من</span>
+      </button>
+
+      <!-- تلگرام -->
+      <button class="app-item" onclick="openTelegram()">
+        <div class="app-icon icon-cyan">
+          <svg viewBox="0 0 24 24">
+            <path d="M21 4L3 11l7 2 2 7 3-5 4 3 2-14z"/>
+            <path d="M10 13l8-6"/>
+          </svg>
+        </div>
+        <span class="app-name">کانال تلگرام</span>
+      </button>
+
+      <!-- درباره -->
+      <button class="app-item" onclick="openScreen('aboutScreen','about')">
+        <div class="app-icon icon-orange">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M12 10v6"/>
+            <circle cx="12" cy="7" r=".8"/>
+          </svg>
+        </div>
+        <span class="app-name">درباره پنل</span>
+      </button>
+
+      <!-- راهنما -->
+      <button class="app-item" onclick="showToast('برای ساخت کانفیگ وارد بخش ساخت کانفیگ شوید.')">
+        <div class="app-icon icon-green">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M9.5 9a2.5 2.5 0 1 1 4.1 1.9c-.9.7-1.6 1.1-1.6 2.1"/>
+            <circle cx="12" cy="16.5" r=".7"/>
+          </svg>
+        </div>
+        <span class="app-name">راهنما</span>
+      </button>
+
+      <!-- کانفیگ معمولی -->
+      <button class="app-item" onclick="openScreen('configsScreen','configs')">
+        <div class="app-icon icon-yellow">
+          <svg viewBox="0 0 24 24">
+            <path d="M4 7h16M4 12h16M4 17h16"/>
+            <path d="M8 5v4M15 10v4M11 15v4"/>
+          </svg>
+        </div>
+        <span class="app-name">مدیریت کانفیگ</span>
+      </button>
+
+      <!-- لینک -->
+      <button class="app-item" onclick="openTelegram()">
+        <div class="app-icon icon-pink">
+          <svg viewBox="0 0 24 24">
+            <path d="M10 13a5 5 0 0 0 7.1.1l2-2a5 5 0 0 0-7.1-7.1l-1.1 1.1"/>
+            <path d="M14 11a5 5 0 0 0-7.1-.1l-2 2A5 5 0 0 0 12 20l1.1-1.1"/>
+          </svg>
+        </div>
+        <span class="app-name">لینک SpaedrNG</span>
+      </button>
+
+    </div>
+  </section>
+
+
+  <!-- ساخت کانفیگ -->
+  <section id="createScreen" class="screen">
+
+    <div class="screen-header">
+      <button class="back" onclick="goHome()">
+        <svg viewBox="0 0 24 24">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+      </button>
+      <div class="screen-title">ساخت کانفیگ</div>
+    </div>
+
+    <div class="form-card">
+
+      <label for="configName">
+        نام کانفیگ
+      </label>
+
+      <input
+        id="configName"
+        type="text"
+        placeholder="مثلاً Ali"
+        maxlength="40"
+      >
+
+      <button class="main-btn" onclick="createNormalConfig()">
+        ساخت کانفیگ
+      </button>
+
+    </div>
+  </section>
+
+
+  <!-- IP ثابت -->
+  <section id="fixedScreen" class="screen">
+
+    <div class="screen-header">
+      <button class="back" onclick="goHome()">
+        <svg viewBox="0 0 24 24">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+      </button>
+
+      <div class="screen-title">IP ثابت</div>
+    </div>
+
+    <div class="form-card">
+
+      <label for="fixedName">
+        نام کانفیگ
+      </label>
+
+      <input
+        id="fixedName"
+        type="text"
+        placeholder="مثلاً Ali"
+        maxlength="40"
+      >
+
+      <label for="country">
+        کشور
+      </label>
+
+      <select id="country">
+        <option value="DE">🇩🇪 آلمان</option>
+        <option value="AE">🇦🇪 امارات</option>
+      </select>
+
+      <button class="main-btn" onclick="createFixedConfig()">
+        ساخت IP ثابت
+      </button>
+
+    </div>
+  </section>
+
+
+  <!-- کانفیگ های من -->
+  <section id="configsScreen" class="screen">
+
+    <div class="screen-header">
+      <button class="back" onclick="goHome()">
+        <svg viewBox="0 0 24 24">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+      </button>
+
+      <div class="screen-title">کانفیگ‌های من</div>
+    </div>
+
+    <div id="configList" class="config-list"></div>
+
+  </section>
+
+
+  <!-- درباره -->
+  <section id="aboutScreen" class="screen">
+
+    <div class="screen-header">
+      <button class="back" onclick="goHome()">
+        <svg viewBox="0 0 24 24">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+      </button>
+
+      <div class="screen-title">درباره SpaedrNG</div>
+    </div>
+
+    <div class="info-card">
+
+      <div>
+        این پنل برای کاربرانی ساخته شده که در اتصال مشکل دارند
+        و هدف آن مدیریت ساده کانفیگ‌ها است.
+      </div>
+
+      <br>
+
+      <div>
+        این پنل برای کسایی که مشکل وصل شدن دارند درست شده.
+        فروش آن کار غیر اخلاقی میباشد.
+      </div>
+
+      <button class="telegram-btn" onclick="openTelegram()">
+        ورود به کانال SpaedrNG
+      </button>
 
     </div>
 
-  </div>
+  </section>
+
+</main>
+
+
+<!-- داک -->
+<nav class="dock">
+
+  <button
+    id="dockHome"
+    class="dock-btn active"
+    onclick="goHome()"
+  >
+    <svg viewBox="0 0 24 24">
+      <path d="M3 11l9-8 9 8"/>
+      <path d="M5 10v10h14V10"/>
+    </svg>
+    <span>خانه</span>
+  </button>
 
+  <button
+    id="dockCreate"
+    class="dock-btn"
+    onclick="openScreen('createScreen','create')"
+  >
+    <svg viewBox="0 0 24 24">
+      <path d="M12 5v14M5 12h14"/>
+    </svg>
+    <span>ساخت</span>
+  </button>
 
-  <script>
+  <button
+    id="dockFixed"
+    class="dock-btn"
+    onclick="openScreen('fixedScreen','fixed')"
+  >
+    <svg viewBox="0 0 24 24">
+      <path d="M12 21s7-6.1 7-12a7 7 0 0 0-14 0c0 5.9 7 12 7 12z"/>
+      <circle cx="12" cy="9" r="2.2"/>
+    </svg>
+    <span>IP ثابت</span>
+  </button>
 
+  <button
+    id="dockConfigs"
+    class="dock-btn"
+    onclick="openScreen('configsScreen','configs')"
+  >
+    <svg viewBox="0 0 24 24">
+      <path d="M8 6h12M8 12h12M8 18h12"/>
+      <circle cx="4" cy="6" r="1"/>
+      <circle cx="4" cy="12" r="1"/>
+      <circle cx="4" cy="18" r="1"/>
+    </svg>
+    <span>کانفیگ‌ها</span>
+  </button>
 
-    /* =================================
-       کانفیگ پایه
-       ================================= */
+</nav>
 
-    const BASE_CONFIG =
-      "vless://15a05f72-8e49-408e-8337-9c4d418f2d43@" +
-      "104.21.5.155:443" +
-      "?type=ws" +
-      "&host=MSg-QUeue-140448-edg.royal-DiSk-882F.wORKErs.Dev" +
-      "&path=%2F%3Fproxyip%3D37.152.182.54%26ed%3D2560" +
-      "&security=tls" +
-      "&sni=mSg-QueUE-140448-edg.rOyaL-dISK-882F.woRKerS.DEv" +
-      "&encryption=none";
 
+<div id="toast" class="toast"></div>
 
-    /* =================================
-       تلگرام
-       ================================= */
 
-    const TELEGRAM =
-      "https://t.me/spaedrNG";
+<script>
 
+/* =========================
+   تنظیمات
+========================= */
 
-    /* =================================
-       ساخت کانفیگ
-       ================================= */
+const TELEGRAM =
+  "https://t.me/spaedrNG";
 
-    function createConfig() {
+const STORAGE_KEY =
+  "spaedrng_configs";
 
-      const input =
-        document.getElementById(
-          "userName"
-        );
 
+/* =========================
+   کانفیگ پایه
+========================= */
 
-      const name =
-        input.value.trim();
+const BASE_CONFIG =
+  "vless://15a05f72-8e49-408e-8337-9c4d418f2d43@" +
+  "104.21.5.155:443" +
+  "?type=ws" +
+  "&host=MSg-QUeue-140448-edg.royal-DiSk-882F.wORKErs.Dev" +
+  "&path=%2F%3Fproxyip%3D37.152.182.54%26ed%3D2560" +
+  "&security=tls" +
+  "&sni=mSg-QueUE-140448-edg.rOyaL-dISK-882F.woRKerS.DEv" +
+  "&encryption=none";
 
 
-      if (!name) {
+/* =========================
+   IP ثابت
+========================= */
 
-        alert(
-          "لطفاً نام کاربر را وارد کنید."
-        );
+const FIXED_CONFIGS = {
 
-        input.focus();
+  DE:[
+    "vless://be35b0db-50aa-4573-8d2a-e95624869ab9@103.21.244.12:443?path=%2F%3Fed%3D2560&security=tls&encryption=none&insecure=0&host=API-hUb-908324-edg.h9zL52eNuFUS.wOrkErS.dEv&type=ws&allowInsecure=0&sni=API-hUB-908324-eDg.H9zL52ENuFUs.WoRkErS.dEV",
 
-        return;
-      }
+    "vless://be35b0db-50aa-4573-8d2a-e95624869ab9@103.21.244.12:443?path=%2F%3Fed%3D2560&security=tls&encryption=none&insecure=0&host=APi-hub-908324-EDG.H9ZL52ENufUs.workerS.dev&type=ws&allowInsecure=0&sni=api-Hub-908324-EdG.h9Zl52enuFuS.WOrkErS.dEV"
+  ],
 
+  AE:[
+    "vless://be35b0db-50aa-4573-8d2a-e95624869ab9@api-hub-908324-edg.h9zl52enufus.workers.dev:443?path=%2F%3Fproxyip%3D20.174.15.226%26ed%3D2560&security=tls&encryption=none&insecure=0&host=APi-huB-908324-edG.H9zL52enUfus.wOrkERS.dEV&type=ws&allowInsecure=0&sni=API-hub-908324-EdG.H9zl52enUFUS.wOrKERS.deV",
 
-      const finalName =
-        name +
-        " - " +
-        TELEGRAM;
+    "vless://be35b0db-50aa-4573-8d2a-e95624869ab9@172.67.13.12:443?path=%2F%3Fproxyip%3D20.174.15.226%26ed%3D2560&security=tls&encryption=none&insecure=0&host=aPI-HUb-908324-EDG.h9zl52EnuFUS.WORkERs.dev&type=ws&allowInsecure=0&sni=Api-hUB-908324-Edg.H9zL52enUfUs.worKeRS.DEv"
+  ]
 
+};
 
-      const config =
-        BASE_CONFIG +
-        "#" +
-        encodeURIComponent(
-          finalName
-        );
 
+/* =========================
+   ابزارها
+========================= */
 
-      const configs =
-        JSON.parse(
-          localStorage.getItem(
-            "spaedrng_configs"
-          ) || "[]"
-        );
+function escapeHTML(value){
 
+  return String(value)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 
-      configs.push({
+}
 
-        id: Date.now(),
 
-        name: name,
+function getConfigs(){
 
-        config: config,
+  return JSON.parse(
+    localStorage.getItem(STORAGE_KEY) || "[]"
+  );
 
-        date:
-          new Date()
-            .toLocaleString("fa-IR")
+}
 
-      });
 
+function saveConfigs(configs){
 
-      localStorage.setItem(
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(configs)
+  );
 
-        "spaedrng_configs",
+}
 
-        JSON.stringify(configs)
 
-      );
+/* =========================
+   ناوبری
+========================= */
 
+function hideScreens(){
 
-      input.value = "";
+  document
+    .querySelectorAll(".screen")
+    .forEach(screen=>{
+      screen.classList.remove("active");
+    });
 
+}
 
-      const success =
-        document.getElementById(
-          "success"
-        );
 
+function clearDock(){
 
-      success.style.display =
-        "block";
+  document
+    .querySelectorAll(".dock-btn")
+    .forEach(btn=>{
+      btn.classList.remove("active");
+    });
 
+}
 
-      setTimeout(() => {
 
-        success.style.display =
-          "none";
+function openScreen(screenId,type){
 
-      }, 2500);
+  hideScreens();
 
+  const screen =
+    document.getElementById(screenId);
 
-      renderConfigs();
+  if(screen){
+    screen.classList.add("active");
+  }
 
-    }
+  clearDock();
 
+  const map = {
+    create:"dockCreate",
+    fixed:"dockFixed",
+    configs:"dockConfigs"
+  };
 
-    /* =================================
-       نمایش کانفیگ‌ها
-       ================================= */
+  if(map[type]){
+    document
+      .getElementById(map[type])
+      .classList.add("active");
+  }
 
-    function renderConfigs() {
+  if(type === "configs"){
+    renderConfigs();
+  }
 
-      const configs =
-        JSON.parse(
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
 
-          localStorage.getItem(
-            "spaedrng_configs"
-          ) || "[]"
+}
 
-        );
 
+function goHome(){
 
-      document.getElementById(
-        "configCount"
-      ).innerText =
-        configs.length;
+  hideScreens();
 
+  document
+    .getElementById("homeScreen")
+    .classList.add("active");
 
-      const list =
-        document.getElementById(
-          "configList"
-        );
+  clearDock();
 
+  document
+    .getElementById("dockHome")
+    .classList.add("active");
 
-      if (!configs.length) {
+  updateCount();
 
-        list.innerHTML =
-          '<div class="empty">' +
-          'هنوز کانفیگی ساخته نشده است.' +
-          '</div>';
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
 
-        return;
-      }
+}
 
 
-      list.innerHTML =
+/* =========================
+   ساخت کانفیگ معمولی
+========================= */
 
-        configs.map(
-          (item, index) => `
+function createNormalConfig(){
 
-            <div class="config-item">
+  const input =
+    document.getElementById("configName");
 
-              <div class="config-info">
+  const name =
+    input.value.trim();
 
-                <div class="config-name">
-                  ${escapeHTML(item.name)}
-                </div>
+  if(!name){
 
-                <div class="config-date">
-                  ${escapeHTML(item.date)}
-                </div>
+    showToast("لطفاً نام کانفیگ را وارد کنید.");
 
+    input.focus();
+
+    return;
+  }
+
+  const finalName =
+    name + " - " + TELEGRAM;
+
+  const config =
+    BASE_CONFIG +
+    "#" +
+    encodeURIComponent(finalName);
+
+  const configs =
+    getConfigs();
+
+  configs.push({
+
+    id:Date.now(),
+
+    name:name,
+
+    config:config,
+
+    type:"normal",
+
+    country:"",
+
+    date:new Date().toLocaleString("fa-IR")
+
+  });
+
+  saveConfigs(configs);
+
+  input.value="";
+
+  updateCount();
+
+  showToast(
+    "کانفیگ با موفقیت ساخته شد."
+  );
+
+  setTimeout(()=>{
+    openScreen(
+      "configsScreen",
+      "configs"
+    );
+  },500);
+
+}
+
+
+/* =========================
+   ساخت IP ثابت
+========================= */
+
+function createFixedConfig(){
+
+  const nameInput =
+    document.getElementById("fixedName");
+
+  const countryInput =
+    document.getElementById("country");
+
+  const name =
+    nameInput.value.trim();
+
+  const country =
+    countryInput.value;
+
+  if(!name){
+
+    showToast("لطفاً نام کانفیگ را وارد کنید.");
+
+    nameInput.focus();
+
+    return;
+  }
+
+  const pool =
+    FIXED_CONFIGS[country];
+
+  if(!pool || !pool.length){
+
+    showToast("کانفیگ این کشور موجود نیست.");
+
+    return;
+  }
+
+  const randomConfig =
+    pool[
+      Math.floor(
+        Math.random() * pool.length
+      )
+    ];
+
+  const countryName =
+    country === "DE"
+      ? "🇩🇪 آلمان"
+      : "🇦🇪 امارات";
+
+  const finalName =
+    name +
+    " - " +
+    countryName +
+    " - " +
+    TELEGRAM;
+
+  const config =
+    randomConfig +
+    "#" +
+    encodeURIComponent(finalName);
+
+  const configs =
+    getConfigs();
+
+  configs.push({
+
+    id:Date.now(),
+
+    name:name,
+
+    config:config,
+
+    type:"fixed",
+
+    country:countryName,
+
+    date:new Date().toLocaleString("fa-IR")
+
+  });
+
+  saveConfigs(configs);
+
+  nameInput.value="";
+
+  updateCount();
+
+  showToast(
+    "IP ثابت با موفقیت ساخته شد."
+  );
+
+  setTimeout(()=>{
+    openScreen(
+      "configsScreen",
+      "configs"
+    );
+  },500);
+
+}
+
+
+/* =========================
+   نمایش کانفیگ‌ها
+========================= */
+
+function renderConfigs(){
+
+  const container =
+    document.getElementById("configList");
+
+  const configs =
+    getConfigs();
+
+  updateCount();
+
+  if(!configs.length){
+
+    container.innerHTML = `
+      <div class="empty">
+        هنوز هیچ کانفیگی ساخته نشده است.
+        <br>
+        از بخش «ساخت کانفیگ» شروع کنید.
+      </div>
+    `;
+
+    return;
+  }
+
+  container.innerHTML =
+    configs
+      .map((item,index)=>{
+
+        const safeName =
+          escapeHTML(item.name);
+
+        const safeCountry =
+          escapeHTML(item.country || "");
+
+        const type =
+          item.type === "fixed"
+            ? "IP ثابت"
+            : "کانفیگ معمولی";
+
+        return `
+
+          <div class="config-item">
+
+            <div class="config-icon">
+
+              <svg viewBox="0 0 24 24">
+                <path d="M4 7h16"/>
+                <path d="M4 12h16"/>
+                <path d="M4 17h16"/>
+                <circle cx="8" cy="7" r="1"/>
+                <circle cx="14" cy="12" r="1"/>
+                <circle cx="10" cy="17" r="1"/>
+              </svg>
+
+            </div>
+
+            <div class="config-info">
+
+              <div class="config-name">
+                ${safeName}
               </div>
 
+              <div class="config-meta">
+                ${type}
+                ${safeCountry ? " • " + safeCountry : ""}
+              </div>
+
+            </div>
+
+            <div class="config-actions">
 
               <button
-                class="copy-btn"
+                class="action-btn copy-btn"
                 onclick="copyConfig(${index})"
+                aria-label="کپی"
               >
-                کپی کانفیگ
+                <svg viewBox="0 0 24 24">
+                  <rect x="8" y="8" width="11" height="11" rx="2"/>
+                  <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/>
+                </svg>
+              </button>
+
+              <button
+                class="action-btn delete-btn"
+                onclick="deleteConfig(${index})"
+                aria-label="حذف"
+              >
+                <svg viewBox="0 0 24 24">
+                  <path d="M4 7h16"/>
+                  <path d="M9 7V4h6v3"/>
+                  <path d="M7 7l1 13h8l1-13"/>
+                  <path d="M10 11v5M14 11v5"/>
+                </svg>
               </button>
 
             </div>
 
-          `
-        ).join("");
+          </div>
 
-    }
+        `;
 
+      })
+      .join("");
 
-    /* =================================
-       کپی کانفیگ
-       ================================= */
-
-    async function copyConfig(index) {
-
-      const configs =
-        JSON.parse(
-
-          localStorage.getItem(
-            "spaedrng_configs"
-          ) || "[]"
-
-        );
+}
 
 
-      if (!configs[index]) {
-        return;
-      }
+/* =========================
+   کپی
+========================= */
 
+async function copyConfig(index){
 
-      try {
+  const configs =
+    getConfigs();
 
-        await navigator.clipboard.writeText(
-          configs[index].config
-        );
+  if(!configs[index]){
+    return;
+  }
 
+  const config =
+    configs[index].config;
 
-        alert(
-          "کانفیگ کپی شد."
-        );
+  try{
 
-      }
-
-      catch (error) {
-
-        const textarea =
-          document.createElement(
-            "textarea"
-          );
-
-
-        textarea.value =
-          configs[index].config;
-
-
-        document.body.appendChild(
-          textarea
-        );
-
-
-        textarea.select();
-
-
-        document.execCommand(
-          "copy"
-        );
-
-
-        textarea.remove();
-
-
-        alert(
-          "کانفیگ کپی شد."
-        );
-
-      }
-
-    }
-
-
-    /* =================================
-       کانال تلگرام
-       ================================= */
-
-    function openTelegram() {
-
-      window.open(
-        TELEGRAM,
-        "_blank"
-      );
-
-    }
-
-
-    /* =================================
-       جلوگیری از HTML Injection
-       ================================= */
-
-    function escapeHTML(value) {
-
-      return value
-
-        .replaceAll(
-          "&",
-          "&amp;"
-        )
-
-        .replaceAll(
-          "<",
-          "&lt;"
-        )
-
-        .replaceAll(
-          ">",
-          "&gt;"
-        )
-
-        .replaceAll(
-          '"',
-          "&quot;"
-        )
-
-        .replaceAll(
-          "'",
-          "&#039;"
-        );
-
-    }
-
-
-    /* =================================
-       نمایش عنکبوت
-       ================================= */
-
-    function showSpider() {
-
-      const spider =
-        document.getElementById(
-          "spider"
-        );
-
-
-      spider.classList.remove(
-        "show"
-      );
-
-
-      void spider.offsetWidth;
-
-
-      spider.classList.add(
-        "show"
-      );
-
-    }
-
-
-    /*
-      اولین نمایش
-      */
-
-    setTimeout(
-      showSpider,
-      2000
+    await navigator.clipboard.writeText(
+      config
     );
 
+  }catch(error){
 
-    /*
-      نمایش مجدد
-      هر ۱۰ ثانیه
-      */
+    const textarea =
+      document.createElement("textarea");
 
-    setInterval(
-      showSpider,
-      10000
+    textarea.value = config;
+
+    document.body.appendChild(
+      textarea
     );
 
+    textarea.select();
 
-    /* =================================
-       بارگذاری اولیه
-       ================================= */
+    document.execCommand("copy");
 
-    renderConfigs();
+    textarea.remove();
 
-  </script>
+  }
+
+  showToast("کانفیگ کپی شد.");
+
+}
+
+
+/* =========================
+   حذف
+========================= */
+
+function deleteConfig(index){
+
+  const configs =
+    getConfigs();
+
+  if(!configs[index]){
+    return;
+  }
+
+  const name =
+    configs[index].name;
+
+  const confirmed =
+    confirm(
+      "آیا مطمئن هستید که کانفیگ «" +
+      name +
+      "» حذف شود؟"
+    );
+
+  if(!confirmed){
+    return;
+  }
+
+  configs.splice(index,1);
+
+  saveConfigs(configs);
+
+  renderConfigs();
+
+  showToast("کانفیگ حذف شد.");
+
+}
+
+
+/* =========================
+   شمارنده
+========================= */
+
+function updateCount(){
+
+  const configs =
+    getConfigs();
+
+  const count =
+    document.getElementById(
+      "configCount"
+    );
+
+  if(count){
+    count.textContent =
+      configs.length;
+  }
+
+}
+
+
+/* =========================
+   تلگرام
+========================= */
+
+function openTelegram(){
+
+  window.open(
+    TELEGRAM,
+    "_blank"
+  );
+
+}
+
+
+/* =========================
+   Toast
+========================= */
+
+let toastTimer;
+
+function showToast(message){
+
+  const toast =
+    document.getElementById("toast");
+
+  toast.textContent =
+    message;
+
+  toast.classList.add("show");
+
+  clearTimeout(toastTimer);
+
+  toastTimer =
+    setTimeout(()=>{
+      toast.classList.remove("show");
+    },2200);
+
+}
+
+
+/* =========================
+   انیمیشن اسپایدر
+========================= */
+
+function showSpider(){
+
+  const spider =
+    document.getElementById("spider");
+
+  spider.classList.remove("show");
+
+  void spider.offsetWidth;
+
+  spider.classList.add("show");
+
+}
+
+setTimeout(
+  showSpider,
+  2000
+);
+
+setInterval(
+  showSpider,
+  10000
+);
+
+
+/* =========================
+   شروع
+========================= */
+
+updateCount();
+
+renderConfigs();
+
+</script>
 
 </body>
   </html>
