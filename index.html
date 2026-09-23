@@ -2,1134 +2,1999 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#08090c">
+<meta name="color-scheme" content="dark">
+
 <title>ＳｐａｅｄｒＮＧ</title>
 
 <style>
+:root{
+  --bg:#08090c;
+  --surface:#0d0f14;
+  --surface2:#11141a;
+  --surface3:#171a22;
+  --line:#222732;
+  --line2:#2d333f;
+  --text:#f4f6f8;
+  --muted:#7d8595;
+  --muted2:#9ba2af;
+  --red:#e50914;
+  --red2:#ff3945;
+  --green:#16c784;
+  --blue:#4285ff;
+  --danger:#ff4d58;
+  --radius:20px;
+}
+
 *{
   box-sizing:border-box;
   -webkit-tap-highlight-color:transparent;
 }
 
-html,body{
-  margin:0;
-  padding:0;
-  min-height:100%;
-  font-family:Tahoma,Arial,sans-serif;
-  background:#02060d;
-  color:#fff;
+html{
+  scroll-behavior:smooth;
 }
 
 body{
-  overflow-x:hidden;
+  margin:0;
+  min-height:100vh;
+  color:var(--text);
   background:
-    radial-gradient(circle at 50% -10%,rgba(0,100,255,.20),transparent 35%),
-    radial-gradient(circle at 100% 70%,rgba(0,60,180,.13),transparent 30%),
-    linear-gradient(180deg,#020711,#02050a 60%,#010309);
+    radial-gradient(
+      700px 350px at 100% -5%,
+      rgba(229,9,20,.12),
+      transparent 65%
+    ),
+    radial-gradient(
+      600px 350px at -10% 105%,
+      rgba(66,133,255,.07),
+      transparent 65%
+    ),
+    var(--bg);
+  font-family:
+    Tahoma,
+    Arial,
+    sans-serif;
 }
 
-/* خطوط تزئینی */
-body::before{
-  content:"";
-  position:fixed;
-  width:420px;
-  height:420px;
-  border:1px solid rgba(0,100,255,.22);
-  border-radius:50%;
-  top:-250px;
-  right:-180px;
-  box-shadow:
-    0 0 80px rgba(0,90,255,.08),
-    inset 0 0 60px rgba(0,90,255,.05);
-  pointer-events:none;
-}
-
-body::after{
-  content:"";
-  position:fixed;
-  width:520px;
-  height:250px;
-  border-top:1px solid rgba(0,100,255,.20);
-  border-radius:50%;
-  bottom:-130px;
-  left:-180px;
-  transform:rotate(18deg);
-  pointer-events:none;
+button,
+input{
+  font:inherit;
 }
 
 button{
-  font-family:inherit;
+  -webkit-user-select:none;
+  user-select:none;
 }
 
-/* اپ اصلی */
-.app{
-  width:100%;
-  max-width:1100px;
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+/* ─────────────────────────────
+   SHELL
+───────────────────────────── */
+
+.shell{
+  width:min(860px,100%);
   margin:auto;
-  padding:22px 18px 105px;
-  position:relative;
-  z-index:2;
+  padding:0 15px 105px;
 }
 
-/* هدر */
+/* ─────────────────────────────
+   HEADER
+───────────────────────────── */
+
 .header{
-  text-align:center;
-  padding:8px 0 22px;
-  position:relative;
+  position:sticky;
+  top:0;
+  z-index:50;
+  height:70px;
+  background:rgba(8,9,12,.84);
+  backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(22px);
+  border-bottom:1px solid rgba(255,255,255,.055);
 }
 
-.online{
-  position:absolute;
-  right:5px;
-  top:10px;
+.headerInner{
+  width:min(860px,100%);
+  height:100%;
+  margin:auto;
+  padding:0 15px;
   display:flex;
   align-items:center;
-  gap:7px;
-  color:#dce5f5;
-  font-size:13px;
-}
-
-.online-dot{
-  width:11px;
-  height:11px;
-  border-radius:50%;
-  background:#00ff9d;
-  box-shadow:0 0 14px #00ff9d;
-}
-
-.logo{
-  width:82px;
-  height:82px;
-  margin:0 auto 8px;
-  border-radius:26px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:50px;
-  background:
-    linear-gradient(145deg,rgba(255,255,255,.14),rgba(255,255,255,.02)),
-    rgba(5,18,35,.8);
-  border:1px solid rgba(0,145,255,.65);
-  box-shadow:
-    0 0 35px rgba(0,110,255,.28),
-    inset 0 0 25px rgba(0,90,255,.08);
+  justify-content:space-between;
 }
 
 .brand{
-  font-size:27px;
-  font-weight:900;
-  letter-spacing:.5px;
+  display:flex;
+  align-items:center;
+  gap:11px;
 }
 
-.subtitle{
-  color:#9aa9c2;
-  margin-top:7px;
-  font-size:13px;
-}
-
-/* کارت خوش آمد */
-.hero{
-  min-height:275px;
-  border-radius:30px;
-  border:1px solid rgba(0,137,255,.55);
+.brandMark{
+  width:40px;
+  height:40px;
+  display:grid;
+  place-items:center;
+  border-radius:13px;
   background:
-    radial-gradient(circle at 15% 50%,rgba(0,145,255,.13),transparent 25%),
-    linear-gradient(145deg,rgba(11,31,55,.93),rgba(3,12,23,.96));
+    linear-gradient(
+      145deg,
+      #1a1d25,
+      #0d0f14
+    );
+  border:1px solid #2b303a;
   box-shadow:
-    0 15px 55px rgba(0,50,120,.18),
-    inset 0 0 40px rgba(0,100,255,.05);
+    inset 0 0 18px rgba(229,9,20,.08);
+  font-size:21px;
+}
+
+.brandName{
+  font-size:17px;
+  font-weight:900;
+  letter-spacing:.2px;
+}
+
+.brandStatus{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  margin-top:3px;
+  color:#737b89;
+  font-size:8px;
+}
+
+.onlineDot{
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 9px rgba(22,199,132,.7);
+}
+
+.menuBtn{
+  width:42px;
+  height:42px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  color:#fff;
+  background:var(--surface);
+  cursor:pointer;
+  display:grid;
+  place-items:center;
+  font-size:20px;
+}
+
+/* ─────────────────────────────
+   HERO
+───────────────────────────── */
+
+.hero{
   position:relative;
   overflow:hidden;
-  padding:35px;
-  display:flex;
-  align-items:center;
-  gap:30px;
-}
-
-.hero::after{
-  content:"";
-  position:absolute;
-  width:700px;
-  height:180px;
-  border:1px solid rgba(0,110,255,.30);
-  border-radius:50%;
-  right:-180px;
-  bottom:-50px;
-  transform:rotate(-18deg);
-}
-
-.hero-logo{
-  width:155px;
-  height:155px;
-  min-width:155px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:82px;
+  margin-top:17px;
+  padding:27px 23px 25px;
+  border-radius:26px;
+  border:1px solid var(--line);
   background:
-    radial-gradient(circle,rgba(0,90,180,.22),rgba(1,10,20,.9));
-  border:8px solid transparent;
+    radial-gradient(
+      280px 160px at 100% 0%,
+      rgba(229,9,20,.13),
+      transparent 70%
+    ),
+    linear-gradient(
+      145deg,
+      #14171f,
+      #0c0e13
+    );
   box-shadow:
-    0 0 0 1px rgba(0,175,255,.35),
-    0 0 35px rgba(0,120,255,.40),
-    inset 0 0 35px rgba(0,110,255,.20);
-  position:relative;
-  z-index:2;
+    0 24px 70px rgba(0,0,0,.26);
 }
 
-.hero-content{
-  flex:1;
-  position:relative;
-  z-index:2;
-}
-
-.hero-content h1{
-  font-size:32px;
-  margin:0 0 10px;
-}
-
-.hero-content p{
-  color:#8ea2c1;
-  margin:0;
-  font-size:16px;
-}
-
-.hero-count{
+.heroGrid{
   position:absolute;
-  left:35px;
-  bottom:35px;
-  z-index:3;
+  inset:0;
+  opacity:.22;
+  pointer-events:none;
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,.035) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.035) 1px,
+      transparent 1px
+    );
+  background-size:32px 32px;
+  mask-image:linear-gradient(
+    90deg,
+    transparent,
+    #000 55%,
+    transparent
+  );
 }
 
-.hero-count-number{
-  font-size:62px;
-  line-height:1;
+.heroTop{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.heroIcon{
+  width:62px;
+  height:62px;
+  border-radius:19px;
+  display:grid;
+  place-items:center;
+  font-size:33px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(229,9,20,.16),
+      rgba(255,255,255,.025)
+    );
+  border:1px solid rgba(255,255,255,.09);
+  box-shadow:
+    inset 0 0 25px rgba(229,9,20,.05);
+}
+
+.heroBadge{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:7px 10px;
+  border-radius:30px;
+  background:rgba(22,199,132,.07);
+  border:1px solid rgba(22,199,132,.19);
+  color:#49dba4;
+  font-size:9px;
+}
+
+.heroTitle{
+  position:relative;
+  margin-top:21px;
+  font-size:25px;
+  line-height:1.55;
   font-weight:900;
 }
 
-.hero-count-label{
-  color:#a7b5cb;
-  font-size:15px;
-  margin-top:8px;
+.heroTitle b{
+  color:var(--red2);
 }
 
-.manage-btn{
-  position:absolute;
-  right:35px;
-  bottom:35px;
-  z-index:3;
-  border:1px solid rgba(0,255,170,.45);
-  background:rgba(0,255,170,.09);
-  color:#55ffc5;
-  border-radius:30px;
-  padding:12px 22px;
-  cursor:pointer;
-  font-size:15px;
+.heroDescription{
+  position:relative;
+  max-width:560px;
+  margin-top:7px;
+  color:var(--muted);
+  font-size:11px;
+  line-height:2;
 }
 
-/* عنوان امکانات */
-.section-title{
+.heroBottom{
+  position:relative;
   display:flex;
   align-items:center;
-  gap:12px;
-  margin:38px 5px 18px;
+  gap:8px;
+  margin-top:17px;
 }
 
-.section-line{
-  width:75px;
-  height:3px;
-  border-radius:20px;
-  background:#168dff;
-  box-shadow:0 0 15px rgba(0,130,255,.7);
+.heroLink{
+  padding:9px 12px;
+  border-radius:11px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.07);
+  color:#cfd4dd;
+  font-size:9px;
 }
 
-.section-title h2{
-  margin:0;
-  font-size:22px;
+.heroVersion{
+  color:#626a79;
+  font-size:8px;
 }
 
-/* گرید دقیقاً 4 ستونه */
-.grid{
+/* ─────────────────────────────
+   STATS
+───────────────────────────── */
+
+.stats{
   display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:14px;
+  grid-template-columns:repeat(3,1fr);
+  gap:9px;
+  margin-top:10px;
 }
 
-/* کارت امکانات */
-.card{
+.stat{
+  min-height:91px;
+  padding:14px;
+  border-radius:18px;
+  background:var(--surface);
+  border:1px solid var(--line);
+}
+
+.statLabel{
+  color:#707887;
+  font-size:9px;
+}
+
+.statValue{
+  margin-top:9px;
+  font-size:19px;
+  font-weight:900;
+}
+
+.statSmall{
+  color:#626a78;
+  font-size:8px;
+  margin-top:4px;
+}
+
+/* ─────────────────────────────
+   SECTION
+───────────────────────────── */
+
+.section{
+  margin-top:23px;
+}
+
+.sectionHeader{
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  margin:0 2px 11px;
+}
+
+.sectionTitle{
+  font-size:14px;
+  font-weight:900;
+}
+
+.sectionSubtitle{
+  margin-top:4px;
+  color:#666e7d;
+  font-size:9px;
+}
+
+.textButton{
+  border:0;
+  padding:0;
+  color:#f04a53;
+  background:none;
+  cursor:pointer;
+  font-size:9px;
+}
+
+/* ─────────────────────────────
+   QUICK GRID
+───────────────────────────── */
+
+.quickGrid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+}
+
+.quick{
   min-width:0;
-  min-height:190px;
-  padding:15px 10px;
-  border-radius:27px;
-  border:1px solid rgba(0,130,255,.35);
+  min-height:94px;
+  padding:12px 5px;
+  border-radius:18px;
+  border:1px solid var(--line);
   background:
-    linear-gradient(145deg,rgba(12,35,63,.88),rgba(5,12,25,.96));
+    linear-gradient(
+      145deg,
+      #12151c,
+      #0c0e13
+    );
+  color:#fff;
+  cursor:pointer;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  text-align:center;
-  cursor:pointer;
-  transition:.2s ease;
-  position:relative;
-  overflow:hidden;
+  gap:8px;
+  transition:
+    transform .16s,
+    border-color .16s,
+    background .16s;
 }
 
-.card::before{
-  content:"";
-  position:absolute;
-  width:130px;
-  height:130px;
-  border-radius:50%;
-  background:rgba(0,130,255,.08);
-  filter:blur(15px);
-  top:-40px;
-  left:-40px;
-}
-
-.card:active{
+.quick:active{
   transform:scale(.96);
 }
 
-.card:hover{
-  transform:translateY(-3px);
-  border-color:rgba(0,160,255,.7);
+.quick:hover{
+  border-color:#343a46;
 }
 
-/* رنگ اختصاصی کارت‌ها */
-.card.red{border-color:rgba(255,45,80,.48);}
-.card.blue{border-color:rgba(0,140,255,.50);}
-.card.purple{border-color:rgba(125,70,255,.50);}
-.card.green{border-color:rgba(0,235,150,.43);}
-.card.orange{border-color:rgba(255,120,20,.50);}
-.card.pink{border-color:rgba(255,30,150,.48);}
-.card.yellow{border-color:rgba(255,190,0,.50);}
+.quickIcon{
+  width:38px;
+  height:38px;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  border:1px solid #2b303b;
+  background:#181b22;
+  font-size:17px;
+}
 
-/* آیکون */
-.icon{
-  width:82px;
-  height:82px;
-  border-radius:25px;
+.quickText{
+  color:#c9ced7;
+  font-size:9px;
+  white-space:nowrap;
+}
+
+/* ─────────────────────────────
+   RECENT
+───────────────────────────── */
+
+.recent{
+  overflow:hidden;
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:var(--surface);
+}
+
+.recentItem{
   display:flex;
   align-items:center;
-  justify-content:center;
-  margin-bottom:13px;
-  position:relative;
-  z-index:2;
-  background:linear-gradient(145deg,#087cff,#063d9c);
-  box-shadow:
-    0 12px 25px rgba(0,100,255,.24),
-    inset 0 1px 1px rgba(255,255,255,.25);
+  gap:11px;
+  padding:13px;
+  border-bottom:1px solid #1c2028;
 }
 
-.red .icon{
-  background:linear-gradient(145deg,#ff3355,#b90035);
+.recentItem:last-child{
+  border-bottom:0;
 }
 
-.purple .icon{
-  background:linear-gradient(145deg,#7d42ff,#32109e);
-}
-
-.green .icon{
-  background:linear-gradient(145deg,#00c978,#087d57);
-}
-
-.orange .icon{
-  background:linear-gradient(145deg,#ff7b18,#c73d00);
-}
-
-.pink .icon{
-  background:linear-gradient(145deg,#ff1590,#a60067);
-}
-
-.yellow .icon{
-  background:linear-gradient(145deg,#ffc400,#b96c00);
-}
-
-/* آیکون ساخت کانفیگ - شیشه‌ای */
-.glass-icon{
-  background:
-    linear-gradient(145deg,rgba(255,55,90,.65),rgba(160,0,50,.30)) !important;
-  border:1px solid rgba(255,255,255,.35);
-  backdrop-filter:blur(12px);
-  box-shadow:
-    0 0 30px rgba(255,0,65,.24),
-    inset 0 1px 12px rgba(255,255,255,.16);
-}
-
-.icon svg{
+.recentIcon{
   width:40px;
   height:40px;
-  stroke:white;
-  fill:none;
-  stroke-width:2;
-  stroke-linecap:round;
-  stroke-linejoin:round;
+  display:grid;
+  place-items:center;
+  flex:none;
+  border-radius:12px;
+  background:#171a21;
+  border:1px solid #292e38;
 }
 
-.card-name{
-  position:relative;
-  z-index:2;
-  font-size:14px;
-  color:#f4f7ff;
-  line-height:1.7;
+.recentName{
+  font-size:11px;
+  font-weight:900;
 }
 
-.card-arrow{
-  color:#6684b7;
-  font-size:20px;
-  margin-top:3px;
+.recentDate{
+  color:#646c7b;
+  font-size:8px;
+  margin-top:4px;
 }
 
-/* صفحات داخلی */
-.screen{
+.empty{
+  padding:28px 15px;
+  text-align:center;
+  color:#687080;
+  font-size:10px;
+  line-height:2;
+}
+
+/* ─────────────────────────────
+   PAGE
+───────────────────────────── */
+
+.page{
   display:none;
+  padding-top:20px;
 }
 
-.screen.active{
+.page.active{
   display:block;
 }
 
-.back{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  border:0;
-  background:transparent;
-  color:#9eb1cf;
-  cursor:pointer;
+.pageTitle{
+  font-size:23px;
+  font-weight:900;
+}
+
+.pageDescription{
+  margin:6px 0 18px;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.9;
+}
+
+.card{
+  padding:17px;
+  margin-bottom:11px;
+  border-radius:19px;
+  border:1px solid var(--line);
+  background:var(--surface);
+}
+
+.cardTitle{
   font-size:14px;
-  margin-bottom:20px;
+  font-weight:900;
 }
 
-.form-box,
-.list-box,
-.about-box{
-  border:1px solid rgba(0,130,255,.35);
-  background:rgba(5,15,28,.9);
-  border-radius:25px;
-  padding:22px;
-  box-shadow:0 10px 40px rgba(0,50,120,.13);
+.cardDescription{
+  margin-top:5px;
+  color:var(--muted);
+  font-size:9px;
+  line-height:1.8;
 }
 
-.form-box h2,
-.list-box h2,
-.about-box h2{
-  margin-top:0;
+/* ─────────────────────────────
+   FORM
+───────────────────────────── */
+
+.formGroup{
+  margin-top:17px;
+}
+
+.formLabel{
+  display:block;
+  margin-bottom:7px;
+  color:#b8bec9;
+  font-size:10px;
 }
 
 .input{
   width:100%;
-  padding:15px;
-  border-radius:15px;
-  border:1px solid #243a58;
-  background:#050b14;
-  color:white;
+  height:49px;
+  padding:0 14px;
+  border-radius:14px;
   outline:none;
-  font-family:inherit;
-  margin:10px 0 15px;
+  color:#fff;
+  background:#0a0c10;
+  border:1px solid #292e38;
 }
 
 .input:focus{
-  border-color:#168dff;
-  box-shadow:0 0 15px rgba(0,130,255,.15);
+  border-color:#4a515e;
 }
 
-.main-btn{
+.primary{
   width:100%;
+  height:49px;
+  margin-top:14px;
   border:0;
-  border-radius:16px;
-  padding:15px;
-  background:linear-gradient(135deg,#0788ff,#0755c7);
-  color:white;
+  border-radius:14px;
+  color:#fff;
+  font-weight:900;
+  background:
+    linear-gradient(
+      135deg,
+      var(--red2),
+      #ad050d
+    );
   cursor:pointer;
+}
+
+/* ─────────────────────────────
+   CONFIG LIST
+───────────────────────────── */
+
+.search{
+  margin-bottom:10px;
+}
+
+.config{
+  padding:14px;
+  margin-top:9px;
+  border-radius:17px;
+  border:1px solid var(--line);
+  background:#0d1015;
+}
+
+.configHead{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.configIcon{
+  width:41px;
+  height:41px;
+  flex:none;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  background:#171a21;
+  border:1px solid #292e38;
+}
+
+.configName{
+  font-size:12px;
+  font-weight:900;
+}
+
+.configDate{
+  color:#626a78;
+  margin-top:4px;
+  font-size:8px;
+}
+
+.configActions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+  margin-top:11px;
+}
+
+.action{
+  height:37px;
+  border-radius:11px;
+  border:1px solid #292e38;
+  background:#171a21;
+  color:#fff;
+  font-size:9px;
+  cursor:pointer;
+}
+
+.action.copy{
+  color:#46d99e;
+  background:rgba(22,199,132,.07);
+  border-color:rgba(22,199,132,.20);
+}
+
+.action.delete{
+  color:#ff6670;
+  background:rgba(255,59,69,.07);
+  border-color:rgba(255,59,69,.18);
+}
+
+/* ─────────────────────────────
+   COUNTRY
+───────────────────────────── */
+
+.countryGrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:9px;
+}
+
+.country{
+  min-height:118px;
+  border-radius:19px;
+  border:1px solid var(--line);
+  background:var(--surface);
+  color:#fff;
+  cursor:pointer;
+}
+
+.country:active{
+  transform:scale(.97);
+}
+
+.flag{
+  display:block;
+  font-size:31px;
+  margin-bottom:9px;
+}
+
+.countryName{
+  font-size:10px;
+  font-weight:900;
+}
+
+/* ─────────────────────────────
+   INFO
+───────────────────────────── */
+
+.infoRow{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:13px 0;
+  border-bottom:1px solid #1d2129;
+}
+
+.infoRow:last-child{
+  border-bottom:0;
+}
+
+.infoIcon{
+  width:38px;
+  height:38px;
+  display:grid;
+  place-items:center;
+  flex:none;
+  border-radius:11px;
+  background:#181b22;
+  border:1px solid #292e38;
+}
+
+.infoTitle{
+  font-size:11px;
+  font-weight:900;
+}
+
+.infoText{
+  margin-top:4px;
+  color:#727a89;
+  font-size:8px;
+  line-height:1.8;
+}
+
+/* ─────────────────────────────
+   SIDE MENU
+───────────────────────────── */
+
+.overlay{
+  position:fixed;
+  inset:0;
+  z-index:90;
+  background:rgba(0,0,0,.7);
+  opacity:0;
+  visibility:hidden;
+  transition:.25s;
+  backdrop-filter:blur(4px);
+}
+
+.overlay.show{
+  opacity:1;
+  visibility:visible;
+}
+
+.drawer{
+  position:fixed;
+  top:0;
+  right:-350px;
+  z-index:100;
+  width:min(350px,89vw);
+  height:100dvh;
+  display:flex;
+  flex-direction:column;
+  background:
+    linear-gradient(
+      180deg,
+      #12151c,
+      #090a0d
+    );
+  border-left:1px solid #2a303a;
+  box-shadow:-30px 0 80px rgba(0,0,0,.55);
+  transition:.3s cubic-bezier(.2,.8,.2,1);
+}
+
+.drawer.open{
+  right:0;
+}
+
+.drawerHead{
+  padding:25px 19px 19px;
+  border-bottom:1px solid var(--line);
+}
+
+.drawerBrand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+}
+
+.drawerLogo{
+  width:49px;
+  height:49px;
+  display:grid;
+  place-items:center;
+  border-radius:15px;
+  background:#181b23;
+  border:1px solid #303640;
+  font-size:25px;
+}
+
+.drawerTitle{
+  font-size:17px;
+  font-weight:900;
+}
+
+.drawerSub{
+  color:#687080;
+  margin-top:4px;
+  font-size:9px;
+}
+
+.drawerBody{
+  flex:1;
+  overflow:auto;
+  padding:12px;
+}
+
+.menuLabel{
+  padding:10px 9px 7px;
+  color:#5e6675;
+  font-size:9px;
   font-weight:bold;
+}
+
+.menuItem{
+  width:100%;
+  min-height:50px;
+  margin-bottom:3px;
+  padding:0 10px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  border:0;
+  border-radius:13px;
+  background:transparent;
+  color:#e9ebef;
+  text-align:right;
+  cursor:pointer;
+  font-size:11px;
+}
+
+.menuItem:hover{
+  background:#181b22;
+}
+
+.menuItem.active{
+  background:
+    linear-gradient(
+      90deg,
+      rgba(229,9,20,.14),
+      rgba(229,9,20,.025)
+    );
+  border:1px solid rgba(229,9,20,.15);
+}
+
+.menuIcon{
+  width:35px;
+  height:35px;
+  display:grid;
+  place-items:center;
+  flex:none;
+  border-radius:11px;
+  background:#171a21;
+  border:1px solid #292e38;
   font-size:15px;
 }
 
-.fixed-buttons{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-  margin-top:15px;
-}
-
-.fixed-buttons button{
+.drawerFooter{
   padding:15px;
-  border:0;
-  border-radius:15px;
-  cursor:pointer;
-  color:white;
-  font-family:inherit;
-  background:#173b70;
-}
-
-.config-item{
-  border:1px solid #20344d;
-  background:#07111e;
-  border-radius:18px;
-  padding:15px;
-  margin-bottom:12px;
-}
-
-.config-name{
-  font-weight:bold;
-  margin-bottom:7px;
-}
-
-.config-date{
-  color:#7588a5;
-  font-size:11px;
-  margin-bottom:12px;
-}
-
-.config-actions{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-}
-
-.copy-btn,
-.delete-btn{
-  border:0;
-  padding:11px;
-  border-radius:12px;
-  color:white;
-  cursor:pointer;
-  font-family:inherit;
-}
-
-.copy-btn{
-  background:#079b61;
-}
-
-.delete-btn{
-  background:#d7193f;
-}
-
-.empty{
   text-align:center;
-  color:#7889a4;
-  padding:35px 10px;
+  border-top:1px solid var(--line);
+  color:#596170;
+  font-size:8px;
 }
 
-/* نوار پایین شبیه تصویر */
-.bottom-nav{
+/* ─────────────────────────────
+   BOTTOM NAV
+───────────────────────────── */
+
+.bottomNav{
   position:fixed;
+  z-index:60;
   left:50%;
-  bottom:15px;
+  bottom:0;
   transform:translateX(-50%);
-  width:min(920px,calc(100% - 30px));
-  height:75px;
-  border-radius:28px;
-  border:1px solid rgba(0,130,255,.45);
-  background:rgba(5,17,32,.90);
-  backdrop-filter:blur(18px);
+  width:min(860px,100%);
+  height:70px;
+  padding:6px 5px env(safe-area-inset-bottom);
   display:grid;
-  grid-template-columns:repeat(5,1fr);
-  z-index:50;
-  box-shadow:0 15px 50px rgba(0,0,0,.4);
+  grid-template-columns:repeat(4,1fr);
+  background:rgba(9,10,14,.94);
+  border-top:1px solid var(--line);
+  backdrop-filter:blur(20px);
 }
 
-.nav-btn{
+.navItem{
   border:0;
+  border-radius:13px;
   background:transparent;
-  color:#8fa4c7;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:4px;
+  color:#687080;
   cursor:pointer;
-  font-family:inherit;
+  font-size:8px;
 }
 
-.nav-btn svg{
-  width:25px;
-  height:25px;
-  stroke:currentColor;
-  fill:none;
-  stroke-width:2;
+.navItem.active{
+  color:#fff;
+  background:#171a21;
 }
 
-.nav-btn.active{
-  color:#27a4ff;
+.navIcon{
+  display:block;
+  margin-bottom:4px;
+  font-size:18px;
 }
 
-.nav-home{
-  width:68px;
-  height:68px;
-  border-radius:50%;
-  margin:auto;
-  margin-top:-27px;
-  background:radial-gradient(circle,#159cff,#06469d);
-  border:1px solid #27b4ff;
-  box-shadow:0 0 30px rgba(0,140,255,.6);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
+/* ─────────────────────────────
+   TOAST
+───────────────────────────── */
 
-.nav-home svg{
-  width:30px;
-  height:30px;
-  stroke:white;
-}
-
-.nav-text{
-  font-size:11px;
-}
-
-/* Toast */
 .toast{
   position:fixed;
-  bottom:100px;
   left:50%;
-  transform:translateX(-50%) translateY(20px);
-  background:#101c2d;
-  border:1px solid #28527c;
-  color:white;
-  padding:12px 20px;
-  border-radius:14px;
+  bottom:86px;
+  z-index:200;
+  min-width:210px;
+  max-width:calc(100% - 30px);
+  padding:12px 15px;
+  border-radius:13px;
+  background:#171a21;
+  border:1px solid #303641;
+  box-shadow:0 18px 50px rgba(0,0,0,.45);
+  color:#fff;
+  text-align:center;
+  font-size:10px;
   opacity:0;
-  pointer-events:none;
-  transition:.25s;
-  z-index:100;
-  font-size:13px;
+  visibility:hidden;
+  transform:translate(-50%,15px);
+  transition:.22s;
 }
 
 .toast.show{
   opacity:1;
-  transform:translateX(-50%) translateY(0);
+  visibility:visible;
+  transform:translate(-50%,0);
 }
 
-/* موبایل:
-   همچنان دقیقاً 4 ستون باقی می‌ماند */
-@media(max-width:600px){
+/* ─────────────────────────────
+   MOBILE
+───────────────────────────── */
 
-  .app{
-    padding:15px 10px 105px;
-  }
+@media(max-width:520px){
 
-  .header{
-    padding-top:5px;
-  }
-
-  .online{
-    position:static;
-    justify-content:center;
-    margin-bottom:12px;
-  }
-
-  .logo{
-    width:65px;
-    height:65px;
-    border-radius:20px;
-    font-size:39px;
-  }
-
-  .brand{
-    font-size:22px;
-  }
-
-  .subtitle{
-    font-size:11px;
+  .shell{
+    padding-left:13px;
+    padding-right:13px;
   }
 
   .hero{
-    min-height:260px;
-    padding:20px 15px;
-    display:block;
-    text-align:right;
+    padding:24px 18px;
   }
 
-  .hero-logo{
-    width:100px;
-    height:100px;
-    min-width:100px;
-    font-size:55px;
-    margin:auto;
+  .heroTitle{
+    font-size:22px;
   }
 
-  .hero-content{
-    text-align:center;
-    margin-top:13px;
+  .stats{
+    grid-template-columns:repeat(3,1fr);
   }
 
-  .hero-content h1{
-    font-size:20px;
+  .stat{
+    min-height:82px;
+    padding:11px;
   }
 
-  .hero-content p{
-    font-size:11px;
-  }
-
-  .hero-count{
-    left:15px;
-    bottom:18px;
-  }
-
-  .hero-count-number{
-    font-size:38px;
-  }
-
-  .hero-count-label{
-    font-size:10px;
-  }
-
-  .manage-btn{
-    right:15px;
-    bottom:18px;
-    padding:9px 13px;
-    font-size:11px;
-  }
-
-  .section-title{
-    margin-top:25px;
-  }
-
-  .section-title h2{
+  .statValue{
     font-size:17px;
   }
 
-  .section-line{
-    width:40px;
+}
+
+/* مهم: همیشه ۴ ستون */
+@media(max-width:360px){
+
+  .quick{
+    min-height:87px;
   }
 
-  .grid{
-    grid-template-columns:repeat(4,minmax(0,1fr));
-    gap:7px;
+  .quickText{
+    font-size:8px;
   }
 
-  .card{
-    min-height:115px;
-    padding:8px 3px;
-    border-radius:17px;
+  .heroTitle{
+    font-size:20px;
   }
 
-  .icon{
-    width:48px;
-    height:48px;
-    border-radius:15px;
-    margin-bottom:7px;
-  }
-
-  .icon svg{
-    width:25px;
-    height:25px;
-  }
-
-  .card-name{
-    font-size:9px;
-    line-height:1.5;
-  }
-
-  .card-arrow{
-    display:none;
-  }
-
-  .bottom-nav{
-    width:calc(100% - 14px);
-    bottom:7px;
-    height:67px;
-    border-radius:22px;
-  }
-
-  .nav-home{
-    width:59px;
-    height:59px;
-    margin-top:-20px;
-  }
-
-  .nav-text{
-    font-size:9px;
-  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="app">
+<!-- OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeDrawer()"></div>
 
-  <!-- هدر -->
-  <header class="header">
-    <div class="online">
-      <span class="online-dot"></span>
-      آنلاین
+<!-- DRAWER -->
+<aside class="drawer" id="drawer">
+
+  <div class="drawerHead">
+
+    <div class="drawerBrand">
+
+      <div class="drawerLogo">🕷️</div>
+
+      <div>
+        <div class="drawerTitle">ＳｐａｅｄｒＮＧ</div>
+        <div class="drawerSub">
+          پنل مدیریت کانفیگ
+        </div>
+      </div>
+
     </div>
 
-    <div class="logo">🕷️</div>
-    <div class="brand">ＳｐａｅｄｒＮＧ</div>
-    <div class="subtitle">سریع‌تر از همیشه</div>
-  </header>
+  </div>
+
+  <div class="drawerBody">
+
+    <div class="menuLabel">اصلی</div>
+
+    <button class="menuItem active"
+      data-menu="home"
+      onclick="showPage('home')">
+      <span class="menuIcon">⌂</span>
+      <span>داشبورد</span>
+    </button>
+
+    <div class="menuLabel">مدیریت</div>
+
+    <button class="menuItem"
+      data-menu="create"
+      onclick="showPage('create')">
+      <span class="menuIcon">＋</span>
+      <span>ساخت کانفیگ</span>
+    </button>
+
+    <button class="menuItem"
+      data-menu="configs"
+      onclick="showPage('configs')">
+      <span class="menuIcon">▤</span>
+      <span>کانفیگ‌های من</span>
+    </button>
+
+    <button class="menuItem"
+      data-menu="fixed"
+      onclick="showPage('fixed')">
+      <span class="menuIcon">◎</span>
+      <span>IP ثابت</span>
+    </button>
+
+    <button class="menuItem"
+      data-menu="manage"
+      onclick="showPage('manage')">
+      <span class="menuIcon">⚙</span>
+      <span>مدیریت کانفیگ</span>
+    </button>
+
+    <div class="menuLabel">اطلاعات</div>
+
+    <button class="menuItem"
+      data-menu="guide"
+      onclick="showPage('guide')">
+      <span class="menuIcon">?</span>
+      <span>راهنما</span>
+    </button>
+
+    <button class="menuItem"
+      onclick="openTelegram()">
+      <span class="menuIcon">◉</span>
+      <span>کانال تلگرام</span>
+    </button>
+
+    <button class="menuItem"
+      onclick="copyText(TELEGRAM);toast('لینک SpaedrNG کپی شد');closeDrawer()">
+      <span class="menuIcon">↗</span>
+      <span>لینک SpaedrNG</span>
+    </button>
+
+    <button class="menuItem"
+      data-menu="about"
+      onclick="showPage('about')">
+      <span class="menuIcon">i</span>
+      <span>درباره پنل</span>
+    </button>
+
+    <div class="menuLabel">تنظیمات</div>
+
+    <button class="menuItem"
+      onclick="clearData()">
+      <span class="menuIcon">×</span>
+      <span>پاک‌سازی اطلاعات</span>
+    </button>
+
+  </div>
+
+  <div class="drawerFooter">
+    ＳｐａｅｄｒＮＧ · 2026
+  </div>
+
+</aside>
 
 
-  <!-- صفحه خانه -->
-  <main id="homeScreen" class="screen active">
+<!-- HEADER -->
+<header class="header">
 
-    <section class="hero">
+  <div class="headerInner">
 
-      <div class="hero-logo">🕷️</div>
+    <button class="menuBtn" onclick="openDrawer()">
+      ☰
+    </button>
 
-      <div class="hero-content">
-        <h1>خوش آمدید به ＳｐａｅｄｒＮＧ</h1>
-        <p>پنل مدیریت سریع و حرفه‌ای</p>
+    <div class="brand">
+
+      <div>
+
+        <div class="brandName">
+          ＳｐａｅｄｒＮＧ
+        </div>
+
+        <div class="brandStatus">
+          <span class="onlineDot"></span>
+          آنلاین
+        </div>
+
       </div>
 
-      <div class="hero-count">
-        <div class="hero-count-number" id="configCount">0</div>
-        <div class="hero-count-label">کانفیگ‌های ساخته شده</div>
+      <div class="brandMark">
+        🕷️
       </div>
 
-      <button class="manage-btn" onclick="showScreen('configsScreen')">
-        ● مدیریت کانفیگ
+    </div>
+
+  </div>
+
+</header>
+
+
+<div class="shell">
+
+<!-- ═════════════════ HOME ═════════════════ -->
+
+<section class="page active" id="page-home">
+
+  <div class="hero">
+
+    <div class="heroGrid"></div>
+
+    <div class="heroTop">
+
+      <div class="heroIcon">
+        🕷️
+      </div>
+
+      <div class="heroBadge">
+        <span class="onlineDot"></span>
+        سرویس فعال
+      </div>
+
+    </div>
+
+    <div class="heroTitle">
+      خوش آمدید به
+      <b>ＳｐａｅｄｒＮＧ</b>
+    </div>
+
+    <div class="heroDescription">
+      مدیریت سریع و ساده کانفیگ‌ها، IP ثابت و ابزارهای پنل
+      در یک محیط سبک و اختصاصی.
+    </div>
+
+    <div class="heroBottom">
+
+      <a
+        class="heroLink"
+        href="https://t.me/spaedrNG"
+        target="_blank"
+        rel="noopener">
+        کانال SpaedrNG ↗
+      </a>
+
+      <span class="heroVersion">
+        نسخه 1.0
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <div class="stats">
+
+    <div class="stat">
+
+      <div class="statLabel">
+        کانفیگ‌ها
+      </div>
+
+      <div class="statValue"
+        id="statConfigs">
+        0
+      </div>
+
+      <div class="statSmall">
+        ذخیره‌شده
+      </div>
+
+    </div>
+
+    <div class="stat">
+
+      <div class="statLabel">
+        وضعیت
+      </div>
+
+      <div class="statValue"
+        style="color:#45d99f">
+        آنلاین
+      </div>
+
+      <div class="statSmall">
+        سرویس فعال
+      </div>
+
+    </div>
+
+    <div class="stat">
+
+      <div class="statLabel">
+        نسخه
+      </div>
+
+      <div class="statValue">
+        1.0
+      </div>
+
+      <div class="statSmall">
+        SpaedrNG
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="section">
+
+    <div class="sectionHeader">
+
+      <div>
+        <div class="sectionTitle">
+          دسترسی سریع
+        </div>
+
+        <div class="sectionSubtitle">
+          ابزارهای اصلی پنل
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="quickGrid">
+
+      <button class="quick"
+        onclick="showPage('create')">
+
+        <span class="quickIcon">＋</span>
+        <span class="quickText">
+          ساخت کانفیگ
+        </span>
+
       </button>
 
-    </section>
+      <button class="quick"
+        onclick="showPage('configs')">
 
+        <span class="quickIcon">▤</span>
+        <span class="quickText">
+          کانفیگ‌های من
+        </span>
 
-    <div class="section-title">
-      <div class="section-line"></div>
-      <h2>امکانات</h2>
-    </div>
-
-
-    <!-- دقیقاً 4 ستون -->
-    <section class="grid">
-
-      <!-- ساخت کانفیگ -->
-      <div class="card red" onclick="showScreen('createScreen')">
-        <div class="icon glass-icon">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 5v14M5 12h14"/>
-          </svg>
-        </div>
-        <div class="card-name">ساخت کانفیگ</div>
-        <div class="card-arrow">‹</div>
-      </div>
-
-
-      <!-- IP ثابت -->
-      <div class="card blue" onclick="showScreen('fixedScreen')">
-        <div class="icon">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/>
-            <circle cx="12" cy="9" r="2.5"/>
-          </svg>
-        </div>
-        <div class="card-name">IP ثابت</div>
-        <div class="card-arrow">‹</div>
-      </div>
-
-
-      <!-- کانفیگ‌های من -->
-      <div class="card purple" onclick="showScreen('configsScreen')">
-        <div class="icon">
-          <svg viewBox="0 0 24 24">
-            <path d="M8 6h13M8 12h13M8 18h13"/>
-            <circle cx="3.5" cy="6" r="1"/>
-            <circle cx="3.5" cy="12" r="1"/>
-            <circle cx="3.5" cy="18" r="1"/>
-          </svg>
-        </div>
-        <div class="card-name">کانفیگ‌های من</div>
-        <div class="card-arrow">‹</div>
-      </div>
-
-
-      <!-- تلگرام -->
-      <div class="card blue" onclick="openTelegram()">
-        <div class="icon">
-          <svg viewBox="0 0 24 24">
-            <path d="M21 3 3 10l7 3 3 7 2-6 6-11z"/>
-            <path d="m10 13 5-5"/>
-          </svg>
-        </div>
-        <div class="card-name">کانال تلگرام</div>
-        <div class="card-arrow">‹</div>
-      </div>
-
-
-      <!-- لینک -->
-      <div class="card pink" onclick="openTelegram()">
-        <div class="icon">
-          <svg viewBox="0 0 24 24">
-            <path d="M10 13a5 5 0 0 0 7.1.1l2-2a5 5 0 0 0-7.1-7.1l-1.1 1.1"/>
-            <path d="M14 11a5 5 0 0 0-7.1-.1l-2 2A5 5 0 0 0 12 20l1.1-1.1"/>
-          </svg>
-        </div>
-        <div class="card-name">لینک SpaedrNG</div>
-        <div class="card-arrow">‹</div>
-      </div>
-
-
-      <!-- مدیریت -->
-      <div class="card yellow" onclick="showScreen('configsScreen')">
-        <div class="icon">
-          <svg viewBox="0 0 24 24">
-            <path d="M4 7h16M4 12h16M4 17h16"/>
-            <circle cx="9" cy="7" r="2"/>
-            <circle cx="15" cy="12" r="2"/>
-            <circle cx="11" cy="17" r="2"/>
-          </svg>
-        </div>
-        <div class="card-name">مدیریت کانفیگ</div>
-        <div class="card-arrow">‹</div>
-      </div>
-
-
-      <!-- راهنما -->
-      <div class="card green" onclick="showScreen('aboutScreen')">
-        <div class="icon">
-          <svg viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="9"/>
-            <path d="M9.5 9a2.5 2.5 0 1 1 4.3 1.8c-.9.8-1.8 1.2-1.8 2.7"/>
-            <path d="M12 17h.01"/>
-          </svg>
-        </div>
-        <div class="card-name">راهنما</div>
-        <div class="card-arrow">‹</div>
-      </div>
-
-
-      <!-- درباره -->
-      <div class="card orange" onclick="showScreen('aboutScreen')">
-        <div class="icon">
-          <svg viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="9"/>
-            <path d="M12 10v6"/>
-            <path d="M12 7h.01"/>
-          </svg>
-        </div>
-        <div class="card-name">درباره پنل</div>
-        <div class="card-arrow">‹</div>
-      </div>
-
-    </section>
-  </main>
-
-
-  <!-- ساخت کانفیگ -->
-  <section id="createScreen" class="screen">
-
-    <button class="back" onclick="showScreen('homeScreen')">→ بازگشت</button>
-
-    <div class="form-box">
-      <h2>ساخت کانفیگ</h2>
-
-      <label>نام کاربر</label>
-      <input id="nameInput"
-             class="input"
-             type="text"
-             placeholder="مثلاً Ali">
-
-      <button class="main-btn" onclick="createConfig()">
-        ساخت کانفیگ
       </button>
+
+      <button class="quick"
+        onclick="showPage('fixed')">
+
+        <span class="quickIcon">◎</span>
+        <span class="quickText">
+          IP ثابت
+        </span>
+
+      </button>
+
+      <button class="quick"
+        onclick="showPage('guide')">
+
+        <span class="quickIcon">?</span>
+        <span class="quickText">
+          راهنما
+        </span>
+
+      </button>
+
     </div>
 
-  </section>
+  </div>
 
 
-  <!-- IP ثابت -->
-  <section id="fixedScreen" class="screen">
+  <div class="section">
 
-    <button class="back" onclick="showScreen('homeScreen')">→ بازگشت</button>
+    <div class="sectionHeader">
 
-    <div class="form-box">
-      <h2>ساخت IP ثابت</h2>
+      <div>
+        <div class="sectionTitle">
+          آخرین کانفیگ‌ها
+        </div>
 
-      <input id="fixedNameInput"
-             class="input"
-             type="text"
-             placeholder="نام کاربر">
-
-      <div class="fixed-buttons">
-        <button onclick="createFixed('DE')">🇩🇪 آلمان</button>
-        <button onclick="createFixed('AE')">🇦🇪 امارات</button>
+        <div class="sectionSubtitle">
+          آخرین موارد ساخته‌شده
+        </div>
       </div>
+
+      <button class="textButton"
+        onclick="showPage('configs')">
+        مشاهده همه
+      </button>
+
     </div>
 
-  </section>
+    <div class="recent" id="recent"></div>
+
+  </div>
+
+</section>
 
 
-  <!-- کانفیگ‌ها -->
-  <section id="configsScreen" class="screen">
+<!-- ═════════════════ CREATE ═════════════════ -->
 
-    <button class="back" onclick="showScreen('homeScreen')">→ بازگشت</button>
+<section class="page" id="page-create">
 
-    <div class="list-box">
-      <h2>کانفیگ‌های ساخته شده</h2>
-      <div id="configList"></div>
+  <div class="pageTitle">
+    ساخت کانفیگ
+  </div>
+
+  <div class="pageDescription">
+    یک نام برای کانفیگ انتخاب کنید و آن را در پنل ذخیره کنید.
+  </div>
+
+  <div class="card">
+
+    <div class="cardTitle">
+      کانفیگ جدید
     </div>
 
-  </section>
-
-
-  <!-- درباره -->
-  <section id="aboutScreen" class="screen">
-
-    <button class="back" onclick="showScreen('homeScreen')">→ بازگشت</button>
-
-    <div class="about-box">
-      <h2>راهنما و درباره پنل</h2>
-
-      <p>
-        به پنل ＳｐａｅｄｒＮＧ خوش آمدید.
-      </p>
-
-      <p>
-        از بخش «ساخت کانفیگ» می‌توانید کانفیگ ایجاد کنید
-        و از بخش «کانفیگ‌های من» آن‌ها را کپی یا حذف کنید.
-      </p>
-
-      <p>
-        کانال:
-        <b>https://t.me/spaedrNG</b>
-      </p>
+    <div class="cardDescription">
+      نام انتخابی در لیست کانفیگ‌ها نمایش داده می‌شود.
     </div>
 
-  </section>
+    <div class="formGroup">
+
+      <label class="formLabel">
+        نام کاربر
+      </label>
+
+      <input
+        class="input"
+        id="configName"
+        autocomplete="off"
+        placeholder="مثلاً Ali">
+
+    </div>
+
+    <button class="primary"
+      onclick="createConfig()">
+      ساخت کانفیگ
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- ═════════════════ CONFIGS ═════════════════ -->
+
+<section class="page" id="page-configs">
+
+  <div class="pageTitle">
+    کانفیگ‌های من
+  </div>
+
+  <div class="pageDescription">
+    کانفیگ‌های ذخیره‌شده روی این دستگاه.
+  </div>
+
+  <input
+    class="input search"
+    id="search"
+    autocomplete="off"
+    placeholder="جستجوی کانفیگ..."
+    oninput="renderConfigs()">
+
+  <div id="configs"></div>
+
+</section>
+
+
+<!-- ═════════════════ FIXED ═════════════════ -->
+
+<section class="page" id="page-fixed">
+
+  <div class="pageTitle">
+    IP ثابت
+  </div>
+
+  <div class="pageDescription">
+    موقعیت موردنظر را انتخاب کنید تا یک کانفیگ IP ثابت ساخته شود.
+  </div>
+
+  <div class="card">
+
+    <div class="cardTitle">
+      انتخاب موقعیت
+    </div>
+
+    <div class="cardDescription">
+      کشور موردنظر خود را انتخاب کنید.
+    </div>
+
+  </div>
+
+  <div class="countryGrid">
+
+    <button class="country"
+      onclick="createFixed('DE')">
+
+      <span class="flag">🇩🇪</span>
+
+      <span class="countryName">
+        آلمان
+      </span>
+
+    </button>
+
+    <button class="country"
+      onclick="createFixed('AE')">
+
+      <span class="flag">🇦🇪</span>
+
+      <span class="countryName">
+        امارات
+      </span>
+
+    </button>
+
+    <button class="country"
+      onclick="createFixed('JP')">
+
+      <span class="flag">🇯🇵</span>
+
+      <span class="countryName">
+        ژاپن
+      </span>
+
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- ═════════════════ MANAGE ═════════════════ -->
+
+<section class="page" id="page-manage">
+
+  <div class="pageTitle">
+    مدیریت کانفیگ
+  </div>
+
+  <div class="pageDescription">
+    مدیریت اطلاعات و ذخیره‌سازی پنل.
+  </div>
+
+  <div class="card">
+
+    <div class="infoRow">
+
+      <div class="infoIcon">▤</div>
+
+      <div>
+        <div class="infoTitle">
+          تعداد کانفیگ
+        </div>
+
+        <div class="infoText"
+          id="manageCount">
+          0 کانفیگ ذخیره شده
+        </div>
+      </div>
+
+    </div>
+
+    <div class="infoRow">
+
+      <div class="infoIcon">⌂</div>
+
+      <div>
+        <div class="infoTitle">
+          ذخیره‌سازی محلی
+        </div>
+
+        <div class="infoText">
+          اطلاعات این پنل روی همین مرورگر ذخیره می‌شود.
+        </div>
+      </div>
+
+    </div>
+
+    <div class="infoRow">
+
+      <div class="infoIcon">✓</div>
+
+      <div>
+        <div class="infoTitle">
+          وضعیت پنل
+        </div>
+
+        <div class="infoText">
+          پنل آماده استفاده است.
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <button class="primary"
+    onclick="showPage('configs')">
+    مشاهده کانفیگ‌ها
+  </button>
+
+</section>
+
+
+<!-- ═════════════════ GUIDE ═════════════════ -->
+
+<section class="page" id="page-guide">
+
+  <div class="pageTitle">
+    راهنما
+  </div>
+
+  <div class="pageDescription">
+    راهنمای کوتاه استفاده از پنل.
+  </div>
+
+  <div class="card">
+
+    <div class="infoRow">
+
+      <div class="infoIcon">1</div>
+
+      <div>
+        <div class="infoTitle">
+          ساخت کانفیگ
+        </div>
+
+        <div class="infoText">
+          از منوی ساخت کانفیگ نام کاربر را وارد کنید.
+        </div>
+      </div>
+
+    </div>
+
+    <div class="infoRow">
+
+      <div class="infoIcon">2</div>
+
+      <div>
+        <div class="infoTitle">
+          کانفیگ‌های من
+        </div>
+
+        <div class="infoText">
+          کانفیگ‌های ساخته‌شده را مشاهده، کپی یا حذف کنید.
+        </div>
+      </div>
+
+    </div>
+
+    <div class="infoRow">
+
+      <div class="infoIcon">3</div>
+
+      <div>
+        <div class="infoTitle">
+          IP ثابت
+        </div>
+
+        <div class="infoText">
+          از بین کشورهای موجود یک کانفیگ IP ثابت ایجاد کنید.
+        </div>
+      </div>
+
+    </div>
+
+    <div class="infoRow">
+
+      <div class="infoIcon">4</div>
+
+      <div>
+        <div class="infoTitle">
+          استفاده
+        </div>
+
+        <div class="infoText">
+          کانفیگ را کپی کرده و در برنامه سازگار خود وارد کنید.
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ═════════════════ ABOUT ═════════════════ -->
+
+<section class="page" id="page-about">
+
+  <div class="pageTitle">
+    درباره پنل
+  </div>
+
+  <div class="pageDescription">
+    اطلاعات SpaedrNG.
+  </div>
+
+  <div class="card">
+
+    <div style="
+      text-align:center;
+      padding:12px 0 22px;
+    ">
+
+      <div style="
+        width:76px;
+        height:76px;
+        margin:auto;
+        display:grid;
+        place-items:center;
+        border-radius:23px;
+        background:#181b22;
+        border:1px solid #303640;
+        font-size:38px;
+      ">
+        🕷️
+      </div>
+
+      <div style="
+        margin-top:14px;
+        font-size:21px;
+        font-weight:900;
+      ">
+        ＳｐａｅｄｒＮＧ
+      </div>
+
+      <div style="
+        margin-top:5px;
+        color:#697181;
+        font-size:9px;
+      ">
+        پنل مدیریت کانفیگ
+      </div>
+
+    </div>
+
+    <div class="infoRow">
+
+      <div class="infoIcon">◉</div>
+
+      <div>
+        <div class="infoTitle">
+          کانال تلگرام
+        </div>
+
+        <div class="infoText">
+          t.me/spaedrNG
+        </div>
+      </div>
+
+    </div>
+
+    <button class="primary"
+      onclick="openTelegram()">
+      ورود به کانال
+    </button>
+
+  </div>
+
+</section>
 
 </div>
 
 
-<!-- نوار پایین -->
-<nav class="bottom-nav">
+<!-- BOTTOM NAV -->
 
-  <button class="nav-btn" onclick="showScreen('configsScreen')">
-    <svg viewBox="0 0 24 24">
-      <path d="M8 6h13M8 12h13M8 18h13"/>
-      <circle cx="3.5" cy="6" r="1"/>
-      <circle cx="3.5" cy="12" r="1"/>
-      <circle cx="3.5" cy="18" r="1"/>
-    </svg>
-    <span class="nav-text">کانفیگ‌ها</span>
+<nav class="bottomNav">
+
+  <button class="navItem active"
+    data-page="home"
+    onclick="showPage('home')">
+
+    <span class="navIcon">⌂</span>
+    خانه
+
   </button>
 
+  <button class="navItem"
+    data-page="create"
+    onclick="showPage('create')">
 
-  <button class="nav-btn" onclick="showScreen('fixedScreen')">
-    <svg viewBox="0 0 24 24">
-      <path d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/>
-      <circle cx="12" cy="9" r="2.5"/>
-    </svg>
-    <span class="nav-text">IP ثابت</span>
+    <span class="navIcon">＋</span>
+    ساخت
+
   </button>
 
+  <button class="navItem"
+    data-page="configs"
+    onclick="showPage('configs')">
 
-  <button class="nav-btn active" onclick="showScreen('homeScreen')">
-    <div class="nav-home">
-      <svg viewBox="0 0 24 24">
-        <path d="m3 11 9-8 9 8"/>
-        <path d="M5 10v10h14V10"/>
-        <path d="M9 20v-6h6v6"/>
-      </svg>
-    </div>
-    <span class="nav-text">خانه</span>
+    <span class="navIcon">▤</span>
+    کانفیگ‌ها
+
   </button>
 
+  <button class="navItem"
+    data-page="fixed"
+    onclick="showPage('fixed')">
 
-  <button class="nav-btn" onclick="showScreen('createScreen')">
-    <svg viewBox="0 0 24 24">
-      <path d="M12 5v14M5 12h14"/>
-    </svg>
-    <span class="nav-text">ساخت</span>
-  </button>
+    <span class="navIcon">◎</span>
+    IP ثابت
 
-
-  <button class="nav-btn" onclick="showScreen('aboutScreen')">
-    <svg viewBox="0 0 24 24">
-      <circle cx="12" cy="12" r="9"/>
-      <path d="M12 10v6"/>
-      <path d="M12 7h.01"/>
-    </svg>
-    <span class="nav-text">بیشتر</span>
   </button>
 
 </nav>
 
 
-<div id="toast" class="toast"></div>
+<div class="toast" id="toast"></div>
 
 
 <script>
-const TELEGRAM = "https://t.me/spaedrNG";
+
+/* ═══════════════════════════════
+   DATA
+═══════════════════════════════ */
+
+const TELEGRAM =
+  "https://t.me/spaedrNG";
+
+const STORAGE_KEY =
+  "spaedrng_configs";
 
 const BASE_CONFIG =
-"vless://15a05f72-8e49-408e-8337-9c4d418f2d43@" +
-"104.21.5.155:443" +
-"?type=ws" +
-"&host=MSg-QUeue-140448-edg.royal-DiSk-882F.wORKErs.Dev" +
-"&path=%2F%3Fproxyip%3D37.152.182.54%26ed%3D2560" +
-"&security=tls" +
-"&sni=mSg-QueUE-140448-edg.rOyaL-dISK-882F.woRKerS.DEv" +
-"&encryption=none";
-
+  "vless://15a05f72-8e49-408e-8337-9c4d418f2d43@" +
+  "104.21.5.155:443" +
+  "?type=ws" +
+  "&host=MSg-QUeue-140448-edg.royal-DiSk-882F.wORKErs.Dev" +
+  "&path=%2F%3Fproxyip%3D37.152.182.54%26ed%3D2560" +
+  "&security=tls" +
+  "&sni=mSg-QUeUE-140448-edg.rOyaL-dISK-882F.woRkErS.DEv" +
+  "&encryption=none";
 
 const FIXED_CONFIGS = {
 
   DE:[
     "vless://be35b0db-50aa-4573-8d2a-e95624869ab9@103.21.244.12:443?path=%2F%3Fed%3D2560&security=tls&encryption=none&insecure=0&host=API-hUb-908324-edg.h9zL52eNuFUS.wOrkErS.dEv&type=ws&allowInsecure=0&sni=API-hUB-908324-eDg.H9zL52ENuFUs.WoRkErS.dEV",
 
-    "vless://be35b0db-50aa-4573-8d2a-e95624869ab9@103.21.244.12:443?path=%2F%3Fed%3D2560&security=tls&encryption=none&insecure=0&host=APi-hub-908324-EDG.H9ZL52ENufUs.workerS.dev&type=ws&allowInsecure=0&sni=api-Hub-908324-Edg.h9zL52enuFuS.WOrkErS.dEV"
+    "vless://be35b0db-50aa-4573-8d2a-e95624869ab9@103.21.244.12:443?path=%2F%3Fed%3D2560&security=tls&encryption=none&insecure=0&host=APi-hub-908324-EDG.H9ZL52ENufUs.workerS.dev&type=ws&allowInsecure=0&sni=api-Hub-908324-Edg.h9Zl52enuFuS.WOrkErS.dEV"
   ],
 
   AE:[
     "vless://be35b0db-50aa-4573-8d2a-e95624869ab9@api-hub-908324-edg.h9zl52enufus.workers.dev:443?path=%2F%3Fproxyip%3D20.174.15.226%26ed%3D2560&security=tls&encryption=none&insecure=0&host=APi-huB-908324-edG.H9zL52enUfus.wOrkERS.dEV&type=ws&allowInsecure=0&sni=API-hub-908324-EdG.H9zl52enUFUS.worKERS.deV",
 
     "vless://be35b0db-50aa-4573-8d2a-e95624869ab9@172.67.13.12:443?path=%2F%3Fproxyip%3D20.174.15.226%26ed%3D2560&security=tls&encryption=none&insecure=0&host=aPI-HUb-908324-EDG.h9zl52EnuFUS.WORkERs.dev&type=ws&allowInsecure=0&sni=Api-hUB-908324-Edg.H9zl52enUfUs.worKeRS.DEv"
+  ],
+
+  JP:[
+    "vless://be35b0db-50aa-4573-8d2a-e95624869ab9@104.16.15.172:443?path=%2F%3Fed%3D2560&security=tls&encryption=none&insecure=0&host=API-hUb-908324-edg.h9zL52eNuFUS.wOrkErS.dEv&type=ws&allowInsecure=0&sni=API-hUB-908324-eDg.H9zL52enUfuS.wOrKERS.dEV#JP%F0%9F%87%AF%F0%9F%87%B52",
+
+    "vless://be35b0db-50aa-4573-8d2a-e95624869ab9@104.16.15.172:443?path=%2F%3Fed%3D2560&security=tls&encryption=none&insecure=0&host=APi-hub-908324-EDG.H9ZL52ENufUs.workerS.dev&type=ws&allowInsecure=0&sni=api-Hub-908324-EdG.h9Zl52enuFUS.WOrkErS.dEV#JP%F0%9F%87%AF%F0%9F%87%B51"
   ]
+
+};
+
+const COUNTRY_NAMES = {
+  DE:"🇩🇪 آلمان",
+  AE:"🇦🇪 امارات",
+  JP:"🇯🇵 ژاپن"
 };
 
 
+/* ═══════════════════════════════
+   STORAGE
+═══════════════════════════════ */
+
 function getConfigs(){
-  return JSON.parse(
-    localStorage.getItem("spaedrng_configs") || "[]"
-  );
+
+  try{
+    return JSON.parse(
+      localStorage.getItem(STORAGE_KEY)
+    ) || [];
+  }catch{
+    return [];
+  }
+
 }
 
+function saveConfigs(data){
 
-function saveConfigs(configs){
   localStorage.setItem(
-    "spaedrng_configs",
-    JSON.stringify(configs)
+    STORAGE_KEY,
+    JSON.stringify(data)
   );
+
 }
 
 
-function showScreen(id){
+/* ═══════════════════════════════
+   NAVIGATION
+═══════════════════════════════ */
 
-  document.querySelectorAll(".screen").forEach(screen=>{
-    screen.classList.remove("active");
-  });
+function showPage(name){
 
-  document.getElementById(id).classList.add("active");
+  document.querySelectorAll(".page")
+    .forEach(page=>{
+      page.classList.remove("active");
+    });
+
+  const target =
+    document.getElementById(
+      "page-"+name
+    );
+
+  if(target){
+    target.classList.add("active");
+  }
+
+  document.querySelectorAll(".navItem")
+    .forEach(item=>{
+      item.classList.toggle(
+        "active",
+        item.dataset.page===name
+      );
+    });
+
+  document.querySelectorAll(".menuItem")
+    .forEach(item=>{
+      item.classList.toggle(
+        "active",
+        item.dataset.menu===name
+      );
+    });
+
+  closeDrawer();
+
+  renderAll();
 
   window.scrollTo({
     top:0,
     behavior:"smooth"
   });
 
-  updateCount();
-
-  if(id === "configsScreen"){
-    renderConfigs();
-  }
 }
 
+
+/* ═══════════════════════════════
+   DRAWER
+═══════════════════════════════ */
+
+function openDrawer(){
+
+  document
+    .getElementById("drawer")
+    .classList.add("open");
+
+  document
+    .getElementById("overlay")
+    .classList.add("show");
+
+}
+
+function closeDrawer(){
+
+  document
+    .getElementById("drawer")
+    .classList.remove("open");
+
+  document
+    .getElementById("overlay")
+    .classList.remove("show");
+
+}
+
+
+/* ═══════════════════════════════
+   TOAST
+═══════════════════════════════ */
+
+let toastTimer;
+
+function toast(message){
+
+  const el =
+    document.getElementById("toast");
+
+  el.textContent=message;
+
+  el.classList.add("show");
+
+  clearTimeout(toastTimer);
+
+  toastTimer =
+    setTimeout(()=>{
+      el.classList.remove("show");
+    },2300);
+
+}
+
+
+/* ═══════════════════════════════
+   SECURITY
+═══════════════════════════════ */
+
+function escapeHTML(value){
+
+  return String(value)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+/* ═══════════════════════════════
+   COPY
+═══════════════════════════════ */
+
+async function copyText(text){
+
+  try{
+
+    await navigator.clipboard.writeText(text);
+
+  }catch{
+
+    const area =
+      document.createElement("textarea");
+
+    area.value=text;
+    area.style.position="fixed";
+    area.style.opacity="0";
+
+    document.body.appendChild(area);
+
+    area.focus();
+    area.select();
+
+    try{
+      document.execCommand("copy");
+    }catch{}
+
+    area.remove();
+
+  }
+
+}
+
+
+/* ═══════════════════════════════
+   CREATE NORMAL
+═══════════════════════════════ */
 
 function createConfig(){
 
   const input =
-    document.getElementById("nameInput");
+    document.getElementById(
+      "configName"
+    );
 
   const name =
     input.value.trim();
 
   if(!name){
-    showToast("نام کاربر را وارد کنید.");
+
+    toast("نام کاربر را وارد کنید.");
+
+    input.focus();
+
     return;
   }
 
@@ -1137,260 +2002,435 @@ function createConfig(){
     BASE_CONFIG +
     "#" +
     encodeURIComponent(
-      name + " - " + TELEGRAM
+      name+" - "+TELEGRAM
     );
 
-  const configs = getConfigs();
+  const data =
+    getConfigs();
 
-  configs.unshift({
+  data.unshift({
+
     id:Date.now(),
+
     name:name,
+
     config:config,
+
     type:"normal",
+
     country:"",
-    date:new Date().toLocaleString("fa-IR")
+
+    date:new Date()
+      .toLocaleString("fa-IR")
+
   });
 
-  saveConfigs(configs);
+  saveConfigs(data);
 
   input.value="";
 
-  updateCount();
+  renderAll();
 
-  showToast("کانفیگ شما با موفقیت ساخته شد.");
-
-  setTimeout(()=>{
-    showScreen("configsScreen");
-  },500);
-}
-
-
-function createFixed(country){
-
-  const input =
-    document.getElementById("fixedNameInput");
-
-  const name =
-    input.value.trim();
-
-  if(!name){
-    showToast("نام کاربر را وارد کنید.");
-    return;
-  }
-
-  const list = FIXED_CONFIGS[country];
-
-  const random =
-    list[Math.floor(Math.random()*list.length)];
-
-  const countryName =
-    country === "DE"
-      ? "🇩🇪 آلمان"
-      : "🇦🇪 امارات";
-
-  const config =
-    random +
-    "#" +
-    encodeURIComponent(
-      name + " - " +
-      countryName +
-      " - " +
-      TELEGRAM
-    );
-
-  const configs = getConfigs();
-
-  configs.unshift({
-    id:Date.now(),
-    name:name,
-    config:config,
-    type:"fixed",
-    country:countryName,
-    date:new Date().toLocaleString("fa-IR")
-  });
-
-  saveConfigs(configs);
-
-  input.value="";
-
-  updateCount();
-
-  showToast(
-    "کانفیگ " +
-    countryName +
-    " ساخته شد."
+  toast(
+    "کانفیگ «"+name+"» ساخته شد."
   );
 
   setTimeout(()=>{
-    showScreen("configsScreen");
-  },500);
+    showPage("configs");
+  },350);
+
 }
 
 
-function escapeHTML(text){
+/* ═══════════════════════════════
+   CREATE FIXED
+═══════════════════════════════ */
 
-  const div =
-    document.createElement("div");
+function createFixed(country){
 
-  div.textContent = text;
+  const list =
+    FIXED_CONFIGS[country];
 
-  return div.innerHTML;
+  if(!list || !list.length){
+
+    toast("کانفیگ این کشور موجود نیست.");
+
+    return;
+  }
+
+  const selected =
+    list[
+      Math.floor(
+        Math.random()*list.length
+      )
+    ];
+
+  const countryName =
+    COUNTRY_NAMES[country];
+
+  const config =
+    selected +
+    "#" +
+    encodeURIComponent(
+      countryName+" - SpaedrNG"
+    );
+
+  const data =
+    getConfigs();
+
+  data.unshift({
+
+    id:Date.now(),
+
+    name:
+      countryName+" - IP ثابت",
+
+    config:config,
+
+    type:"fixed",
+
+    country:countryName,
+
+    date:new Date()
+      .toLocaleString("fa-IR")
+
+  });
+
+  saveConfigs(data);
+
+  renderAll();
+
+  toast(
+    countryName+" ساخته شد."
+  );
+
+  setTimeout(()=>{
+    showPage("configs");
+  },350);
+
 }
 
+
+/* ═══════════════════════════════
+   RENDER CONFIGS
+═══════════════════════════════ */
 
 function renderConfigs(){
 
-  const list =
-    document.getElementById("configList");
+  const root =
+    document.getElementById(
+      "configs"
+    );
 
-  const configs = getConfigs();
+  if(!root)return;
 
-  if(!configs.length){
+  const query =
+    (
+      document.getElementById(
+        "search"
+      )?.value || ""
+    )
+    .trim()
+    .toLowerCase();
 
-    list.innerHTML =
-      '<div class="empty">هنوز کانفیگی ساخته نشده است.</div>';
+  const all =
+    getConfigs();
 
-    return;
-  }
+  const filtered =
+    all.filter(item=>
+      item.name
+        .toLowerCase()
+        .includes(query)
+    );
 
-  list.innerHTML =
-    configs.map((item,index)=>`
+  if(!filtered.length){
 
-      <div class="config-item">
+    root.innerHTML=`
 
-        <div class="config-name">
-          ${item.type === "fixed"
-            ? item.country + " "
-            : ""}
-          ${escapeHTML(item.name)}
-        </div>
-
-        <div class="config-date">
-          ${escapeHTML(item.date)}
-        </div>
-
-        <div class="config-actions">
-
-          <button
-            class="copy-btn"
-            onclick="copyConfig(${index})">
-            کپی
-          </button>
-
-          <button
-            class="delete-btn"
-            onclick="deleteConfig(${index})">
-            حذف
-          </button>
-
-        </div>
-
+      <div class="card empty">
+        ${query
+          ? "نتیجه‌ای برای جستجو پیدا نشد."
+          : "هنوز کانفیگی ساخته نشده است."
+        }
       </div>
 
-    `).join("");
-}
+    `;
 
-
-async function copyConfig(index){
-
-  const configs =
-    getConfigs();
-
-  if(!configs[index]) return;
-
-  const config =
-    configs[index].config;
-
-  try{
-
-    await navigator.clipboard.writeText(config);
-
-  }catch(error){
-
-    const textarea =
-      document.createElement("textarea");
-
-    textarea.value = config;
-
-    document.body.appendChild(textarea);
-
-    textarea.select();
-
-    document.execCommand("copy");
-
-    textarea.remove();
-  }
-
-  showToast("کانفیگ کپی شد.");
-}
-
-
-function deleteConfig(index){
-
-  const configs =
-    getConfigs();
-
-  if(!configs[index]) return;
-
-  if(
-    !confirm(
-      "کانفیگ «" +
-      configs[index].name +
-      "» حذف شود؟"
-    )
-  ){
     return;
   }
 
-  configs.splice(index,1);
+  root.innerHTML =
+    filtered.map(item=>{
 
-  saveConfigs(configs);
+      const index =
+        all.findIndex(
+          x=>x.id===item.id
+        );
 
-  renderConfigs();
+      return `
 
-  updateCount();
+        <div class="config">
 
-  showToast("کانفیگ حذف شد.");
+          <div class="configHead">
+
+            <div class="configIcon">
+              ${item.type==="fixed"
+                ? "🌍"
+                : "🕷️"
+              }
+            </div>
+
+            <div>
+
+              <div class="configName">
+                ${escapeHTML(item.name)}
+              </div>
+
+              <div class="configDate">
+                ${escapeHTML(item.date)}
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="configActions">
+
+            <button
+              class="action copy"
+              onclick="copyConfig(${index})">
+              کپی کانفیگ
+            </button>
+
+            <button
+              class="action delete"
+              onclick="deleteConfig(${index})">
+              حذف
+            </button>
+
+          </div>
+
+        </div>
+
+      `;
+
+    }).join("");
+
 }
 
 
-function updateCount(){
+/* ═══════════════════════════════
+   RECENT
+═══════════════════════════════ */
+
+function renderRecent(){
+
+  const root =
+    document.getElementById(
+      "recent"
+    );
+
+  if(!root)return;
+
+  const data =
+    getConfigs();
+
+  if(!data.length){
+
+    root.innerHTML=`
+
+      <div class="empty">
+        هنوز کانفیگی ساخته نشده.
+        <br>
+        از «ساخت کانفیگ» شروع کنید.
+      </div>
+
+    `;
+
+    return;
+  }
+
+  root.innerHTML =
+    data.slice(0,4)
+      .map(item=>`
+
+        <div class="recentItem">
+
+          <div class="recentIcon">
+            ${item.type==="fixed"
+              ? "🌍"
+              : "🕷️"
+            }
+          </div>
+
+          <div>
+
+            <div class="recentName">
+              ${escapeHTML(item.name)}
+            </div>
+
+            <div class="recentDate">
+              ${escapeHTML(item.date)}
+            </div>
+
+          </div>
+
+        </div>
+
+      `)
+      .join("");
+
+}
+
+
+/* ═══════════════════════════════
+   COUNT
+═══════════════════════════════ */
+
+function updateStats(){
 
   const count =
     getConfigs().length;
 
-  document.getElementById(
-    "configCount"
-  ).textContent = count;
+  const stat =
+    document.getElementById(
+      "statConfigs"
+    );
+
+  if(stat)
+    stat.textContent=count;
+
+  const manage =
+    document.getElementById(
+      "manageCount"
+    );
+
+  if(manage)
+    manage.textContent =
+      count+
+      " کانفیگ ذخیره شده";
+
 }
 
+
+/* ═══════════════════════════════
+   COPY CONFIG
+═══════════════════════════════ */
+
+async function copyConfig(index){
+
+  const data =
+    getConfigs();
+
+  if(!data[index])return;
+
+  await copyText(
+    data[index].config
+  );
+
+  toast("کانفیگ کپی شد.");
+
+}
+
+
+/* ═══════════════════════════════
+   DELETE
+═══════════════════════════════ */
+
+function deleteConfig(index){
+
+  const data =
+    getConfigs();
+
+  if(!data[index])return;
+
+  if(!confirm(
+    "کانفیگ «"+
+    data[index].name+
+    "» حذف شود؟"
+  )){
+    return;
+  }
+
+  data.splice(index,1);
+
+  saveConfigs(data);
+
+  renderAll();
+
+  toast("کانفیگ حذف شد.");
+
+}
+
+
+/* ═══════════════════════════════
+   TELEGRAM
+═══════════════════════════════ */
 
 function openTelegram(){
+
   window.open(
     TELEGRAM,
-    "_blank"
+    "_blank",
+    "noopener,noreferrer"
   );
+
 }
 
 
-function showToast(message){
+/* ═══════════════════════════════
+   CLEAR
+═══════════════════════════════ */
 
-  const toast =
-    document.getElementById("toast");
+function clearData(){
 
-  toast.textContent =
-    message;
+  if(!confirm(
+    "تمام کانفیگ‌های ذخیره‌شده روی این دستگاه حذف شوند؟"
+  )){
+    return;
+  }
 
-  toast.classList.add("show");
+  localStorage.removeItem(
+    STORAGE_KEY
+  );
 
-  setTimeout(()=>{
-    toast.classList.remove("show");
-  },2200);
+  renderAll();
+
+  closeDrawer();
+
+  toast("اطلاعات پاک شد.");
+
 }
 
 
-updateCount();
-renderConfigs();
+/* ═══════════════════════════════
+   RENDER ALL
+═══════════════════════════════ */
+
+function renderAll(){
+
+  renderConfigs();
+
+  renderRecent();
+
+  updateStats();
+
+}
+
+
+/* ═══════════════════════════════
+   START
+═══════════════════════════════ */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  ()=>{
+
+    renderAll();
+
+  }
+);
+
 </script>
 
 </body>
