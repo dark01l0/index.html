@@ -19,7 +19,6 @@
   --red:#e50914;
   --red2:#ff3945;
   --green:#16c784;
-  --danger:#ff5963;
 }
 
 *{
@@ -51,9 +50,113 @@ button{
   display:none!important;
 }
 
-/* =========================
+
+/* =========================================
+   SPIDER ANIMATION
+========================================= */
+
+.spider-scene{
+  position:fixed;
+  top:0;
+  left:0;
+  width:90px;
+  height:180px;
+  z-index:1100;
+  pointer-events:none;
+  opacity:.8;
+}
+
+.spider-thread{
+  position:absolute;
+  top:0;
+  left:43px;
+  width:1px;
+  height:95px;
+  background:linear-gradient(
+    to bottom,
+    rgba(255,255,255,.05),
+    rgba(255,255,255,.38)
+  );
+}
+
+.spider{
+  position:absolute;
+  top:82px;
+  left:29px;
+  width:30px;
+  height:30px;
+  animation:spiderMove 7s ease-in-out infinite;
+  filter:drop-shadow(0 5px 10px rgba(0,0,0,.5));
+}
+
+.spider-body{
+  position:absolute;
+  left:9px;
+  top:8px;
+  width:13px;
+  height:17px;
+  border-radius:50%;
+  background:#111;
+  border:1px solid #343941;
+}
+
+.spider-head{
+  position:absolute;
+  left:10px;
+  top:1px;
+  width:11px;
+  height:10px;
+  border-radius:50%;
+  background:#111;
+  border:1px solid #343941;
+}
+
+.spider-eye{
+  position:absolute;
+  top:4px;
+  width:3px;
+  height:4px;
+  border-radius:50%;
+  background:#fff;
+}
+
+.spider-eye.one{left:12px}
+.spider-eye.two{left:17px}
+
+.leg{
+  position:absolute;
+  width:17px;
+  height:1px;
+  background:#555b65;
+  transform-origin:right center;
+}
+
+.l1{left:-3px;top:8px;transform:rotate(25deg)}
+.l2{left:-4px;top:14px;transform:rotate(-8deg)}
+.l3{left:-2px;top:20px;transform:rotate(-30deg)}
+.l4{left:17px;top:8px;transform-origin:left;transform:rotate(-25deg)}
+.l5{left:17px;top:14px;transform-origin:left;transform:rotate(8deg)}
+.l6{left:17px;top:20px;transform-origin:left;transform:rotate(30deg)}
+
+@keyframes spiderMove{
+  0%,100%{
+    transform:translateY(0) translateX(0) rotate(0);
+  }
+  25%{
+    transform:translateY(18px) translateX(5px) rotate(3deg);
+  }
+  50%{
+    transform:translateY(7px) translateX(13px) rotate(-3deg);
+  }
+  75%{
+    transform:translateY(27px) translateX(4px) rotate(2deg);
+  }
+}
+
+
+/* =========================================
    INTRO
-========================= */
+========================================= */
 
 .intro{
   position:fixed;
@@ -130,9 +233,11 @@ button{
   color:#fff;
 }
 
-.lang-btn:active{
-  border-color:var(--red);
-  transform:scale(.98);
+.primary-btn{
+  width:100%;
+  margin-top:12px;
+  background:linear-gradient(135deg,var(--red),#a90008);
+  color:#fff;
 }
 
 .text-input{
@@ -148,14 +253,6 @@ button{
 
 .text-input:focus{
   border-color:var(--red);
-  box-shadow:0 0 0 3px rgba(229,9,20,.08);
-}
-
-.primary-btn{
-  width:100%;
-  margin-top:12px;
-  background:linear-gradient(135deg,var(--red),#a90008);
-  color:#fff;
 }
 
 .notice{
@@ -174,9 +271,10 @@ button{
   margin-bottom:5px;
 }
 
-/* =========================
-   APP HEADER
-========================= */
+
+/* =========================================
+   APP
+========================================= */
 
 .app{
   min-height:100vh;
@@ -236,9 +334,10 @@ button{
   font-size:21px;
 }
 
-/* =========================
+
+/* =========================================
    DRAWER
-========================= */
+========================================= */
 
 .drawer{
   position:fixed;
@@ -319,18 +418,10 @@ button{
   font-size:12px;
 }
 
-.menu-item:active,
-.menu-item:hover{
-  background:var(--surface2);
-}
 
-.menu-item.danger{
-  color:#ff626b;
-}
-
-/* =========================
+/* =========================================
    PAGES
-========================= */
+========================================= */
 
 .page{
   display:none;
@@ -394,10 +485,6 @@ button{
   box-shadow:0 0 10px rgba(22,199,132,.55);
 }
 
-/* =========================
-   STATS
-========================= */
-
 .stats{
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -421,10 +508,6 @@ button{
   font-size:18px;
   font-weight:900;
 }
-
-/* =========================
-   QUICK GRID
-========================= */
 
 .section-head{
   display:flex;
@@ -463,10 +546,6 @@ button{
   gap:7px;
 }
 
-.quick:active{
-  transform:scale(.97);
-}
-
 .quick-icon{
   font-size:20px;
 }
@@ -474,10 +553,6 @@ button{
 .quick-text{
   font-size:9px;
 }
-
-/* =========================
-   CARDS
-========================= */
 
 .card{
   padding:17px;
@@ -521,11 +596,95 @@ button{
   font-weight:900;
 }
 
-/* =========================
-   CONFIG DISPLAY
-   فقط نام، کشور و دکمه
-   هیچ VLESS نمایش داده نمی‌شود
-========================= */
+
+/* =========================================
+   AMNEZIA
+========================================= */
+
+.amnezia-card{
+  position:relative;
+  overflow:hidden;
+  padding:22px;
+  border-radius:23px;
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(255,255,255,.08),
+      transparent 35%
+    ),
+    linear-gradient(145deg,#151922,#0d0f14);
+  border:1px solid #303641;
+  margin-bottom:14px;
+}
+
+.amnezia-head{
+  display:flex;
+  align-items:center;
+  gap:13px;
+}
+
+.amnezia-logo{
+  width:54px;
+  height:54px;
+  flex:none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:16px;
+  background:#fff;
+  overflow:hidden;
+  box-shadow:0 8px 25px rgba(0,0,0,.35);
+}
+
+.amnezia-logo svg{
+  width:38px;
+  height:38px;
+}
+
+.amnezia-title{
+  font-size:17px;
+  font-weight:900;
+}
+
+.amnezia-subtitle{
+  color:var(--muted);
+  font-size:9px;
+  margin-top:5px;
+}
+
+.amnezia-description{
+  margin-top:17px;
+  color:#aab1bd;
+  font-size:11px;
+  line-height:2;
+}
+
+.amnezia-copy{
+  width:100%;
+  margin-top:16px;
+  border:0;
+  border-radius:14px;
+  padding:14px;
+  background:#fff;
+  color:#111;
+  font-weight:900;
+}
+
+.amnezia-note{
+  margin-top:12px;
+  padding:12px 14px;
+  border-radius:14px;
+  background:#0a0c10;
+  border:1px solid #252a34;
+  color:#8f97a5;
+  font-size:9px;
+  line-height:1.9;
+}
+
+
+/* =========================================
+   CONFIG ROW
+========================================= */
 
 .config-row{
   display:flex;
@@ -581,14 +740,6 @@ button{
   font-weight:900;
 }
 
-.copy-btn:active{
-  background:var(--red);
-}
-
-/* =========================
-   EMPTY
-========================= */
-
 .empty{
   padding:32px 15px;
   text-align:center;
@@ -598,9 +749,10 @@ button{
   font-size:11px;
 }
 
-/* =========================
-   BOTTOM NAV
-========================= */
+
+/* =========================================
+   BOTTOM
+========================================= */
 
 .bottom-nav{
   position:fixed;
@@ -642,10 +794,6 @@ button{
   color:var(--red2);
 }
 
-/* =========================
-   TOAST
-========================= */
-
 .toast{
   position:fixed;
   z-index:10000;
@@ -682,28 +830,50 @@ button{
   .quick-text{
     font-size:8px;
   }
-
-  .hero h1{
-    font-size:22px;
-  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- =========================
-     LOGIN / INTRO
-========================= -->
+
+<!-- SPIDER -->
+
+<div class="spider-scene">
+
+  <div class="spider-thread"></div>
+
+  <div class="spider">
+
+    <div class="spider-head"></div>
+    <div class="spider-body"></div>
+
+    <div class="spider-eye one"></div>
+    <div class="spider-eye two"></div>
+
+    <div class="leg l1"></div>
+    <div class="leg l2"></div>
+    <div class="leg l3"></div>
+    <div class="leg l4"></div>
+    <div class="leg l5"></div>
+    <div class="leg l6"></div>
+
+  </div>
+
+</div>
+
+
+<!-- INTRO -->
 
 <div id="intro" class="intro">
 
-  <!-- LANGUAGE -->
   <div id="languageStep" class="intro-card">
 
     <div class="logo">🕷️</div>
 
-    <div class="brand-large">ＳｐａｅｄｒＮＧ</div>
+    <div class="brand-large">
+      ＳｐａｅｄｒＮＧ
+    </div>
 
     <div class="intro-desc">
       پنل مدیریت کانفیگ
@@ -714,6 +884,7 @@ button{
     </div>
 
     <div class="lang-grid">
+
       <button class="lang-btn" onclick="chooseLanguage('fa')">
         🇮🇷 فارسی
       </button>
@@ -721,12 +892,12 @@ button{
       <button class="lang-btn" onclick="chooseLanguage('en')">
         🇬🇧 English
       </button>
+
     </div>
 
   </div>
 
 
-  <!-- NAME -->
   <div id="nameStep" class="intro-card hidden">
 
     <div class="logo">🕷️</div>
@@ -750,15 +921,13 @@ button{
     <button
       id="nameContinue"
       class="primary-btn"
-      onclick="saveUserName()"
-    >
+      onclick="saveUserName()">
       ادامه
     </button>
 
   </div>
 
 
-  <!-- RULES -->
   <div id="rulesStep" class="intro-card hidden">
 
     <div class="logo">🕷️</div>
@@ -772,10 +941,12 @@ button{
       <div class="notice-icon">⚠️</div>
 
       <div id="rulesText">
-        این پنل و کانفیگ‌های آن <strong>رایگان</strong> هستند.
-        استفاده از سرویس برای فروش کانفیگ یا فروش دسترسی به دیگران
-        <strong>غیراخلاقی و خلاف قوانین استفاده از پنل</strong> است.
-        لطفاً فقط برای استفاده شخصی و مجاز از آن استفاده کنید.
+        این پنل و کانفیگ‌های آن
+        <strong>رایگان</strong> هستند.
+        استفاده از سرویس برای فروش کانفیگ یا فروش
+        دسترسی به دیگران
+        <strong>غیراخلاقی و خلاف قوانین استفاده از پنل</strong>
+        است.
       </div>
 
     </div>
@@ -783,8 +954,7 @@ button{
     <button
       id="understoodButton"
       class="primary-btn"
-      onclick="enterPanel()"
-    >
+      onclick="enterPanel()">
       فهمیدم
     </button>
 
@@ -793,9 +963,7 @@ button{
 </div>
 
 
-<!-- =========================
-     MAIN APP
-========================= -->
+<!-- APP -->
 
 <div id="app" class="app hidden">
 
@@ -803,16 +971,29 @@ button{
 
   <div class="brand">
 
-    <div class="brand-icon">🕷️</div>
+    <div class="brand-icon">
+      🕷️
+    </div>
 
     <div>
-      <div class="brand-name">ＳｐａｅｄｒＮＧ</div>
-      <div class="online">● Online</div>
+
+      <div class="brand-name">
+        ＳｐａｅｄｒＮＧ
+      </div>
+
+      <div class="online">
+        ● Online
+      </div>
+
     </div>
 
   </div>
 
-  <button class="menu-btn" onclick="openDrawer()">☰</button>
+  <button
+    class="menu-btn"
+    onclick="openDrawer()">
+    ☰
+  </button>
 
 </header>
 
@@ -821,59 +1002,111 @@ button{
 
 <div id="drawer" class="drawer">
 
-  <div class="drawer-bg" onclick="closeDrawer()"></div>
+  <div
+    class="drawer-bg"
+    onclick="closeDrawer()">
+  </div>
 
   <div class="drawer-panel">
 
     <div class="drawer-head">
 
       <div>
-        <strong>ＳｐａｅｄｒＮＧ</strong>
-        <div id="drawerUser" class="drawer-user"></div>
+
+        <strong>
+          ＳｐａｅｄｒＮＧ
+        </strong>
+
+        <div
+          id="drawerUser"
+          class="drawer-user">
+        </div>
+
       </div>
 
-      <button class="close-btn" onclick="closeDrawer()">×</button>
+      <button
+        class="close-btn"
+        onclick="closeDrawer()">
+        ×
+      </button>
 
     </div>
 
 
-    <button class="menu-item" onclick="showPage('home');closeDrawer()">
+    <button
+      class="menu-item"
+      onclick="showPage('home');closeDrawer()">
       🏠 داشبورد
     </button>
 
-    <button class="menu-item" onclick="showPage('create');closeDrawer()">
+
+    <button
+      class="menu-item"
+      onclick="showPage('create');closeDrawer()">
       ➕ ساخت کانفیگ
     </button>
 
-    <button class="menu-item" onclick="showPage('configs');closeDrawer()">
+
+    <button
+      class="menu-item"
+      onclick="showPage('configs');closeDrawer()">
       📋 کانفیگ‌های من
     </button>
 
-    <button class="menu-item" onclick="showPage('fixed');closeDrawer()">
+
+    <button
+      class="menu-item"
+      onclick="showPage('fixed');closeDrawer()">
       🎯 IP ثابت
     </button>
 
-    <button class="menu-item" onclick="showPage('manage');closeDrawer()">
+
+    <button
+      class="menu-item"
+      onclick="showPage('amnezia');closeDrawer()">
+      🛡️ AmneziaVPN
+    </button>
+
+
+    <button
+      class="menu-item"
+      onclick="showPage('manage');closeDrawer()">
       ⚙️ مدیریت کانفیگ
     </button>
 
-    <button class="menu-item" onclick="showPage('guide');closeDrawer()">
+
+    <button
+      class="menu-item"
+      onclick="showPage('guide');closeDrawer()">
       ❓ راهنما
     </button>
 
-    <button class="menu-item" onclick="openTelegram()">
+
+    <button
+      class="menu-item"
+      onclick="openTelegram()">
       ✈️ کانال تلگرام
     </button>
 
-    <button class="menu-item" onclick="copyTelegram()">
+
+    <button
+      class="menu-item"
+      onclick="copyTelegram()">
       🔗 لینک SpaedrNG
     </button>
 
-    <button class="menu-item" onclick="showPage('about');closeDrawer()">
+
+    <button
+      class="menu-item"
+      onclick="showPage('about');closeDrawer()">
       ℹ️ درباره پنل
     </button>
 
-    <button class="menu-item danger" onclick="clearConfigs()">
+
+    <button
+      class="menu-item"
+      onclick="clearConfigs()"
+      style="color:#ff5963">
       🗑️ پاک‌سازی کانفیگ‌ها
     </button>
 
@@ -882,11 +1115,11 @@ button{
 </div>
 
 
-<!-- =========================
-     HOME
-========================= -->
+<!-- HOME -->
 
-<section id="page-home" class="page active">
+<section
+  id="page-home"
+  class="page active">
 
   <div class="hero">
 
@@ -898,7 +1131,7 @@ button{
       سلام
     </h1>
 
-    <p id="heroText">
+    <p>
       مدیریت سریع و ساده کانفیگ‌های شما.
     </p>
 
@@ -918,58 +1151,135 @@ button{
   <div class="stats">
 
     <div class="stat">
-      <div class="stat-label">کانفیگ‌های شما</div>
-      <div id="statConfigs" class="stat-value">0</div>
+
+      <div class="stat-label">
+        کانفیگ‌های شما
+      </div>
+
+      <div
+        id="statConfigs"
+        class="stat-value">
+        0
+      </div>
+
     </div>
 
-    <div class="stat">
-      <div class="stat-label">IP ثابت</div>
-      <div id="statFixed" class="stat-value">0</div>
-    </div>
 
     <div class="stat">
-      <div class="stat-label">وضعیت</div>
-      <div class="stat-value" style="color:var(--green)">
+
+      <div class="stat-label">
+        IP ثابت
+      </div>
+
+      <div
+        id="statFixed"
+        class="stat-value">
+        0
+      </div>
+
+    </div>
+
+
+    <div class="stat">
+
+      <div class="stat-label">
+        وضعیت
+      </div>
+
+      <div
+        class="stat-value"
+        style="color:var(--green)">
         فعال
       </div>
+
     </div>
 
   </div>
 
 
   <div class="section-head">
-    <h2>دسترسی سریع</h2>
-    <span>SPAEDRNG</span>
+
+    <h2>
+      دسترسی سریع
+    </h2>
+
+    <span>
+      SPAEDRNG
+    </span>
+
   </div>
 
 
   <div class="quick-grid">
 
-    <button class="quick" onclick="showPage('create')">
-      <div class="quick-icon">➕</div>
-      <div class="quick-text">ساخت</div>
+    <button
+      class="quick"
+      onclick="showPage('create')">
+
+      <div class="quick-icon">
+        ➕
+      </div>
+
+      <div class="quick-text">
+        ساخت
+      </div>
+
     </button>
 
-    <button class="quick" onclick="showPage('configs')">
-      <div class="quick-icon">📋</div>
-      <div class="quick-text">کانفیگ‌ها</div>
+
+    <button
+      class="quick"
+      onclick="showPage('configs')">
+
+      <div class="quick-icon">
+        📋
+      </div>
+
+      <div class="quick-text">
+        کانفیگ‌ها
+      </div>
+
     </button>
 
-    <button class="quick" onclick="showPage('fixed')">
-      <div class="quick-icon">🎯</div>
-      <div class="quick-text">IP ثابت</div>
+
+    <button
+      class="quick"
+      onclick="showPage('fixed')">
+
+      <div class="quick-icon">
+        🎯
+      </div>
+
+      <div class="quick-text">
+        IP ثابت
+      </div>
+
     </button>
 
-    <button class="quick" onclick="openTelegram()">
-      <div class="quick-icon">✈️</div>
-      <div class="quick-text">تلگرام</div>
+
+    <button
+      class="quick"
+      onclick="showPage('amnezia')">
+
+      <div class="quick-icon">
+        🛡️
+      </div>
+
+      <div class="quick-text">
+        AmneziaVPN
+      </div>
+
     </button>
 
   </div>
 
 
   <div class="section-head">
-    <h2>آخرین کانفیگ‌ها</h2>
+
+    <h2>
+      آخرین کانفیگ‌ها
+    </h2>
+
   </div>
 
   <div id="recentConfigs"></div>
@@ -977,11 +1287,11 @@ button{
 </section>
 
 
-<!-- =========================
-     CREATE
-========================= -->
+<!-- CREATE -->
 
-<section id="page-create" class="page">
+<section
+  id="page-create"
+  class="page">
 
   <div class="card">
 
@@ -991,9 +1301,7 @@ button{
 
     <div class="card-desc">
       نام موردنظر خود را وارد کنید.
-      متن خام کانفیگ در صفحه نمایش داده نمی‌شود.
     </div>
-
 
     <div class="form-group">
 
@@ -1011,8 +1319,9 @@ button{
 
     </div>
 
-
-    <button class="create-btn" onclick="createConfig()">
+    <button
+      class="create-btn"
+      onclick="createConfig()">
       ساخت کانفیگ
     </button>
 
@@ -1021,11 +1330,11 @@ button{
 </section>
 
 
-<!-- =========================
-     CONFIGS
-========================= -->
+<!-- CONFIGS -->
 
-<section id="page-configs" class="page">
+<section
+  id="page-configs"
+  class="page">
 
   <div class="section-head">
 
@@ -1048,17 +1357,16 @@ button{
     oninput="renderConfigs()"
   >
 
-
   <div id="configsList"></div>
 
 </section>
 
 
-<!-- =========================
-     FIXED IP
-========================= -->
+<!-- FIXED -->
 
-<section id="page-fixed" class="page">
+<section
+  id="page-fixed"
+  class="page">
 
   <div class="card">
 
@@ -1070,14 +1378,15 @@ button{
       کشور موردنظر را انتخاب کنید.
     </div>
 
-
     <div class="form-group">
 
       <label class="label">
         کشور
       </label>
 
-      <select id="fixedCountry" class="text-input">
+      <select
+        id="fixedCountry"
+        class="text-input">
 
         <option value="DE">
           🇩🇪 آلمان
@@ -1091,28 +1400,138 @@ button{
           🇯🇵 ژاپن
         </option>
 
+        <option value="TR">
+          🇹🇷 ترکیه
+        </option>
+
       </select>
 
     </div>
 
-
-    <button class="create-btn" onclick="createFixed()">
+    <button
+      class="create-btn"
+      onclick="createFixed()">
       ساخت کانفیگ IP ثابت
     </button>
 
   </div>
-
 
   <div id="fixedCreated"></div>
 
 </section>
 
 
-<!-- =========================
-     MANAGE
-========================= -->
+<!-- AMNEZIA VPN -->
 
-<section id="page-manage" class="page">
+<section
+  id="page-amnezia"
+  class="page">
+
+  <div class="amnezia-card">
+
+    <div class="amnezia-head">
+
+      <div class="amnezia-logo">
+
+        <!-- Amnezia-style shield icon -->
+        <svg
+          viewBox="0 0 64 64"
+          xmlns="http://www.w3.org/2000/svg">
+
+          <path
+            d="M32 4
+               L55 13
+               V29
+               C55 44 46 55 32 61
+               C18 55 9 44 9 29
+               V13
+               Z"
+            fill="#111"/>
+
+          <path
+            d="M32 13
+               L46 19
+               V29
+               C46 39 41 46 32 51
+               C23 46 18 39 18 29
+               V19
+               Z"
+            fill="#fff"/>
+
+          <path
+            d="M25 35
+               L32 20
+               L39 35
+               H34
+               L32 30
+               L30 35
+               Z"
+            fill="#111"/>
+
+        </svg>
+
+      </div>
+
+
+      <div>
+
+        <div class="amnezia-title">
+          AmneziaVPN
+        </div>
+
+        <div class="amnezia-subtitle">
+          AmneziaWG Configuration
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="amnezia-description">
+      کانفیگ آماده AmneziaWG برای استفاده در
+      برنامه AmneziaVPN.
+    </div>
+
+
+    <button
+      class="amnezia-copy"
+      onclick="copyAmnezia()">
+      📋 کپی کانفیگ AmneziaVPN
+    </button>
+
+
+    <div class="amnezia-note">
+      💡 برای استفاده از کانفیگ، برنامه
+      <strong>Amnezia VPN</strong>
+      را نصب کنید.
+    </div>
+
+  </div>
+
+
+  <div class="card">
+
+    <div class="card-title">
+      🛡️ نحوه استفاده
+    </div>
+
+    <div class="card-desc">
+      ابتدا برنامه Amnezia VPN را نصب کنید،
+      سپس از همین بخش کانفیگ را کپی کرده و
+      داخل برنامه وارد کنید.
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- MANAGE -->
+
+<section
+  id="page-manage"
+  class="page">
 
   <div class="card">
 
@@ -1121,7 +1540,7 @@ button{
     </div>
 
     <div class="card-desc">
-      کانفیگ‌های ذخیره‌شده را از این بخش مدیریت کنید.
+      کانفیگ‌های ذخیره‌شده را مدیریت کنید.
     </div>
 
   </div>
@@ -1131,11 +1550,11 @@ button{
 </section>
 
 
-<!-- =========================
-     GUIDE
-========================= -->
+<!-- GUIDE -->
 
-<section id="page-guide" class="page">
+<section
+  id="page-guide"
+  class="page">
 
   <div class="card">
 
@@ -1151,7 +1570,7 @@ button{
 
       ۳. کانفیگ ساخته می‌شود.<br><br>
 
-      ۴. در لیست فقط نام کانفیگ نمایش داده می‌شود.<br><br>
+      ۴. متن خام کانفیگ روی صفحه نمایش داده نمی‌شود.<br><br>
 
       ۵. برای دریافت کانفیگ روی دکمه کپی بزنید.
 
@@ -1163,12 +1582,12 @@ button{
   <div class="card">
 
     <div class="card-title">
-      🔒 نمایش امن
+      🛡️ AmneziaVPN
     </div>
 
     <div class="card-desc">
-      متن خام کانفیگ در رابط کاربری قرار نمی‌گیرد و به صورت
-      مستقیم روی صفحه قابل مشاهده نیست.
+      برای کانفیگ AmneziaWG وارد بخش
+      AmneziaVPN شوید و روی دکمه کپی بزنید.
     </div>
 
   </div>
@@ -1176,11 +1595,11 @@ button{
 </section>
 
 
-<!-- =========================
-     ABOUT
-========================= -->
+<!-- ABOUT -->
 
-<section id="page-about" class="page">
+<section
+  id="page-about"
+  class="page">
 
   <div class="hero">
 
@@ -1220,11 +1639,9 @@ button{
       ✈️ کانال SpaedrNG
     </div>
 
-    <div class="card-desc">
-      برای دریافت اطلاعیه‌ها و به‌روزرسانی‌ها به کانال ما بپیوندید.
-    </div>
-
-    <button class="create-btn" onclick="openTelegram()">
+    <button
+      class="create-btn"
+      onclick="openTelegram()">
       ورود به کانال
     </button>
 
@@ -1233,59 +1650,109 @@ button{
 </section>
 
 
-<!-- =========================
-     BOTTOM NAV
-========================= -->
+<!-- BOTTOM NAV -->
 
 <nav class="bottom-nav">
 
-  <button id="nav-home" class="nav-btn active" onclick="showPage('home')">
-    <span class="nav-icon">⌂</span>
-    <span>خانه</span>
+  <button
+    id="nav-home"
+    class="nav-btn active"
+    onclick="showPage('home')">
+
+    <span class="nav-icon">
+      ⌂
+    </span>
+
+    <span>
+      خانه
+    </span>
+
   </button>
 
-  <button id="nav-configs" class="nav-btn" onclick="showPage('configs')">
-    <span class="nav-icon">☷</span>
-    <span>کانفیگ‌ها</span>
+
+  <button
+    id="nav-configs"
+    class="nav-btn"
+    onclick="showPage('configs')">
+
+    <span class="nav-icon">
+      ☷
+    </span>
+
+    <span>
+      کانفیگ‌ها
+    </span>
+
   </button>
 
-  <button id="nav-create" class="nav-btn" onclick="showPage('create')">
-    <span class="nav-icon">＋</span>
-    <span>ساخت</span>
+
+  <button
+    id="nav-create"
+    class="nav-btn"
+    onclick="showPage('create')">
+
+    <span class="nav-icon">
+      ＋
+    </span>
+
+    <span>
+      ساخت
+    </span>
+
   </button>
 
-  <button id="nav-fixed" class="nav-btn" onclick="showPage('fixed')">
-    <span class="nav-icon">⌖</span>
-    <span>IP ثابت</span>
+
+  <button
+    id="nav-fixed"
+    class="nav-btn"
+    onclick="showPage('fixed')">
+
+    <span class="nav-icon">
+      ⌖
+    </span>
+
+    <span>
+      IP ثابت
+    </span>
+
   </button>
 
 </nav>
 
 
-<div id="toast" class="toast"></div>
+<div
+  id="toast"
+  class="toast">
+</div>
 
 </div>
 
 
 <script>
-/* =====================================================
-   SPAEDRNG
-   IMPORTANT:
-   این بخش باید داخل script باشد تا کدهای JS روی صفحه
-   به کاربر نمایش داده نشوند.
-===================================================== */
 
-const TELEGRAM = "https://t.me/spaedrNG";
+/* =========================================
+   SETTINGS
+========================================= */
 
-const STORAGE_KEY = "spaedrng_configs_v5";
-const USER_KEY = "spaedrng_user_v5";
-const LANGUAGE_KEY = "spaedrng_language_v5";
-const RULES_KEY = "spaedrng_rules_v5";
+const TELEGRAM =
+  "https://t.me/spaedrNG";
+
+const STORAGE_KEY =
+  "spaedrng_configs_v7";
+
+const USER_KEY =
+  "spaedrng_user_v7";
+
+const LANGUAGE_KEY =
+  "spaedrng_language_v7";
+
+const RULES_KEY =
+  "spaedrng_rules_v7";
 
 
-/* =========================
-   BASE CONFIG
-========================= */
+/* =========================================
+   NORMAL VLESS CONFIG
+========================================= */
 
 const BASE_CONFIG =
 "vless://15a05f72-8e49-408e-8337-9c4d418f2d43@" +
@@ -1298,14 +1765,42 @@ const BASE_CONFIG =
 "&encryption=none";
 
 
-/* =========================
+/* =========================================
+   AMNEZIA CONFIG
+   در رابط کاربری نمایش داده نمی‌شود.
+========================================= */
+
+const AMNEZIA_CONFIG =
+`# Generated AmneziaWG Config
+[Interface]
+PrivateKey = qJblYII0n0lWkluIqjq10bAH6v8gY5T9YJ/nI7Ugfns=
+Address = 172.16.0.2/32, 2606:4700:110:8f9a:adc0:cc2e:8742:f534/128
+DNS = 1.1.1.1, 1.0.0.1, 2606:4700:4700::1111, 2606:4700:4700::1001
+MTU = 1280
+Jc = 3
+Jmin = 1
+Jmax = 3
+S1 = 0
+S2 = 0
+H1 = 1
+H2 = 2
+H3 = 3
+H4 = 4
+
+[Peer]
+PublicKey = bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=
+AllowedIPs = 0.0.0.0/0, ::/0
+Endpoint = 8.6.112.148:891`;
+
+
+/* =========================================
    FIXED CONFIGS
-========================= */
+========================================= */
 
 const FIXED_CONFIGS = {
 
   DE:[
-    "vless://be35b0db-50aa-4573-8d2a-e95624869ab9@103.21.244.12:443?path=%2F%3Fed%3D2560&security=tls&encryption=none&insecure=0&host=API-hUb-908324-edg.h9zL52eNuFUS.wOrkErS.dEv&type=ws&allowInsecure=0&sni=API-hUB-908324-eDg.H9zL52ENuFUs.WoRkErS.dEV",
+    "vless://be35b0db-50aa-4573-8d2a-e95624869ab9@103.21.244.12:443?path=%2F%3Fed%3D2560&security=tls&encryption=none&insecure=0&host=API-hUb-908324-edg.h9zL52eNuFUS.wOrkErS.dEv&type=ws&allowInsecure=0&sni=API-hUB-908324-eDg.H9ZL52ENuFUs.WoRkErS.dEV",
 
     "vless://be35b0db-50aa-4573-8d2a-e95624869ab9@103.21.244.12:443?path=%2F%3Fed%3D2560&security=tls&encryption=none&insecure=0&host=APi-hub-908324-EDG.H9ZL52ENufUs.workerS.dev&type=ws&allowInsecure=0&sni=api-Hub-908324-Edg.h9Zl52enuFUS.WOrkErS.dEV"
   ],
@@ -1317,9 +1812,17 @@ const FIXED_CONFIGS = {
   ],
 
   JP:[
-    "vless://be35b0db-50aa-4573-8d2a-e95624869ab9@104.16.15.172:443?path=%2F%3Fed%3D2560&security=tls&encryption=none&insecure=0&host=APi-hub-908324-EDG.H9ZL52ENufUs.workerS.dev&type=ws&allowInsecure=0&sni=api-Hub-908324-EdG.h9Zl52enuFuS.WOrkErS.dEV#JP%F0%9F%87%AF%F0%9F%87%B51",
+    "vless://be35b0db-50aa-4573-8d2a-e95624869ab9@104.16.15.172:443?path=%2F%3Fed%3D2560&security=tls&encryption=none&insecure=0&host=APi-hub-908324-EDG.H9ZL52ENufUs.workerS.dev&type=ws&allowInsecure=0&sni=api-Hub-908324-EdG.h9Zl52enUfuS.WOrkErS.dEV#JP%F0%9F%87%AF%F0%9F%87%B51",
 
     "vless://be35b0db-50aa-4573-8d2a-e95624869ab9@172.67.13.12:443?path=%2F%3Fed%3D2560&security=tls&encryption=none&insecure=0&host=aPI-Hub-908324-EdG.H9zL52EnufUS.WoRKerS.dEV&type=ws&allowInsecure=0&sni=API-huB-908324-eDg.H9Zl52EnUfus.WorKerS.dEV#JP%F0%9F%87%AF%F0%9F%87%B52"
+  ],
+
+  TR:[
+    "vless://be35b0db-50aa-4573-8d2a-e95624869ab9@api-hub-908324-edg.h9zl52enufus.workers.dev:443?path=%2F%3Fproxyip%3D185.219.134.25%26ed%3D2560&security=tls&encryption=none&insecure=0&host=api-HuB-908324-EdG.H9ZL52enufUS.wOrKErS.DeV&type=ws&allowInsecure=0&sni=Api-Hub-908324-EDG.H9ZL52enUFus.WoRKers.Dev#TR%F0%9F%87%B9%F0%9F%87%B71",
+
+    "vless://be35b0db-50aa-4573-8d2a-e95624869ab9@104.21.5.155:443?path=%2F%3Fproxyip%3D185.219.134.25%26ed%3D2560&security=tls&encryption=none&insecure=0&host=aPi-hUB-908324-eDG.h9zL52ENufUS.WOrKeRs.deV&type=ws&allowInsecure=0&sni=apI-Hub-908324-EDG.H9ZL52ENufus.wOrKERs.DEv#TR%F0%9F%87%B9%F0%9F%87%B72",
+
+    "vless://be35b0db-50aa-4573-8d2a-e95624869ab9@172.67.13.12:443?path=%2F%3Fproxyip%3D185.219.134.25%26ed%3D2560&security=tls&encryption=none&insecure=0&host=API-HUb-908324-EDG.H9zl52eNufUs.wOrkErS.dEV&type=ws&allowInsecure=0&sni=APi-hUB-908324-eDG.h9zl52eNUfUS.WORKErs.dEV#TR%F0%9F%87%B9%F0%9F%87%B73"
   ]
 
 };
@@ -1328,52 +1831,56 @@ const FIXED_CONFIGS = {
 const COUNTRY_NAMES = {
   DE:"🇩🇪 آلمان",
   AE:"🇦🇪 امارات",
-  JP:"🇯🇵 ژاپن"
+  JP:"🇯🇵 ژاپن",
+  TR:"🇹🇷 ترکیه"
 };
 
-
-/* =========================
-   STATE
-========================= */
 
 let currentLanguage =
   localStorage.getItem(LANGUAGE_KEY) || "";
 
-let toastTimer = null;
+let toastTimer;
 
 
-/* =========================
+/* =========================================
    STORAGE
-========================= */
+========================================= */
 
 function getConfigs(){
 
   try{
-    const value = localStorage.getItem(STORAGE_KEY);
 
-    if(!value) return [];
+    const data =
+      JSON.parse(
+        localStorage.getItem(STORAGE_KEY) || "[]"
+      );
 
-    const data = JSON.parse(value);
-
-    return Array.isArray(data) ? data : [];
+    return Array.isArray(data)
+      ? data
+      : [];
 
   }catch(e){
+
     return [];
+
   }
+
 }
 
 
 function saveConfigs(data){
+
   localStorage.setItem(
     STORAGE_KEY,
     JSON.stringify(data)
   );
+
 }
 
 
-/* =========================
-   SAFE TEXT
-========================= */
+/* =========================================
+   SAFE HTML
+========================================= */
 
 function escapeHTML(value){
 
@@ -1383,18 +1890,18 @@ function escapeHTML(value){
     .replaceAll(">","&gt;")
     .replaceAll('"',"&quot;")
     .replaceAll("'","&#039;");
+
 }
 
 
-/* =========================
+/* =========================================
    TOAST
-========================= */
+========================================= */
 
 function toast(message){
 
-  const el = document.getElementById("toast");
-
-  if(!el) return;
+  const el =
+    document.getElementById("toast");
 
   el.textContent = message;
 
@@ -1402,15 +1909,17 @@ function toast(message){
 
   clearTimeout(toastTimer);
 
-  toastTimer = setTimeout(()=>{
-    el.classList.remove("show");
-  },2300);
+  toastTimer =
+    setTimeout(()=>{
+      el.classList.remove("show");
+    },2300);
+
 }
 
 
-/* =========================
+/* =========================================
    COPY
-========================= */
+========================================= */
 
 async function copyText(text){
 
@@ -1420,7 +1929,8 @@ async function copyText(text){
 
   }catch(e){
 
-    const area = document.createElement("textarea");
+    const area =
+      document.createElement("textarea");
 
     area.value = text;
 
@@ -1437,13 +1947,32 @@ async function copyText(text){
     }catch(err){}
 
     area.remove();
+
   }
+
 }
 
 
-/* =========================
+/* =========================================
+   AMNEZIA COPY
+========================================= */
+
+function copyAmnezia(){
+
+  copyText(AMNEZIA_CONFIG);
+
+  toast(
+    currentLanguage === "en"
+      ? "AmneziaVPN configuration copied."
+      : "کانفیگ AmneziaVPN کپی شد."
+  );
+
+}
+
+
+/* =========================================
    LANGUAGE
-========================= */
+========================================= */
 
 function chooseLanguage(lang){
 
@@ -1460,6 +1989,7 @@ function chooseLanguage(lang){
   document.getElementById("nameStep")
     .classList.remove("hidden");
 
+
   if(lang === "en"){
 
     document.documentElement.lang = "en";
@@ -1469,13 +1999,16 @@ function chooseLanguage(lang){
       .textContent = "Your name";
 
     document.getElementById("nameDesc")
-      .textContent = "Enter your name to continue.";
+      .textContent =
+      "Enter your name to continue.";
 
     document.getElementById("userNameInput")
-      .placeholder = "For example: Ali";
+      .placeholder =
+      "For example: Ali";
 
     document.getElementById("nameContinue")
-      .textContent = "Continue";
+      .textContent =
+      "Continue";
 
   }else{
 
@@ -1483,28 +2016,29 @@ function chooseLanguage(lang){
     document.documentElement.dir = "rtl";
 
     document.getElementById("nameTitle")
-      .textContent = "نام شما";
+      .textContent =
+      "نام شما";
 
     document.getElementById("nameDesc")
       .textContent =
       "برای ورود به پنل نام خود را وارد کنید.";
 
     document.getElementById("userNameInput")
-      .placeholder = "مثلاً علی";
+      .placeholder =
+      "مثلاً علی";
 
     document.getElementById("nameContinue")
-      .textContent = "ادامه";
+      .textContent =
+      "ادامه";
+
   }
 
-  setTimeout(()=>{
-    document.getElementById("userNameInput").focus();
-  },100);
 }
 
 
-/* =========================
-   SAVE NAME
-========================= */
+/* =========================================
+   NAME
+========================================= */
 
 function saveUserName(){
 
@@ -1518,8 +2052,8 @@ function saveUserName(){
 
     toast(
       currentLanguage === "en"
-      ? "Please enter your name."
-      : "لطفاً نام خود را وارد کنید."
+        ? "Please enter your name."
+        : "لطفاً نام خود را وارد کنید."
     );
 
     input.focus();
@@ -1538,42 +2072,12 @@ function saveUserName(){
   document.getElementById("rulesStep")
     .classList.remove("hidden");
 
-  if(currentLanguage === "en"){
-
-    document.getElementById("rulesTitle")
-      .textContent = "Before entering";
-
-    document.getElementById("rulesText")
-      .innerHTML =
-      "This panel and its configurations are <strong>free</strong>." +
-      " Using the service to sell configurations or access to others " +
-      "<strong>is not allowed</strong>." +
-      " Please use it only for personal and permitted purposes.";
-
-    document.getElementById("understoodButton")
-      .textContent = "I Understand";
-
-  }else{
-
-    document.getElementById("rulesTitle")
-      .textContent = "قبل از ورود";
-
-    document.getElementById("rulesText")
-      .innerHTML =
-      "این پنل و کانفیگ‌های آن <strong>رایگان</strong> هستند. " +
-      "استفاده از سرویس برای فروش کانفیگ یا فروش دسترسی به دیگران " +
-      "<strong>غیراخلاقی و خلاف قوانین استفاده از پنل</strong> است. " +
-      "لطفاً فقط برای استفاده شخصی و مجاز از آن استفاده کنید.";
-
-    document.getElementById("understoodButton")
-      .textContent = "فهمیدم";
-  }
 }
 
 
-/* =========================
-   ENTER PANEL
-========================= */
+/* =========================================
+   ENTER
+========================================= */
 
 function enterPanel(){
 
@@ -1589,14 +2093,14 @@ function enterPanel(){
     .classList.remove("hidden");
 
   updateUser();
-
   renderAll();
+
 }
 
 
-/* =========================
-   AUTO LOGIN
-========================= */
+/* =========================================
+   BOOT
+========================================= */
 
 function boot(){
 
@@ -1614,10 +2118,14 @@ function boot(){
     currentLanguage = language;
 
     document.documentElement.lang =
-      language === "en" ? "en" : "fa";
+      language === "en"
+        ? "en"
+        : "fa";
 
     document.documentElement.dir =
-      language === "en" ? "ltr" : "rtl";
+      language === "en"
+        ? "ltr"
+        : "rtl";
 
     document.getElementById("intro")
       .classList.add("hidden");
@@ -1628,41 +2136,39 @@ function boot(){
     updateUser();
     renderAll();
 
-    return;
   }
 
-  if(language){
-    chooseLanguage(language);
-  }
 }
 
 
-/* =========================
+/* =========================================
    USER
-========================= */
+========================================= */
 
 function updateUser(){
 
   const user =
-    localStorage.getItem(USER_KEY) || "کاربر";
+    localStorage.getItem(USER_KEY) ||
+    "کاربر";
 
   document.getElementById("welcomeText")
     .textContent =
     currentLanguage === "en"
-    ? "Hello " + user
-    : "سلام " + user;
+      ? "Hello " + user
+      : "سلام " + user;
 
   document.getElementById("userPill")
     .textContent = user;
 
   document.getElementById("drawerUser")
     .textContent = user;
+
 }
 
 
-/* =========================
-   PAGE NAVIGATION
-========================= */
+/* =========================================
+   PAGE
+========================================= */
 
 function showPage(name){
 
@@ -1671,24 +2177,32 @@ function showPage(name){
       page.classList.remove("active");
     });
 
-  const target =
-    document.getElementById("page-" + name);
 
-  if(target){
-    target.classList.add("active");
+  const page =
+    document.getElementById(
+      "page-" + name
+    );
+
+  if(page){
+    page.classList.add("active");
   }
+
 
   document.querySelectorAll(".nav-btn")
     .forEach(btn=>{
       btn.classList.remove("active");
     });
 
+
   const nav =
-    document.getElementById("nav-" + name);
+    document.getElementById(
+      "nav-" + name
+    );
 
   if(nav){
     nav.classList.add("active");
   }
+
 
   window.scrollTo({
     top:0,
@@ -1696,17 +2210,19 @@ function showPage(name){
   });
 
   renderAll();
+
 }
 
 
-/* =========================
+/* =========================================
    DRAWER
-========================= */
+========================================= */
 
 function openDrawer(){
 
   document.getElementById("drawer")
     .classList.add("open");
+
 }
 
 
@@ -1714,26 +2230,25 @@ function closeDrawer(){
 
   document.getElementById("drawer")
     .classList.remove("open");
+
 }
 
 
-/* =========================
+/* =========================================
    CONFIG NAME
-========================= */
+========================================= */
 
 function buildConfigName(name){
 
-  const clean =
-    name.trim().slice(0,30);
-
-  return clean +
+  return name.trim().slice(0,30) +
     " SpaedrNG tm";
+
 }
 
 
-/* =========================
-   CREATE NORMAL CONFIG
-========================= */
+/* =========================================
+   NORMAL CONFIG
+========================================= */
 
 function createConfig(){
 
@@ -1745,17 +2260,21 @@ function createConfig(){
 
   if(!name){
 
-    toast("لطفاً نام کانفیگ را وارد کنید.");
+    toast(
+      "لطفاً نام کانفیگ را وارد کنید."
+    );
 
     input.focus();
 
     return;
   }
 
+
   const finalName =
     buildConfigName(name);
 
-  const config = {
+
+  const item = {
 
     id:Date.now(),
 
@@ -1770,15 +2289,16 @@ function createConfig(){
 
     country:"",
 
-    date:
-      new Date().toLocaleString("fa-IR")
+    date:new Date()
+      .toLocaleString("fa-IR")
 
   };
+
 
   const data =
     getConfigs();
 
-  data.unshift(config);
+  data.unshift(item);
 
   saveConfigs(data);
 
@@ -1786,21 +2306,18 @@ function createConfig(){
 
   renderAll();
 
-  toast(
-    "کانفیگ «" +
-    finalName +
-    "» ساخته شد."
-  );
+  toast("کانفیگ ساخته شد.");
 
   setTimeout(()=>{
     showPage("configs");
   },350);
+
 }
 
 
-/* =========================
-   CREATE FIXED
-========================= */
+/* =========================================
+   FIXED
+========================================= */
 
 function createFixed(){
 
@@ -1811,18 +2328,27 @@ function createFixed(){
   const list =
     FIXED_CONFIGS[country];
 
+
   if(!list || !list.length){
 
-    toast("کانفیگ این کشور موجود نیست.");
+    toast("کانفیگ موجود نیست.");
 
     return;
   }
 
+
   const selected =
-    list[Math.floor(Math.random()*list.length)];
+    list[
+      Math.floor(
+        Math.random() * list.length
+      )
+    ];
+
 
   const user =
-    localStorage.getItem(USER_KEY) || "User";
+    localStorage.getItem(USER_KEY) ||
+    "User";
+
 
   const finalName =
     user +
@@ -1830,7 +2356,8 @@ function createFixed(){
     COUNTRY_NAMES[country] +
     " SpaedrNG tm";
 
-  const config = {
+
+  const item = {
 
     id:Date.now(),
 
@@ -1845,21 +2372,25 @@ function createFixed(){
 
     country:country,
 
-    date:
-      new Date().toLocaleString("fa-IR")
+    date:new Date()
+      .toLocaleString("fa-IR")
 
   };
+
 
   const data =
     getConfigs();
 
-  data.unshift(config);
+  data.unshift(item);
 
   saveConfigs(data);
 
+
   document.getElementById("fixedCreated")
     .innerHTML = `
+
       <div class="card">
+
         <div class="card-title">
           ✅ کانفیگ ساخته شد
         </div>
@@ -1870,50 +2401,71 @@ function createFixed(){
 
         <button
           class="create-btn"
-          onclick="copyConfigById(${config.id})"
-        >
+          onclick="copyConfigById(${item.id})">
           کپی کانفیگ
         </button>
+
       </div>
+
     `;
+
 
   renderAll();
 
   toast("کانفیگ آماده شد.");
+
 }
 
 
-/* =========================
-   RENDER CONFIG ROW
-   هیچ config در HTML قرار نمی‌گیرد
-========================= */
+/* =========================================
+   COUNTRY ICON
+========================================= */
 
-function configRow(config, index){
+function countryIcon(country){
 
-  const icon =
-    config.country === "JP"
-    ? "🇯🇵"
-    : config.country === "DE"
-    ? "🇩🇪"
-    : config.country === "AE"
-    ? "🇦🇪"
-    : "⚡";
+  if(country === "JP")
+    return "🇯🇵";
+
+  if(country === "DE")
+    return "🇩🇪";
+
+  if(country === "AE")
+    return "🇦🇪";
+
+  if(country === "TR")
+    return "🇹🇷";
+
+  return "⚡";
+
+}
+
+
+/* =========================================
+   CONFIG ROW
+========================================= */
+
+function configRow(item,index){
 
   return `
+
     <div class="config-row">
 
       <div class="config-icon">
-        ${icon}
+        ${countryIcon(item.country)}
       </div>
 
       <div class="config-info">
 
         <div class="config-name">
-          ${escapeHTML(config.name)}
+          ${escapeHTML(item.name)}
         </div>
 
         <div class="config-meta">
-          ${config.type === "fixed" ? "IP ثابت" : "کانفیگ عادی"}
+          ${
+            item.type === "fixed"
+              ? "IP ثابت"
+              : "کانفیگ عادی"
+          }
           · SpaedrNG
         </div>
 
@@ -1921,37 +2473,44 @@ function configRow(config, index){
 
       <button
         class="copy-btn"
-        onclick="copyConfig(${index})"
-      >
+        onclick="copyConfig(${index})">
         کپی
       </button>
 
     </div>
+
   `;
+
 }
 
 
-/* =========================
-   RENDER CONFIGS
-========================= */
+/* =========================================
+   CONFIG LIST
+========================================= */
 
 function renderConfigs(){
 
   const container =
-    document.getElementById("configsList");
+    document.getElementById(
+      "configsList"
+    );
 
   if(!container) return;
+
 
   const data =
     getConfigs();
 
-  const searchEl =
-    document.getElementById("configSearch");
 
   const search =
-    searchEl
-    ? searchEl.value.trim().toLowerCase()
-    : "";
+    (
+      document.getElementById(
+        "configSearch"
+      )?.value || ""
+    )
+    .trim()
+    .toLowerCase();
+
 
   const filtered =
     data.filter(item=>
@@ -1960,8 +2519,12 @@ function renderConfigs(){
         .includes(search)
     );
 
-  document.getElementById("configCount")
-    .textContent = data.length;
+
+  document.getElementById(
+    "configCount"
+  ).textContent =
+    data.length;
+
 
   if(!filtered.length){
 
@@ -1973,34 +2536,44 @@ function renderConfigs(){
     return;
   }
 
+
   container.innerHTML =
-    filtered.map(item=>{
+    filtered
+      .map(item=>{
 
-      const originalIndex =
-        data.findIndex(x=>x.id === item.id);
+        const index =
+          data.findIndex(
+            x=>x.id === item.id
+          );
 
-      return configRow(
-        item,
-        originalIndex
-      );
+        return configRow(
+          item,
+          index
+        );
 
-    }).join("");
+      })
+      .join("");
+
 }
 
 
-/* =========================
+/* =========================================
    RECENT
-========================= */
+========================================= */
 
 function renderRecent(){
 
   const container =
-    document.getElementById("recentConfigs");
+    document.getElementById(
+      "recentConfigs"
+    );
 
   if(!container) return;
 
+
   const data =
     getConfigs();
+
 
   if(!data.length){
 
@@ -2012,27 +2585,31 @@ function renderRecent(){
     return;
   }
 
-  const recent =
-    data.slice(0,3);
 
   container.innerHTML =
-    recent.map(item=>{
+    data
+      .slice(0,3)
+      .map(item=>{
 
-      const index =
-        data.findIndex(x=>x.id === item.id);
+        const index =
+          data.findIndex(
+            x=>x.id === item.id
+          );
 
-      return configRow(
-        item,
-        index
-      );
+        return configRow(
+          item,
+          index
+        );
 
-    }).join("");
+      })
+      .join("");
+
 }
 
 
-/* =========================
-   COPY CONFIG
-========================= */
+/* =========================================
+   COPY VLESS
+========================================= */
 
 function copyConfig(index){
 
@@ -2042,77 +2619,66 @@ function copyConfig(index){
   const item =
     data[index];
 
-  if(!item || !item.config){
-
-    toast("کانفیگ پیدا نشد.");
-
-    return;
-  }
+  if(!item) return;
 
   copyText(item.config);
 
   toast("کانفیگ کپی شد.");
+
 }
 
-
-/* =========================
-   COPY BY ID
-========================= */
 
 function copyConfigById(id){
 
-  const data =
-    getConfigs();
-
   const item =
-    data.find(x=>x.id === id);
+    getConfigs()
+      .find(x=>x.id === id);
 
-  if(!item){
-
-    toast("کانفیگ پیدا نشد.");
-
-    return;
-  }
+  if(!item) return;
 
   copyText(item.config);
 
   toast("کانفیگ کپی شد.");
+
 }
 
 
-/* =========================
+/* =========================================
    DELETE
-========================= */
+========================================= */
 
 function deleteConfig(id){
 
   const data =
-    getConfigs();
+    getConfigs()
+      .filter(x=>x.id !== id);
 
-  const filtered =
-    data.filter(x=>x.id !== id);
-
-  saveConfigs(filtered);
+  saveConfigs(data);
 
   renderAll();
 
   toast("کانفیگ حذف شد.");
+
 }
 
 
-/* =========================
+/* =========================================
    MANAGE
-========================= */
+========================================= */
 
 function renderManage(){
 
   const container =
-    document.getElementById("manageList");
+    document.getElementById(
+      "manageList"
+    );
 
   if(!container) return;
 
+
   const data =
     getConfigs();
+
 
   if(!data.length){
 
@@ -2124,81 +2690,78 @@ function renderManage(){
     return;
   }
 
+
   container.innerHTML =
-    data.map(item=>`
+    data
+      .map(item=>`
 
-      <div class="config-row">
+        <div class="config-row">
 
-        <div class="config-icon">
-          ⚙️
-        </div>
-
-        <div class="config-info">
-
-          <div class="config-name">
-            ${escapeHTML(item.name)}
+          <div class="config-icon">
+            ${countryIcon(item.country)}
           </div>
 
-          <div class="config-meta">
-            ${escapeHTML(item.date || "")}
+          <div class="config-info">
+
+            <div class="config-name">
+              ${escapeHTML(item.name)}
+            </div>
+
+            <div class="config-meta">
+              ${escapeHTML(
+                item.date || ""
+              )}
+            </div>
+
           </div>
+
+          <button
+            class="copy-btn"
+            onclick="deleteConfig(${item.id})">
+            حذف
+          </button>
 
         </div>
 
-        <button
-          class="copy-btn"
-          onclick="deleteConfig(${item.id})"
-        >
-          حذف
-        </button>
+      `)
+      .join("");
 
-      </div>
-
-    `).join("");
 }
 
 
-/* =========================
+/* =========================================
    STATS
-========================= */
+========================================= */
 
 function updateStats(){
 
   const data =
     getConfigs();
 
+
   const fixed =
-    data.filter(x=>x.type==="fixed");
+    data.filter(
+      x=>x.type === "fixed"
+    );
 
-  document.getElementById("statConfigs")
-    .textContent = data.length;
 
-  document.getElementById("statFixed")
-    .textContent = fixed.length;
+  document.getElementById(
+    "statConfigs"
+  ).textContent =
+    data.length;
+
+
+  document.getElementById(
+    "statFixed"
+  ).textContent =
+    fixed.length;
+
 }
 
 
-/* =========================
-   RENDER ALL
-========================= */
-
-function renderAll(){
-
-  updateUser();
-
-  updateStats();
-
-  renderRecent();
-
-  renderConfigs();
-
-  renderManage();
-}
-
-
-/* =========================
+/* =========================================
    TELEGRAM
-========================= */
+========================================= */
 
 function openTelegram(){
 
@@ -2207,6 +2770,7 @@ function openTelegram(){
     "_blank",
     "noopener,noreferrer"
   );
+
 }
 
 
@@ -2214,58 +2778,58 @@ function copyTelegram(){
 
   copyText(TELEGRAM);
 
-  toast("لینک کانال کپی شد.");
+  toast(
+    "لینک کانال کپی شد."
+  );
+
 }
 
 
-/* =========================
+/* =========================================
    CLEAR
-========================= */
+========================================= */
 
 function clearConfigs(){
 
-  const ok =
-    confirm(
-      "همه کانفیگ‌های ذخیره‌شده حذف شوند؟"
-    );
+  if(!confirm(
+    "همه کانفیگ‌های ذخیره‌شده حذف شوند؟"
+  )){
+    return;
+  }
 
-  if(!ok) return;
 
   localStorage.removeItem(
     STORAGE_KEY
   );
 
+
   renderAll();
 
-  toast("کانفیگ‌ها پاک شدند.");
+  toast(
+    "کانفیگ‌ها پاک شدند."
+  );
+
 }
 
 
-/* =========================
-   ENTER KEY
-========================= */
+/* =========================================
+   RENDER ALL
+========================================= */
 
-document.addEventListener(
-  "keydown",
-  function(event){
+function renderAll(){
 
-    if(
-      event.key === "Enter" &&
-      !document.getElementById("nameStep")
-        .classList.contains("hidden")
-    ){
+  updateUser();
+  updateStats();
+  renderRecent();
+  renderConfigs();
+  renderManage();
 
-      saveUserName();
-
-    }
-
-  }
-);
+}
 
 
-/* =========================
+/* =========================================
    START
-========================= */
+========================================= */
 
 document.addEventListener(
   "DOMContentLoaded",
