@@ -2,23 +2,27 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#08090c">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="theme-color" content="#09090d">
+<meta name="description" content="ＳｐａｅｄｒＮＧ VPN Panel">
 <title>ＳｐａｅｄｒＮＧ</title>
 
 <style>
 :root{
-  --bg:#08090c;
-  --surface:#0e1015;
-  --surface2:#12151b;
-  --surface3:#181c24;
-  --line:#252a34;
-  --line2:#303642;
-  --text:#f5f6f8;
-  --muted:#858d9c;
-  --red:#e50914;
-  --red2:#ff3945;
-  --green:#16c784;
+  --bg:#07080d;
+  --bg2:#0d0f17;
+  --card:rgba(22,24,34,.78);
+  --card2:rgba(28,31,44,.72);
+  --red:#ff3344;
+  --red2:#ff5968;
+  --pink:#ff7890;
+  --green:#35e39a;
+  --yellow:#ffd166;
+  --blue:#6ea8ff;
+  --text:#fff;
+  --muted:#a4a8b7;
+  --line:rgba(255,255,255,.08);
+  --shadow:0 20px 60px rgba(0,0,0,.35);
 }
 
 *{
@@ -26,23 +30,46 @@
   -webkit-tap-highlight-color:transparent;
 }
 
-html,body{
-  margin:0;
-  min-height:100%;
-  background:var(--bg);
-  color:var(--text);
-  font-family:Tahoma,Arial,sans-serif;
+html{
+  scroll-behavior:smooth;
 }
 
 body{
+  margin:0;
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 15% 5%,rgba(255,51,68,.16),transparent 27%),
+    radial-gradient(circle at 90% 20%,rgba(255,100,130,.09),transparent 25%),
+    linear-gradient(145deg,var(--bg),#0b0c12 50%,#08090d);
+  color:var(--text);
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
   overflow-x:hidden;
 }
 
-button,input,select{
-  font-family:inherit;
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.035;
+  background-image:
+    linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px);
+  background-size:32px 32px;
+  mask-image:linear-gradient(to bottom,black,transparent);
+}
+
+button,input{
+  font:inherit;
 }
 
 button{
+  border:0;
   cursor:pointer;
 }
 
@@ -50,664 +77,488 @@ button{
   display:none!important;
 }
 
-
-/* =========================================
-   SPIDER ANIMATION
-========================================= */
-
-.spider-scene{
-  position:fixed;
-  top:0;
-  left:0;
-  width:90px;
-  height:180px;
-  z-index:1100;
-  pointer-events:none;
-  opacity:.8;
-}
-
-.spider-thread{
-  position:absolute;
-  top:0;
-  left:43px;
-  width:1px;
-  height:95px;
-  background:linear-gradient(
-    to bottom,
-    rgba(255,255,255,.05),
-    rgba(255,255,255,.38)
-  );
-}
-
-.spider{
-  position:absolute;
-  top:82px;
-  left:29px;
-  width:30px;
-  height:30px;
-  animation:spiderMove 7s ease-in-out infinite;
-  filter:drop-shadow(0 5px 10px rgba(0,0,0,.5));
-}
-
-.spider-body{
-  position:absolute;
-  left:9px;
-  top:8px;
-  width:13px;
-  height:17px;
-  border-radius:50%;
-  background:#111;
-  border:1px solid #343941;
-}
-
-.spider-head{
-  position:absolute;
-  left:10px;
-  top:1px;
-  width:11px;
-  height:10px;
-  border-radius:50%;
-  background:#111;
-  border:1px solid #343941;
-}
-
-.spider-eye{
-  position:absolute;
-  top:4px;
-  width:3px;
-  height:4px;
-  border-radius:50%;
-  background:#fff;
-}
-
-.spider-eye.one{left:12px}
-.spider-eye.two{left:17px}
-
-.leg{
-  position:absolute;
-  width:17px;
-  height:1px;
-  background:#555b65;
-  transform-origin:right center;
-}
-
-.l1{left:-3px;top:8px;transform:rotate(25deg)}
-.l2{left:-4px;top:14px;transform:rotate(-8deg)}
-.l3{left:-2px;top:20px;transform:rotate(-30deg)}
-.l4{left:17px;top:8px;transform-origin:left;transform:rotate(-25deg)}
-.l5{left:17px;top:14px;transform-origin:left;transform:rotate(8deg)}
-.l6{left:17px;top:20px;transform-origin:left;transform:rotate(30deg)}
-
-@keyframes spiderMove{
-  0%,100%{
-    transform:translateY(0) translateX(0) rotate(0);
-  }
-  25%{
-    transform:translateY(18px) translateX(5px) rotate(3deg);
-  }
-  50%{
-    transform:translateY(7px) translateX(13px) rotate(-3deg);
-  }
-  75%{
-    transform:translateY(27px) translateX(4px) rotate(2deg);
-  }
-}
-
-
-/* =========================================
-   INTRO
-========================================= */
+/* ================= INTRO ================= */
 
 .intro{
-  position:fixed;
-  inset:0;
-  z-index:99999;
+  min-height:100vh;
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:18px;
-  background:
-    radial-gradient(circle at 50% 0%,rgba(229,9,20,.18),transparent 38%),
-    #08090c;
+  padding:24px;
+  position:relative;
+  overflow:hidden;
 }
 
 .intro-card{
-  width:min(430px,100%);
-  background:rgba(16,19,25,.97);
-  border:1px solid var(--line2);
-  border-radius:28px;
-  padding:28px 20px;
-  box-shadow:0 30px 90px rgba(0,0,0,.6);
+  width:min(460px,100%);
+  padding:34px 26px;
+  border:1px solid var(--line);
+  border-radius:30px;
+  background:rgba(15,16,24,.78);
+  backdrop-filter:blur(24px);
+  box-shadow:var(--shadow);
   text-align:center;
+  animation:introIn .7s ease both;
+}
+
+@keyframes introIn{
+  from{
+    opacity:0;
+    transform:translateY(30px) scale(.96);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
 }
 
 .logo{
-  width:74px;
-  height:74px;
-  margin:0 auto 17px;
-  border-radius:23px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:linear-gradient(145deg,#1a1d25,#0c0e12);
-  border:1px solid #343a46;
-  font-size:36px;
-}
-
-.brand-large{
-  font-size:24px;
-  font-weight:900;
-  margin-bottom:7px;
-}
-
-.intro-desc{
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.9;
-  margin-bottom:22px;
-}
-
-.intro-title{
-  font-size:18px;
-  font-weight:900;
-  margin-bottom:14px;
-}
-
-.lang-grid{
+  width:82px;
+  height:82px;
+  margin:0 auto 18px;
+  border-radius:26px;
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
+  place-items:center;
+  font-size:42px;
+  background:
+    linear-gradient(145deg,rgba(255,51,68,.95),rgba(255,105,125,.8));
+  box-shadow:
+    0 15px 45px rgba(255,51,68,.28),
+    inset 0 1px 0 rgba(255,255,255,.25);
+  animation:logoFloat 3s ease-in-out infinite;
 }
 
-.lang-btn,
+@keyframes logoFloat{
+  0%,100%{transform:translateY(0) rotate(-2deg)}
+  50%{transform:translateY(-8px) rotate(2deg)}
+}
+
+.intro h1{
+  margin:0;
+  font-size:30px;
+}
+
+.intro p{
+  color:var(--muted);
+  line-height:1.9;
+  margin:12px 0 25px;
+}
+
+.lang-buttons{
+  display:grid;
+  gap:12px;
+}
+
+.primary-btn,
+.secondary-btn{
+  min-height:52px;
+  border-radius:17px;
+  padding:0 20px;
+  color:white;
+  transition:.2s ease;
+}
+
 .primary-btn{
-  border:0;
-  border-radius:15px;
-  padding:15px;
-  font-weight:900;
+  background:linear-gradient(135deg,var(--red),var(--pink));
+  box-shadow:0 12px 28px rgba(255,51,68,.25);
 }
 
-.lang-btn{
-  background:var(--surface3);
-  border:1px solid var(--line2);
-  color:#fff;
+.primary-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 16px 35px rgba(255,51,68,.34);
 }
 
-.primary-btn{
-  width:100%;
-  margin-top:12px;
-  background:linear-gradient(135deg,var(--red),#a90008);
-  color:#fff;
+.primary-btn:active,
+.secondary-btn:active{
+  transform:scale(.97);
 }
 
-.text-input{
-  width:100%;
-  border:1px solid var(--line2);
-  background:#090b0f;
-  color:#fff;
-  border-radius:15px;
-  padding:15px;
-  outline:none;
-  font-size:14px;
+.secondary-btn{
+  background:rgba(255,255,255,.06);
+  border:1px solid var(--line);
 }
 
-.text-input:focus{
-  border-color:var(--red);
-}
-
-.notice{
-  text-align:right;
-  background:#11141a;
-  border:1px solid #343a46;
-  border-radius:18px;
-  padding:16px;
-  color:#dfe2e8;
-  font-size:12px;
-  line-height:2;
-}
-
-.notice-icon{
-  font-size:22px;
-  margin-bottom:5px;
-}
-
-
-/* =========================================
-   APP
-========================================= */
+/* ================= DASHBOARD ================= */
 
 .app{
   min-height:100vh;
   padding-bottom:95px;
 }
 
-.header{
-  position:sticky;
-  top:0;
-  z-index:1000;
-  height:67px;
-  padding:0 15px;
+.topbar{
+  width:min(1120px,calc(100% - 28px));
+  margin:auto;
+  padding:20px 0 10px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  background:rgba(8,9,12,.9);
-  backdrop-filter:blur(18px);
-  border-bottom:1px solid rgba(255,255,255,.05);
+  gap:15px;
+  position:relative;
+  z-index:5;
 }
 
 .brand{
   display:flex;
   align-items:center;
-  gap:10px;
+  gap:12px;
 }
 
-.brand-icon{
-  width:40px;
-  height:40px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:13px;
-  background:#151820;
-  border:1px solid #303641;
-  font-size:20px;
+.brand-logo{
+  width:48px;
+  height:48px;
+  border-radius:16px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(145deg,var(--red),#ff7180);
+  box-shadow:0 10px 30px rgba(255,51,68,.22);
+  font-size:25px;
 }
 
-.brand-name{
-  font-size:17px;
+.brand-title{
   font-weight:900;
+  font-size:19px;
 }
 
-.online{
-  color:var(--green);
-  font-size:9px;
+.brand-sub{
+  color:var(--muted);
+  font-size:11px;
   margin-top:3px;
 }
 
 .menu-btn{
-  width:43px;
-  height:43px;
-  border-radius:14px;
+  width:46px;
+  height:46px;
+  border-radius:15px;
+  background:rgba(255,255,255,.055);
   border:1px solid var(--line);
-  background:var(--surface2);
-  color:#fff;
+  color:white;
+  display:grid;
+  place-items:center;
   font-size:21px;
 }
 
-
-/* =========================================
-   DRAWER
-========================================= */
-
-.drawer{
-  position:fixed;
-  inset:0;
-  z-index:5000;
-  pointer-events:none;
-}
-
-.drawer-bg{
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,.7);
-  opacity:0;
-  transition:.25s;
-}
-
-.drawer-panel{
-  position:absolute;
-  top:0;
-  right:0;
-  bottom:0;
-  width:min(320px,88vw);
-  padding:20px 14px;
-  overflow:auto;
-  background:#0c0e13;
-  border-left:1px solid var(--line);
-  transform:translateX(105%);
-  transition:.28s;
-}
-
-.drawer.open{
-  pointer-events:auto;
-}
-
-.drawer.open .drawer-bg{
-  opacity:1;
-}
-
-.drawer.open .drawer-panel{
-  transform:translateX(0);
-}
-
-.drawer-head{
+.status{
   display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:18px;
-}
-
-.drawer-user{
-  color:var(--muted);
-  font-size:10px;
-  margin-top:4px;
-}
-
-.close-btn{
-  width:38px;
-  height:38px;
-  border:0;
-  border-radius:12px;
-  background:var(--surface3);
-  color:#fff;
-  font-size:22px;
-}
-
-.menu-item{
-  width:100%;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  border:0;
-  border-radius:15px;
-  padding:14px;
-  margin:4px 0;
-  background:transparent;
-  color:#dfe3e9;
-  text-align:right;
-  font-size:12px;
-}
-
-
-/* =========================================
-   PAGES
-========================================= */
-
-.page{
-  display:none;
-  width:min(920px,100%);
-  margin:auto;
-  padding:18px 14px 30px;
-}
-
-.page.active{
-  display:block;
-}
-
-.hero{
-  position:relative;
-  overflow:hidden;
-  padding:25px 20px;
-  margin-bottom:13px;
-  border-radius:25px;
-  background:
-    radial-gradient(circle at 100% 0%,rgba(229,9,20,.2),transparent 38%),
-    linear-gradient(145deg,#171a22,#0e1015);
-  border:1px solid var(--line2);
-}
-
-.hero-tag{
-  color:var(--red2);
-  font-size:10px;
-  font-weight:900;
-  margin-bottom:9px;
-}
-
-.hero h1{
-  margin:0 0 8px;
-  font-size:25px;
-}
-
-.hero p{
-  margin:0;
-  color:#9ba2af;
-  font-size:12px;
-  line-height:1.9;
-}
-
-.user-pill{
-  display:inline-flex;
   align-items:center;
   gap:7px;
-  margin-top:16px;
   padding:8px 12px;
-  border-radius:30px;
-  background:#0a0c10;
-  border:1px solid var(--line2);
-  font-size:10px;
+  border-radius:999px;
+  background:rgba(53,227,154,.08);
+  border:1px solid rgba(53,227,154,.16);
+  color:#72f1b9;
+  font-size:11px;
 }
 
-.dot{
+.status-dot{
   width:7px;
   height:7px;
   border-radius:50%;
   background:var(--green);
-  box-shadow:0 0 10px rgba(22,199,132,.55);
+  box-shadow:0 0 12px var(--green);
+  animation:pulse 1.8s infinite;
+}
+
+@keyframes pulse{
+  50%{opacity:.35;transform:scale(.65)}
+}
+
+/* spider */
+
+.spider{
+  position:fixed;
+  top:82px;
+  left:13px;
+  z-index:3;
+  font-size:25px;
+  animation:spiderFloat 4s ease-in-out infinite;
+  filter:drop-shadow(0 5px 12px rgba(255,51,68,.4));
+  pointer-events:none;
+}
+
+@keyframes spiderFloat{
+  0%,100%{transform:translateY(0) rotate(-4deg)}
+  50%{transform:translateY(15px) rotate(5deg)}
+}
+
+.spider:after{
+  content:"";
+  position:absolute;
+  width:1px;
+  height:55px;
+  background:linear-gradient(var(--red),transparent);
+  left:50%;
+  top:-55px;
+}
+
+/* container */
+
+.container{
+  width:min(1120px,calc(100% - 28px));
+  margin:auto;
+}
+
+/* hero */
+
+.hero{
+  position:relative;
+  overflow:hidden;
+  padding:27px;
+  border-radius:30px;
+  border:1px solid rgba(255,255,255,.08);
+  background:
+    radial-gradient(circle at 85% 15%,rgba(255,88,110,.25),transparent 30%),
+    radial-gradient(circle at 15% 100%,rgba(255,51,68,.12),transparent 30%),
+    linear-gradient(145deg,rgba(29,31,43,.94),rgba(15,16,24,.86));
+  box-shadow:var(--shadow);
+  animation:cardIn .65s ease both;
+}
+
+.hero:before{
+  content:"";
+  position:absolute;
+  width:230px;
+  height:230px;
+  border:1px solid rgba(255,255,255,.04);
+  border-radius:50%;
+  right:-100px;
+  top:-100px;
+}
+
+.hero-content{
+  position:relative;
+  z-index:1;
+}
+
+.hello{
+  color:#ff8491;
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:8px;
+}
+
+.hero h2{
+  margin:0;
+  font-size:clamp(25px,6vw,38px);
+  line-height:1.35;
+}
+
+.hero h2 span{
+  color:white;
+}
+
+.hero-text{
+  color:var(--muted);
+  line-height:1.8;
+  margin:12px 0 20px;
+  max-width:650px;
+}
+
+.hero-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.hero-main-btn{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  min-height:50px;
+  padding:0 18px;
+  border-radius:16px;
+  color:white;
+  background:linear-gradient(135deg,var(--red),#ff6473);
+  box-shadow:0 10px 28px rgba(255,51,68,.25);
+}
+
+.hero-info-btn{
+  min-height:50px;
+  padding:0 18px;
+  border-radius:16px;
+  color:#ddd;
+  background:rgba(255,255,255,.06);
+  border:1px solid var(--line);
 }
 
 .stats{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:8px;
+  gap:12px;
+  margin-top:15px;
 }
 
 .stat{
-  padding:14px 10px;
-  border-radius:18px;
-  background:var(--surface);
+  padding:17px;
+  border-radius:20px;
+  background:rgba(255,255,255,.045);
   border:1px solid var(--line);
+  animation:cardIn .7s ease both;
 }
 
-.stat-label{
+.stat-icon{
+  font-size:19px;
+  margin-bottom:9px;
+}
+
+.stat strong{
+  display:block;
+  font-size:22px;
+}
+
+.stat span{
   color:var(--muted);
-  font-size:9px;
-  margin-bottom:8px;
+  font-size:11px;
 }
 
-.stat-value{
-  font-size:18px;
-  font-weight:900;
+/* sections */
+
+.section{
+  margin-top:28px;
+  animation:cardIn .7s ease both;
+}
+
+@keyframes cardIn{
+  from{
+    opacity:0;
+    transform:translateY(18px);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
 }
 
 .section-head{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  margin:21px 2px 10px;
-}
-
-.section-head h2{
-  margin:0;
-  font-size:14px;
-}
-
-.section-head span{
-  color:var(--muted);
-  font-size:9px;
-}
-
-.quick-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:8px;
-}
-
-.quick{
-  min-width:0;
-  min-height:86px;
-  border-radius:17px;
-  border:1px solid var(--line);
-  background:var(--surface);
-  color:#fff;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:7px;
-}
-
-.quick-icon{
-  font-size:20px;
-}
-
-.quick-text{
-  font-size:9px;
-}
-
-.card{
-  padding:17px;
   margin-bottom:12px;
-  border-radius:20px;
-  background:var(--surface);
-  border:1px solid var(--line);
 }
 
-.card-title{
-  font-size:14px;
+.section-title{
+  font-size:18px;
   font-weight:900;
-  margin-bottom:6px;
 }
 
-.card-desc{
-  color:var(--muted);
+.section-sub{
   font-size:11px;
-  line-height:1.9;
+  color:var(--muted);
 }
 
-.form-group{
-  margin-top:15px;
-}
-
-.label{
-  display:block;
-  color:#9ba2af;
-  font-size:10px;
-  margin-bottom:8px;
-}
-
-.create-btn{
-  width:100%;
-  margin-top:14px;
-  border:0;
-  border-radius:14px;
-  padding:14px;
-  background:linear-gradient(135deg,var(--red),#ad0009);
-  color:#fff;
-  font-weight:900;
-}
-
-
-/* =========================================
-   AMNEZIA
-========================================= */
-
-.amnezia-card{
+.create-card{
   position:relative;
   overflow:hidden;
   padding:22px;
-  border-radius:23px;
-  background:
-    radial-gradient(
-      circle at 100% 0%,
-      rgba(255,255,255,.08),
-      transparent 35%
-    ),
-    linear-gradient(145deg,#151922,#0d0f14);
-  border:1px solid #303641;
-  margin-bottom:14px;
+  border-radius:25px;
+  background:linear-gradient(145deg,rgba(255,51,68,.13),rgba(255,255,255,.035));
+  border:1px solid rgba(255,91,108,.18);
 }
 
-.amnezia-head{
+.create-card:after{
+  content:"✦";
+  position:absolute;
+  right:20px;
+  bottom:-12px;
+  font-size:100px;
+  opacity:.035;
+}
+
+.create-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+}
+
+.create-icon{
+  width:55px;
+  height:55px;
+  border-radius:18px;
+  display:grid;
+  place-items:center;
+  font-size:26px;
+  background:rgba(255,51,68,.13);
+}
+
+.create-title{
+  font-weight:900;
+  margin-bottom:5px;
+}
+
+.create-desc{
+  color:var(--muted);
+  font-size:12px;
+}
+
+.create-btn{
+  min-height:48px;
+  padding:0 18px;
+  border-radius:15px;
+  color:white;
+  background:linear-gradient(135deg,var(--red),var(--pink));
+  box-shadow:0 9px 24px rgba(255,51,68,.2);
+  white-space:nowrap;
+}
+
+.create-btn:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+  box-shadow:none;
+}
+
+/* config list */
+
+.config-list{
+  display:grid;
+  gap:11px;
+}
+
+.empty{
+  padding:30px 18px;
+  text-align:center;
+  border-radius:23px;
+  border:1px dashed rgba(255,255,255,.11);
+  color:var(--muted);
+  background:rgba(255,255,255,.025);
+}
+
+.empty-icon{
+  font-size:35px;
+  margin-bottom:8px;
+}
+
+.config-card{
   display:flex;
   align-items:center;
   gap:13px;
-}
-
-.amnezia-logo{
-  width:54px;
-  height:54px;
-  flex:none;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:16px;
-  background:#fff;
-  overflow:hidden;
-  box-shadow:0 8px 25px rgba(0,0,0,.35);
-}
-
-.amnezia-logo svg{
-  width:38px;
-  height:38px;
-}
-
-.amnezia-title{
-  font-size:17px;
-  font-weight:900;
-}
-
-.amnezia-subtitle{
-  color:var(--muted);
-  font-size:9px;
-  margin-top:5px;
-}
-
-.amnezia-description{
-  margin-top:17px;
-  color:#aab1bd;
-  font-size:11px;
-  line-height:2;
-}
-
-.amnezia-copy{
-  width:100%;
-  margin-top:16px;
-  border:0;
-  border-radius:14px;
-  padding:14px;
-  background:#fff;
-  color:#111;
-  font-weight:900;
-}
-
-.amnezia-note{
-  margin-top:12px;
-  padding:12px 14px;
-  border-radius:14px;
-  background:#0a0c10;
-  border:1px solid #252a34;
-  color:#8f97a5;
-  font-size:9px;
-  line-height:1.9;
-}
-
-
-/* =========================================
-   CONFIG ROW
-========================================= */
-
-.config-row{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:12px;
-  margin-top:8px;
-  border-radius:16px;
-  background:#0b0d12;
+  padding:15px;
+  border-radius:21px;
+  background:var(--card);
   border:1px solid var(--line);
+  box-shadow:0 12px 30px rgba(0,0,0,.12);
+  animation:configIn .4s ease both;
+}
+
+@keyframes configIn{
+  from{
+    opacity:0;
+    transform:translateX(15px);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
 }
 
 .config-icon{
-  width:40px;
-  height:40px;
+  width:48px;
+  height:48px;
   flex:none;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:13px;
-  background:#171a21;
-  border:1px solid var(--line2);
-  font-size:18px;
+  border-radius:16px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(145deg,rgba(255,51,68,.2),rgba(255,255,255,.05));
+  font-size:21px;
 }
 
 .config-info{
@@ -716,100 +567,338 @@ button{
 }
 
 .config-name{
-  font-size:11px;
-  font-weight:900;
+  font-weight:800;
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
 }
 
 .config-meta{
-  color:var(--muted);
-  font-size:8px;
-  margin-top:4px;
+  display:flex;
+  gap:7px;
+  margin-top:5px;
+  flex-wrap:wrap;
+}
+
+.badge{
+  padding:4px 7px;
+  border-radius:7px;
+  font-size:9px;
+  background:rgba(255,255,255,.06);
+  color:#bbb;
+}
+
+.badge.red{
+  color:#ff9ba5;
+  background:rgba(255,51,68,.09);
 }
 
 .copy-btn{
+  width:42px;
+  height:42px;
   flex:none;
-  border:1px solid #303642;
-  border-radius:11px;
-  padding:9px 12px;
-  background:#191d25;
-  color:#fff;
-  font-size:9px;
-  font-weight:900;
+  border-radius:13px;
+  color:#65efb0;
+  background:rgba(53,227,154,.08);
+  border:1px solid rgba(53,227,154,.13);
 }
 
-.empty{
-  padding:32px 15px;
+.delete-btn{
+  width:38px;
+  height:38px;
+  flex:none;
+  border-radius:12px;
+  color:#ff7b87;
+  background:rgba(255,51,68,.07);
+}
+
+/* fixed ip */
+
+.maintenance{
+  position:relative;
+  overflow:hidden;
+  padding:30px 22px;
+  border-radius:26px;
   text-align:center;
+  background:
+    radial-gradient(circle at 50% 0,rgba(255,209,102,.1),transparent 45%),
+    linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.018));
+  border:1px solid var(--line);
+}
+
+.workers{
+  position:relative;
+  width:90px;
+  height:90px;
+  margin:0 auto 15px;
+  border-radius:28px;
+  display:grid;
+  place-items:center;
+  font-size:43px;
+  background:rgba(255,209,102,.08);
+  border:1px solid rgba(255,209,102,.13);
+  animation:workerBounce 2.4s ease-in-out infinite;
+}
+
+@keyframes workerBounce{
+  0%,100%{transform:translateY(0) rotate(-2deg)}
+  50%{transform:translateY(-8px) rotate(2deg)}
+}
+
+.maintenance h3{
+  margin:0 0 7px;
+  font-size:20px;
+}
+
+.maintenance p{
   color:var(--muted);
-  border:1px dashed var(--line2);
-  border-radius:18px;
+  font-size:12px;
+  line-height:1.9;
+  margin:0 auto;
+  max-width:450px;
+}
+
+.updating{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  margin-top:17px;
+  padding:8px 12px;
+  border-radius:999px;
+  color:#ffd979;
+  background:rgba(255,209,102,.07);
+  border:1px solid rgba(255,209,102,.12);
+  font-size:10px;
+}
+
+.loading-dots{
+  display:flex;
+  gap:3px;
+}
+
+.loading-dots i{
+  width:4px;
+  height:4px;
+  border-radius:50%;
+  background:#ffd166;
+  animation:dot 1s infinite;
+}
+
+.loading-dots i:nth-child(2){animation-delay:.15s}
+.loading-dots i:nth-child(3){animation-delay:.3s}
+
+@keyframes dot{
+  0%,100%{opacity:.3;transform:translateY(0)}
+  50%{opacity:1;transform:translateY(-3px)}
+}
+
+/* amnezia */
+
+.amnezia{
+  padding:21px;
+  border-radius:25px;
+  background:linear-gradient(145deg,rgba(75,111,255,.1),rgba(255,255,255,.035));
+  border:1px solid rgba(110,168,255,.12);
+}
+
+.amnezia-top{
+  display:flex;
+  align-items:center;
+  gap:13px;
+}
+
+.amnezia-icon{
+  width:52px;
+  height:52px;
+  border-radius:17px;
+  display:grid;
+  place-items:center;
+  background:rgba(110,168,255,.1);
+  font-size:26px;
+}
+
+.amnezia h3{
+  margin:0 0 5px;
+}
+
+.amnezia p{
+  margin:0;
+  color:var(--muted);
   font-size:11px;
 }
 
+.amnezia-bottom{
+  display:flex;
+  gap:10px;
+  margin-top:17px;
+}
 
-/* =========================================
-   BOTTOM
-========================================= */
+.amnezia-bottom button{
+  flex:1;
+  min-height:46px;
+  border-radius:14px;
+}
+
+.am-copy{
+  color:white;
+  background:#326cff;
+}
+
+.am-info{
+  color:#bbb;
+  background:rgba(255,255,255,.055);
+}
+
+/* drawer */
+
+.drawer-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.58);
+  backdrop-filter:blur(4px);
+  z-index:50;
+  opacity:0;
+  pointer-events:none;
+  transition:.25s;
+}
+
+.drawer-overlay.open{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.drawer{
+  position:absolute;
+  top:0;
+  bottom:0;
+  right:0;
+  width:min(340px,88vw);
+  padding:22px 17px;
+  background:#101119;
+  border-left:1px solid var(--line);
+  transform:translateX(105%);
+  transition:.3s cubic-bezier(.2,.8,.2,1);
+  overflow-y:auto;
+}
+
+.drawer-overlay.open .drawer{
+  transform:none;
+}
+
+.drawer-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:22px;
+}
+
+.drawer-brand{
+  font-weight:900;
+  font-size:20px;
+}
+
+.close-btn{
+  width:40px;
+  height:40px;
+  border-radius:13px;
+  color:white;
+  background:rgba(255,255,255,.06);
+}
+
+.menu-list{
+  display:grid;
+  gap:8px;
+}
+
+.menu-item{
+  width:100%;
+  min-height:52px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:0 14px;
+  border-radius:16px;
+  text-align:right;
+  color:#ddd;
+  background:transparent;
+  border:1px solid transparent;
+}
+
+.menu-item:hover{
+  background:rgba(255,255,255,.05);
+  border-color:var(--line);
+}
+
+.menu-item span:first-child{
+  width:32px;
+  text-align:center;
+  font-size:18px;
+}
+
+.menu-separator{
+  height:1px;
+  background:var(--line);
+  margin:8px 0;
+}
+
+/* bottom nav */
 
 .bottom-nav{
   position:fixed;
-  z-index:1500;
-  left:12px;
-  right:12px;
-  bottom:11px;
-  height:67px;
+  z-index:40;
+  bottom:12px;
+  left:50%;
+  transform:translateX(-50%);
+  width:min(520px,calc(100% - 24px));
+  padding:8px;
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  border-radius:23px;
-  background:rgba(17,20,26,.95);
-  backdrop-filter:blur(18px);
-  border:1px solid #2a303a;
-  box-shadow:0 18px 50px rgba(0,0,0,.45);
+  gap:5px;
+  border-radius:22px;
+  background:rgba(17,18,27,.84);
+  border:1px solid var(--line);
+  backdrop-filter:blur(20px);
+  box-shadow:0 15px 45px rgba(0,0,0,.35);
 }
 
-.nav-btn{
-  border:0;
+.nav-item{
+  min-height:51px;
+  border-radius:16px;
+  color:#8d91a0;
   background:transparent;
-  color:#747c8b;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:4px;
-  font-size:9px;
+  font-size:10px;
 }
 
-.nav-icon{
-  font-size:19px;
+.nav-item .nav-icon{
+  display:block;
+  font-size:18px;
+  margin-bottom:3px;
 }
 
-.nav-btn.active{
-  color:#fff;
+.nav-item.active{
+  color:white;
+  background:rgba(255,51,68,.12);
 }
 
-.nav-btn.active .nav-icon{
-  color:var(--red2);
-}
+/* toast */
 
 .toast{
   position:fixed;
-  z-index:10000;
+  z-index:100;
   left:50%;
-  bottom:91px;
-  max-width:90%;
+  bottom:85px;
+  transform:translate(-50%,20px);
+  max-width:calc(100% - 30px);
   padding:12px 16px;
   border-radius:14px;
-  background:#181c24;
-  border:1px solid #363c48;
-  color:#fff;
-  font-size:10px;
+  color:white;
+  background:#20222d;
+  border:1px solid var(--line);
+  box-shadow:0 15px 40px rgba(0,0,0,.3);
   opacity:0;
   pointer-events:none;
-  transform:translate(-50%,18px);
   transition:.25s;
+  font-size:12px;
   text-align:center;
 }
 
@@ -818,957 +907,582 @@ button{
   transform:translate(-50%,0);
 }
 
-@media(max-width:600px){
-  .quick-grid{
-    grid-template-columns:repeat(4,1fr);
+/* modal */
+
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:80;
+  display:none;
+  place-items:center;
+  padding:20px;
+  background:rgba(0,0,0,.65);
+  backdrop-filter:blur(7px);
+}
+
+.modal.show{
+  display:grid;
+}
+
+.modal-card{
+  width:min(420px,100%);
+  padding:24px;
+  border-radius:25px;
+  background:#141620;
+  border:1px solid var(--line);
+  box-shadow:var(--shadow);
+  animation:introIn .3s ease;
+}
+
+.modal-card h3{
+  margin:0 0 10px;
+}
+
+.modal-card p{
+  color:var(--muted);
+  line-height:1.9;
+  font-size:13px;
+}
+
+.modal-actions{
+  display:flex;
+  gap:9px;
+  margin-top:18px;
+}
+
+.modal-actions button{
+  flex:1;
+  min-height:46px;
+  border-radius:14px;
+}
+
+/* mobile */
+
+@media(max-width:620px){
+  .topbar{
+    padding-top:15px;
   }
 
-  .quick{
-    min-height:82px;
+  .status{
+    display:none;
   }
 
-  .quick-text{
-    font-size:8px;
+  .hero{
+    padding:22px;
+    border-radius:25px;
   }
+
+  .stats{
+    grid-template-columns:1fr;
+  }
+
+  .stat{
+    padding:14px;
+  }
+
+  .create-row{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .create-btn{
+    width:100%;
+  }
+
+  .config-card{
+    padding:12px;
+  }
+
+  .delete-btn{
+    display:none;
+  }
+
+  .spider{
+    opacity:.55;
+  }
+}
+
+[dir="ltr"] .menu-item{
+  text-align:left;
+}
+
+[dir="ltr"] .drawer{
+  right:auto;
+  left:0;
+  transform:translateX(-105%);
+  border-left:0;
+  border-right:1px solid var(--line);
+}
+
+[dir="ltr"] .drawer-overlay.open .drawer{
+  transform:none;
 }
 </style>
 </head>
 
 <body>
 
+<!-- ================= INTRO ================= -->
 
-<!-- SPIDER -->
+<section id="intro" class="intro">
+  <div class="intro-card" id="introCard"></div>
+</section>
 
-<div class="spider-scene">
+<!-- ================= APP ================= -->
 
-  <div class="spider-thread"></div>
+<main id="app" class="app hidden">
 
-  <div class="spider">
+  <div class="spider">🕷️</div>
 
-    <div class="spider-head"></div>
-    <div class="spider-body"></div>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-logo">🕷️</div>
+      <div>
+        <div class="brand-title">ＳｐａｅｄｒＮＧ</div>
+        <div class="brand-sub" data-fa="پنل شخصی کانفیگ" data-en="Personal config panel">
+          پنل شخصی کانفیگ
+        </div>
+      </div>
+    </div>
 
-    <div class="spider-eye one"></div>
-    <div class="spider-eye two"></div>
+    <div class="status">
+      <span class="status-dot"></span>
+      <span data-fa="سیستم فعال" data-en="System online">سیستم فعال</span>
+    </div>
 
-    <div class="leg l1"></div>
-    <div class="leg l2"></div>
-    <div class="leg l3"></div>
-    <div class="leg l4"></div>
-    <div class="leg l5"></div>
-    <div class="leg l6"></div>
+    <button class="menu-btn" onclick="openDrawer()">☰</button>
+  </header>
+
+  <div class="container">
+
+    <!-- HERO -->
+
+    <section class="hero">
+      <div class="hero-content">
+        <div class="hello" id="helloText">سلام 👋</div>
+
+        <h2>
+          <span data-fa="خوش اومدی به" data-en="Welcome to">خوش اومدی به</span>
+          <br>
+          <span>ＳｐａｅｄｒＮＧ</span>
+        </h2>
+
+        <p class="hero-text"
+           data-fa="یک پنل ساده و سریع برای ساخت و مدیریت کانفیگ‌های شما."
+           data-en="A simple and fast panel for creating and managing your configs.">
+          یک پنل ساده و سریع برای ساخت و مدیریت کانفیگ‌های شما.
+        </p>
+
+        <div class="hero-actions">
+          <button class="hero-main-btn" onclick="scrollToCreate()">
+            ⚡
+            <span data-fa="ساخت کانفیگ" data-en="Create config">ساخت کانفیگ</span>
+          </button>
+
+          <button class="hero-info-btn" onclick="showAbout()">
+            ✨
+            <span data-fa="درباره پنل" data-en="About">درباره پنل</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS -->
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-icon">⚙️</div>
+        <strong id="usedCount">0/4</strong>
+        <span data-fa="کانفیگ استفاده‌شده" data-en="Configs used">کانفیگ استفاده‌شده</span>
+      </div>
+
+      <div class="stat">
+        <div class="stat-icon">🎯</div>
+        <strong id="remainingCount">4</strong>
+        <span data-fa="ظرفیت باقی‌مانده" data-en="Remaining">ظرفیت باقی‌مانده</span>
+      </div>
+
+      <div class="stat">
+        <div class="stat-icon">👤</div>
+        <strong id="userStat">—</strong>
+        <span data-fa="کاربر فعلی" data-en="Current user">کاربر فعلی</span>
+      </div>
+    </div>
+
+    <!-- CREATE -->
+
+    <section class="section" id="createSection">
+      <div class="section-head">
+        <div class="section-title" data-fa="ساخت کانفیگ" data-en="Create config">ساخت کانفیگ</div>
+        <div class="section-sub">1 → 4</div>
+      </div>
+
+      <div class="create-card">
+        <div class="create-row">
+
+          <div style="display:flex;align-items:center;gap:13px">
+            <div class="create-icon">⚡</div>
+
+            <div>
+              <div class="create-title"
+                   data-fa="یک کانفیگ جدید بساز"
+                   data-en="Create a new config">
+                یک کانفیگ جدید بساز
+              </div>
+
+              <div class="create-desc"
+                   data-fa="هر بار فقط یک کانفیگ ساخته می‌شود."
+                   data-en="Only one config is created per click.">
+                هر بار فقط یک کانفیگ ساخته می‌شود.
+              </div>
+            </div>
+          </div>
+
+          <button id="createBtn" class="create-btn" onclick="createConfig()">
+            + ساخت
+          </button>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CONFIGS -->
+
+    <section class="section" id="configsSection">
+      <div class="section-head">
+        <div class="section-title"
+             data-fa="کانفیگ‌های من"
+             data-en="My configs">
+          کانفیگ‌های من
+        </div>
+
+        <div class="section-sub" id="listCount">0 مورد</div>
+      </div>
+
+      <div id="configList" class="config-list"></div>
+    </section>
+
+    <!-- FIXED IP -->
+
+    <section class="section" id="fixedSection">
+      <div class="section-head">
+        <div class="section-title"
+             data-fa="IP ثابت"
+             data-en="Fixed IP">
+          IP ثابت
+        </div>
+      </div>
+
+      <div class="maintenance">
+
+        <div class="workers">👷‍♂️</div>
+
+        <h3
+          data-fa="کارگران مشغول کارند 🚧"
+          data-en="Workers are working 🚧">
+          کارگران مشغول کارند 🚧
+        </h3>
+
+        <p
+          data-fa="در حال بهینه‌سازی بخش IP ثابت هستیم. این قابلیت در آپدیت بعدی فعال می‌شود."
+          data-en="We are optimizing the Fixed IP section. This feature will be available in the next update.">
+          در حال بهینه‌سازی بخش IP ثابت هستیم.
+          این قابلیت در آپدیت بعدی فعال می‌شود.
+        </p>
+
+        <div class="updating">
+          <span>✨</span>
+
+          <span
+            data-fa="درحال بهینه‌سازی بخش در آپدیت بعد"
+            data-en="Optimization coming in the next update">
+            درحال بهینه‌سازی بخش در آپدیت بعد
+          </span>
+
+          <span class="loading-dots">
+            <i></i><i></i><i></i>
+          </span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- AMNEZIA -->
+
+    <section class="section" id="amneziaSection">
+
+      <div class="section-head">
+        <div class="section-title">AmneziaVPN</div>
+      </div>
+
+      <div class="amnezia">
+
+        <div class="amnezia-top">
+
+          <div class="amnezia-icon">🛡️</div>
+
+          <div>
+            <h3>AmneziaVPN</h3>
+
+            <p
+              data-fa="کانفیگ آماده برای استفاده در Amnezia VPN"
+              data-en="Ready-to-use config for Amnezia VPN">
+              کانفیگ آماده برای استفاده در Amnezia VPN
+            </p>
+          </div>
+
+        </div>
+
+        <div class="amnezia-bottom">
+
+          <button class="am-copy" onclick="copyAmnezia()">
+            📋
+            <span data-fa="کپی کانفیگ" data-en="Copy config">
+              کپی کانفیگ
+            </span>
+          </button>
+
+          <button class="am-info" onclick="showAmneziaInfo()">
+            ℹ️
+            <span data-fa="راهنما" data-en="Guide">
+              راهنما
+            </span>
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- GUIDE -->
+
+    <section class="section" id="guideSection">
+
+      <div class="section-head">
+        <div class="section-title"
+             data-fa="راهنما"
+             data-en="Guide">
+          راهنما
+        </div>
+      </div>
+
+      <div class="maintenance" style="text-align:right">
+
+        <h3 style="margin-bottom:12px"
+            data-fa="چطور استفاده کنم؟"
+            data-en="How do I use it?">
+          چطور استفاده کنم؟
+        </h3>
+
+        <p
+          data-fa="۱. روی «ساخت کانفیگ» بزنید. ۲. یک کانفیگ برای شما ساخته می‌شود. ۳. از بخش «کانفیگ‌های من» روی دکمه کپی بزنید. ۴. کانفیگ را داخل برنامه موردنظر خود وارد کنید."
+          data-en="1. Tap Create Config. 2. One config will be generated. 3. Copy it from My Configs. 4. Import it into your preferred application.">
+          ۱. روی «ساخت کانفیگ» بزنید.
+          ۲. یک کانفیگ برای شما ساخته می‌شود.
+          ۳. از بخش «کانفیگ‌های من» روی دکمه کپی بزنید.
+          ۴. کانفیگ را داخل برنامه موردنظر خود وارد کنید.
+        </p>
+
+      </div>
+
+    </section>
 
   </div>
 
-</div>
+  <!-- BOTTOM NAV -->
 
+  <nav class="bottom-nav">
 
-<!-- INTRO -->
-
-<div id="intro" class="intro">
-
-  <div id="languageStep" class="intro-card">
-
-    <div class="logo">🕷️</div>
-
-    <div class="brand-large">
-      ＳｐａｅｄｒＮＧ
-    </div>
-
-    <div class="intro-desc">
-      پنل مدیریت کانفیگ
-    </div>
-
-    <div class="intro-title">
-      زبان / Language
-    </div>
-
-    <div class="lang-grid">
-
-      <button class="lang-btn" onclick="chooseLanguage('fa')">
-        🇮🇷 فارسی
-      </button>
-
-      <button class="lang-btn" onclick="chooseLanguage('en')">
-        🇬🇧 English
-      </button>
-
-    </div>
-
-  </div>
-
-
-  <div id="nameStep" class="intro-card hidden">
-
-    <div class="logo">🕷️</div>
-
-    <div id="nameTitle" class="intro-title">
-      نام شما
-    </div>
-
-    <div id="nameDesc" class="intro-desc">
-      برای ورود به پنل نام خود را وارد کنید.
-    </div>
-
-    <input
-      id="userNameInput"
-      class="text-input"
-      maxlength="30"
-      autocomplete="off"
-      placeholder="مثلاً علی"
-    >
-
-    <button
-      id="nameContinue"
-      class="primary-btn"
-      onclick="saveUserName()">
-      ادامه
+    <button class="nav-item active" onclick="goHome(this)">
+      <span class="nav-icon">⌂</span>
+      <span data-fa="خانه" data-en="Home">خانه</span>
     </button>
 
-  </div>
-
-
-  <div id="rulesStep" class="intro-card hidden">
-
-    <div class="logo">🕷️</div>
-
-    <div id="rulesTitle" class="intro-title">
-      قبل از ورود
-    </div>
-
-    <div class="notice">
-
-      <div class="notice-icon">⚠️</div>
-
-      <div id="rulesText">
-        این پنل و کانفیگ‌های آن
-        <strong>رایگان</strong> هستند.
-        استفاده از سرویس برای فروش کانفیگ یا فروش
-        دسترسی به دیگران
-        <strong>غیراخلاقی و خلاف قوانین استفاده از پنل</strong>
-        است.
-      </div>
-
-    </div>
-
-    <button
-      id="understoodButton"
-      class="primary-btn"
-      onclick="enterPanel()">
-      فهمیدم
+    <button class="nav-item" onclick="scrollToCreate();activateNav(this)">
+      <span class="nav-icon">⚡</span>
+      <span data-fa="ساخت" data-en="Create">ساخت</span>
     </button>
 
-  </div>
+    <button class="nav-item" onclick="scrollToConfigs();activateNav(this)">
+      <span class="nav-icon">▣</span>
+      <span data-fa="کانفیگ‌ها" data-en="Configs">کانفیگ‌ها</span>
+    </button>
 
-</div>
+    <button class="nav-item" onclick="openDrawer()">
+      <span class="nav-icon">☰</span>
+      <span data-fa="منو" data-en="Menu">منو</span>
+    </button>
 
+  </nav>
 
-<!-- APP -->
+</main>
 
-<div id="app" class="app hidden">
+<!-- ================= DRAWER ================= -->
 
-<header class="header">
+<div id="drawerOverlay" class="drawer-overlay" onclick="closeDrawer(event)">
 
-  <div class="brand">
-
-    <div class="brand-icon">
-      🕷️
-    </div>
-
-    <div>
-
-      <div class="brand-name">
-        ＳｐａｅｄｒＮＧ
-      </div>
-
-      <div class="online">
-        ● Online
-      </div>
-
-    </div>
-
-  </div>
-
-  <button
-    class="menu-btn"
-    onclick="openDrawer()">
-    ☰
-  </button>
-
-</header>
-
-
-<!-- DRAWER -->
-
-<div id="drawer" class="drawer">
-
-  <div
-    class="drawer-bg"
-    onclick="closeDrawer()">
-  </div>
-
-  <div class="drawer-panel">
+  <aside class="drawer">
 
     <div class="drawer-head">
+      <div class="drawer-brand">🕷️ ＳｐａｅｄｒＮＧ</div>
+      <button class="close-btn" onclick="closeDrawer()">×</button>
+    </div>
 
-      <div>
+    <div class="menu-list">
 
-        <strong>
-          ＳｐａｅｄｒＮＧ
-        </strong>
+      <button class="menu-item" onclick="goHome();closeDrawer()">
+        <span>⌂</span>
+        <span data-fa="خانه" data-en="Home">خانه</span>
+      </button>
 
-        <div
-          id="drawerUser"
-          class="drawer-user">
-        </div>
+      <button class="menu-item" onclick="scrollToCreate();closeDrawer()">
+        <span>⚡</span>
+        <span data-fa="ساخت کانفیگ" data-en="Create config">ساخت کانفیگ</span>
+      </button>
 
-      </div>
+      <button class="menu-item" onclick="scrollToConfigs();closeDrawer()">
+        <span>▣</span>
+        <span data-fa="کانفیگ‌های من" data-en="My configs">کانفیگ‌های من</span>
+      </button>
 
-      <button
-        class="close-btn"
-        onclick="closeDrawer()">
-        ×
+      <button class="menu-item" onclick="scrollToFixed();closeDrawer()">
+        <span>🌐</span>
+        <span data-fa="IP ثابت" data-en="Fixed IP">IP ثابت</span>
+      </button>
+
+      <button class="menu-item" onclick="scrollToAmnezia();closeDrawer()">
+        <span>🛡️</span>
+        <span>AmneziaVPN</span>
+      </button>
+
+      <div class="menu-separator"></div>
+
+      <button class="menu-item" onclick="scrollToGuide();closeDrawer()">
+        <span>❔</span>
+        <span data-fa="راهنما" data-en="Guide">راهنما</span>
+      </button>
+
+      <button class="menu-item" onclick="showAbout();closeDrawer()">
+        <span>✨</span>
+        <span data-fa="درباره پنل" data-en="About panel">درباره پنل</span>
+      </button>
+
+      <button class="menu-item" onclick="window.open(TELEGRAM,'_blank')">
+        <span>✈️</span>
+        <span data-fa="کانال تلگرام" data-en="Telegram channel">کانال تلگرام</span>
       </button>
 
     </div>
 
-
-    <button
-      class="menu-item"
-      onclick="showPage('home');closeDrawer()">
-      🏠 داشبورد
-    </button>
-
-
-    <button
-      class="menu-item"
-      onclick="showPage('create');closeDrawer()">
-      ➕ ساخت کانفیگ
-    </button>
-
-
-    <button
-      class="menu-item"
-      onclick="showPage('configs');closeDrawer()">
-      📋 کانفیگ‌های من
-    </button>
-
-
-    <button
-      class="menu-item"
-      onclick="showPage('fixed');closeDrawer()">
-      🎯 IP ثابت
-    </button>
-
-
-    <button
-      class="menu-item"
-      onclick="showPage('amnezia');closeDrawer()">
-      🛡️ AmneziaVPN
-    </button>
-
-
-    <button
-      class="menu-item"
-      onclick="showPage('manage');closeDrawer()">
-      ⚙️ مدیریت کانفیگ
-    </button>
-
-
-    <button
-      class="menu-item"
-      onclick="showPage('guide');closeDrawer()">
-      ❓ راهنما
-    </button>
-
-
-    <button
-      class="menu-item"
-      onclick="openTelegram()">
-      ✈️ کانال تلگرام
-    </button>
-
-
-    <button
-      class="menu-item"
-      onclick="copyTelegram()">
-      🔗 لینک SpaedrNG
-    </button>
-
-
-    <button
-      class="menu-item"
-      onclick="showPage('about');closeDrawer()">
-      ℹ️ درباره پنل
-    </button>
-
-
-    <button
-      class="menu-item"
-      onclick="clearConfigs()"
-      style="color:#ff5963">
-      🗑️ پاک‌سازی کانفیگ‌ها
-    </button>
-
-  </div>
-
+  </aside>
 </div>
 
+<!-- ================= TOAST ================= -->
 
-<!-- HOME -->
+<div id="toast" class="toast"></div>
 
-<section
-  id="page-home"
-  class="page active">
+<!-- ================= MODAL ================= -->
 
-  <div class="hero">
-
-    <div class="hero-tag">
-      SPAEDRNG PANEL
-    </div>
-
-    <h1 id="welcomeText">
-      سلام
-    </h1>
-
-    <p>
-      مدیریت سریع و ساده کانفیگ‌های شما.
-    </p>
-
-    <div class="user-pill">
-
-      <span class="dot"></span>
-
-      <span id="userPill">
-        کاربر
-      </span>
-
-    </div>
-
-  </div>
-
-
-  <div class="stats">
-
-    <div class="stat">
-
-      <div class="stat-label">
-        کانفیگ‌های شما
-      </div>
-
-      <div
-        id="statConfigs"
-        class="stat-value">
-        0
-      </div>
-
-    </div>
-
-
-    <div class="stat">
-
-      <div class="stat-label">
-        IP ثابت
-      </div>
-
-      <div
-        id="statFixed"
-        class="stat-value">
-        0
-      </div>
-
-    </div>
-
-
-    <div class="stat">
-
-      <div class="stat-label">
-        وضعیت
-      </div>
-
-      <div
-        class="stat-value"
-        style="color:var(--green)">
-        فعال
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <div class="section-head">
-
-    <h2>
-      دسترسی سریع
-    </h2>
-
-    <span>
-      SPAEDRNG
-    </span>
-
-  </div>
-
-
-  <div class="quick-grid">
-
-    <button
-      class="quick"
-      onclick="showPage('create')">
-
-      <div class="quick-icon">
-        ➕
-      </div>
-
-      <div class="quick-text">
-        ساخت
-      </div>
-
-    </button>
-
-
-    <button
-      class="quick"
-      onclick="showPage('configs')">
-
-      <div class="quick-icon">
-        📋
-      </div>
-
-      <div class="quick-text">
-        کانفیگ‌ها
-      </div>
-
-    </button>
-
-
-    <button
-      class="quick"
-      onclick="showPage('fixed')">
-
-      <div class="quick-icon">
-        🎯
-      </div>
-
-      <div class="quick-text">
-        IP ثابت
-      </div>
-
-    </button>
-
-
-    <button
-      class="quick"
-      onclick="showPage('amnezia')">
-
-      <div class="quick-icon">
-        🛡️
-      </div>
-
-      <div class="quick-text">
-        AmneziaVPN
-      </div>
-
-    </button>
-
-  </div>
-
-
-  <div class="section-head">
-
-    <h2>
-      آخرین کانفیگ‌ها
-    </h2>
-
-  </div>
-
-  <div id="recentConfigs"></div>
-
-</section>
-
-
-<!-- CREATE -->
-
-<section
-  id="page-create"
-  class="page">
-
-  <div class="card">
-
-    <div class="card-title">
-      ساخت کانفیگ
-    </div>
-
-    <div class="card-desc">
-      نام موردنظر خود را وارد کنید.
-    </div>
-
-    <div class="form-group">
-
-      <label class="label">
-        نام
-      </label>
-
-      <input
-        id="configName"
-        class="text-input"
-        maxlength="30"
-        autocomplete="off"
-        placeholder="مثلاً علی"
-      >
-
-    </div>
-
-    <button
-      class="create-btn"
-      onclick="createConfig()">
-      ساخت کانفیگ
-    </button>
-
-  </div>
-
-</section>
-
-
-<!-- CONFIGS -->
-
-<section
-  id="page-configs"
-  class="page">
-
-  <div class="section-head">
-
-    <h2>
-      کانفیگ‌های من
-    </h2>
-
-    <span id="configCount">
-      0
-    </span>
-
-  </div>
-
-
-  <input
-    id="configSearch"
-    class="text-input"
-    autocomplete="off"
-    placeholder="جستجوی نام..."
-    oninput="renderConfigs()"
-  >
-
-  <div id="configsList"></div>
-
-</section>
-
-
-<!-- FIXED -->
-
-<section
-  id="page-fixed"
-  class="page">
-
-  <div class="card">
-
-    <div class="card-title">
-      IP ثابت
-    </div>
-
-    <div class="card-desc">
-      کشور موردنظر را انتخاب کنید.
-    </div>
-
-    <div class="form-group">
-
-      <label class="label">
-        کشور
-      </label>
-
-      <select
-        id="fixedCountry"
-        class="text-input">
-
-        <option value="DE">
-          🇩🇪 آلمان
-        </option>
-
-        <option value="AE">
-          🇦🇪 امارات
-        </option>
-
-        <option value="JP">
-          🇯🇵 ژاپن
-        </option>
-
-        <option value="TR">
-          🇹🇷 ترکیه
-        </option>
-
-      </select>
-
-    </div>
-
-    <button
-      class="create-btn"
-      onclick="createFixed()">
-      ساخت کانفیگ IP ثابت
-    </button>
-
-  </div>
-
-  <div id="fixedCreated"></div>
-
-</section>
-
-
-<!-- AMNEZIA VPN -->
-
-<section
-  id="page-amnezia"
-  class="page">
-
-  <div class="amnezia-card">
-
-    <div class="amnezia-head">
-
-      <div class="amnezia-logo">
-
-        <!-- Amnezia-style shield icon -->
-        <svg
-          viewBox="0 0 64 64"
-          xmlns="http://www.w3.org/2000/svg">
-
-          <path
-            d="M32 4
-               L55 13
-               V29
-               C55 44 46 55 32 61
-               C18 55 9 44 9 29
-               V13
-               Z"
-            fill="#111"/>
-
-          <path
-            d="M32 13
-               L46 19
-               V29
-               C46 39 41 46 32 51
-               C23 46 18 39 18 29
-               V19
-               Z"
-            fill="#fff"/>
-
-          <path
-            d="M25 35
-               L32 20
-               L39 35
-               H34
-               L32 30
-               L30 35
-               Z"
-            fill="#111"/>
-
-        </svg>
-
-      </div>
-
-
-      <div>
-
-        <div class="amnezia-title">
-          AmneziaVPN
-        </div>
-
-        <div class="amnezia-subtitle">
-          AmneziaWG Configuration
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div class="amnezia-description">
-      کانفیگ آماده AmneziaWG برای استفاده در
-      برنامه AmneziaVPN.
-    </div>
-
-
-    <button
-      class="amnezia-copy"
-      onclick="copyAmnezia()">
-      📋 کپی کانفیگ AmneziaVPN
-    </button>
-
-
-    <div class="amnezia-note">
-      💡 برای استفاده از کانفیگ، برنامه
-      <strong>Amnezia VPN</strong>
-      را نصب کنید.
-    </div>
-
-  </div>
-
-
-  <div class="card">
-
-    <div class="card-title">
-      🛡️ نحوه استفاده
-    </div>
-
-    <div class="card-desc">
-      ابتدا برنامه Amnezia VPN را نصب کنید،
-      سپس از همین بخش کانفیگ را کپی کرده و
-      داخل برنامه وارد کنید.
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- MANAGE -->
-
-<section
-  id="page-manage"
-  class="page">
-
-  <div class="card">
-
-    <div class="card-title">
-      مدیریت کانفیگ
-    </div>
-
-    <div class="card-desc">
-      کانفیگ‌های ذخیره‌شده را مدیریت کنید.
-    </div>
-
-  </div>
-
-  <div id="manageList"></div>
-
-</section>
-
-
-<!-- GUIDE -->
-
-<section
-  id="page-guide"
-  class="page">
-
-  <div class="card">
-
-    <div class="card-title">
-      ❓ راهنما
-    </div>
-
-    <div class="card-desc">
-
-      ۱. وارد بخش ساخت شوید.<br><br>
-
-      ۲. نام موردنظر را وارد کنید.<br><br>
-
-      ۳. کانفیگ ساخته می‌شود.<br><br>
-
-      ۴. متن خام کانفیگ روی صفحه نمایش داده نمی‌شود.<br><br>
-
-      ۵. برای دریافت کانفیگ روی دکمه کپی بزنید.
-
-    </div>
-
-  </div>
-
-
-  <div class="card">
-
-    <div class="card-title">
-      🛡️ AmneziaVPN
-    </div>
-
-    <div class="card-desc">
-      برای کانفیگ AmneziaWG وارد بخش
-      AmneziaVPN شوید و روی دکمه کپی بزنید.
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- ABOUT -->
-
-<section
-  id="page-about"
-  class="page">
-
-  <div class="hero">
-
-    <div class="hero-tag">
-      ABOUT SPAEDRNG
-    </div>
-
-    <h1>
-      ＳｐａｅｄｒＮＧ
-    </h1>
-
-    <p>
-      پنل رایگان مدیریت کانفیگ.
-    </p>
-
-  </div>
-
-
-  <div class="card">
-
-    <div class="card-title">
-      📌 قوانین
-    </div>
-
-    <div class="card-desc">
-      این پنل رایگان است.
-      استفاده از کانفیگ‌های پنل برای فروش یا فروش دسترسی
-      به دیگران مجاز نیست.
-    </div>
-
-  </div>
-
-
-  <div class="card">
-
-    <div class="card-title">
-      ✈️ کانال SpaedrNG
-    </div>
-
-    <button
-      class="create-btn"
-      onclick="openTelegram()">
-      ورود به کانال
-    </button>
-
-  </div>
-
-</section>
-
-
-<!-- BOTTOM NAV -->
-
-<nav class="bottom-nav">
-
-  <button
-    id="nav-home"
-    class="nav-btn active"
-    onclick="showPage('home')">
-
-    <span class="nav-icon">
-      ⌂
-    </span>
-
-    <span>
-      خانه
-    </span>
-
-  </button>
-
-
-  <button
-    id="nav-configs"
-    class="nav-btn"
-    onclick="showPage('configs')">
-
-    <span class="nav-icon">
-      ☷
-    </span>
-
-    <span>
-      کانفیگ‌ها
-    </span>
-
-  </button>
-
-
-  <button
-    id="nav-create"
-    class="nav-btn"
-    onclick="showPage('create')">
-
-    <span class="nav-icon">
-      ＋
-    </span>
-
-    <span>
-      ساخت
-    </span>
-
-  </button>
-
-
-  <button
-    id="nav-fixed"
-    class="nav-btn"
-    onclick="showPage('fixed')">
-
-    <span class="nav-icon">
-      ⌖
-    </span>
-
-    <span>
-      IP ثابت
-    </span>
-
-  </button>
-
-</nav>
-
-
-<div
-  id="toast"
-  class="toast">
+<div id="modal" class="modal" onclick="closeModal(event)">
+  <div class="modal-card" id="modalCard"></div>
 </div>
-
-</div>
-
 
 <script>
+/* =========================================================
+   SpaedrNG
+   ========================================================= */
 
-/* =========================================
-   SETTINGS
-========================================= */
+const TELEGRAM = "https://t.me/spaedrNG";
 
-const TELEGRAM =
-  "https://t.me/spaedrNG";
+const STORAGE_KEY = "spaedrng_configs_v8";
+const USER_KEY = "spaedrng_user_v8";
+const LANGUAGE_KEY = "spaedrng_language_v8";
+const RULES_KEY = "spaedrng_rules_v8";
+const TOTAL_CREATED_KEY = "spaedrng_total_created_v8";
+const NEXT_KEY = "spaedrng_next_index_v8";
 
-const STORAGE_KEY =
-  "spaedrng_configs_v7";
+const MAX_CONFIGS = 4;
 
-const USER_KEY =
-  "spaedrng_user_v7";
+/* ================= MAIN CONFIGS ================= */
 
-const LANGUAGE_KEY =
-  "spaedrng_language_v7";
+const MAIN_CONFIGS = [
 
-const RULES_KEY =
-  "spaedrng_rules_v7";
+{
+  type:"VLESS",
+  format:"vless",
+  raw:`vless://3a918d0f-b73c-4b77-bb6f-d264168885bc@104.21.5.155:443?path=%2F%3Fproxyip%3D152.32.181.246%26ed%3D2560&security=tls&encryption=none&insecure=0&host=aUTo-SCalE-E8dFc4-edg.PRod-rELAY-2FfB0d.WOrkeRS.DeV&type=ws&allowInsecure=0&sni=aUtO-sCALE-E8DFC4-edg.pROd-ReLAy-2fFB0d.WorKeRS.Dev#SpaedrNG%20%F0%9F%95%B7`
+},
 
+{
+  type:"Trojan",
+  format:"json",
+  raw:`{
+  "remarks": "2. Trojan - IPv4 : 443",
+  "version": {"min":"26.2.6"},
+  "log":{"loglevel":"warning"},
+  "dns":{"servers":[{"address":"https://8.8.8.8/dns-query","tag":"remote-dns"}],"queryStrategy":"UseIP","tag":"dns"},
+  "inbounds":[
+    {"listen":"127.0.0.1","port":10808,"protocol":"mixed","settings":{"auth":"noauth","udp":true},"sniffing":{"destOverride":["http","tls"],"enabled":true,"routeOnly":true},"tag":"mixed-in"},
+    {"listen":"127.0.0.1","port":10853,"protocol":"dokodemo-door","settings":{"address":"1.1.1.1","network":"tcp,udp","port":53},"tag":"dns-in"}
+  ],
+  "outbounds":[
+    {"protocol":"trojan","settings":{"servers":[{"address":"188.114.96.1","port":443,"password":"8942a2614ee13e3b00623c16"}]},"streamSettings":{"network":"ws","wsSettings":{"host":"srv-e1c7ed-a241d4.prod-relay-2ffb0d.workers.dev","path":"/tr/xEbkf8rrSMb1PaAPfxNAZKb?ed=2560"},"security":"tls","tlsSettings":{"serverName":"sRv-e1c7ed-A241d4.PrOd-relAY-2ffB0D.wORKeRS.deV","fingerprint":"chrome","alpn":["http/1.1"]},"sockopt":{"domainStrategy":"UseIP","happyEyeballs":{"tryDelayMs":250,"prioritizeIPv6":false,"interleave":2,"maxConcurrentTry":4}}},"tag":"proxy"},
+    {"protocol":"dns","settings":{"rules":[{"action":"hijack"}]},"tag":"dns-out"},
+    {"protocol":"freedom","settings":{"domainStrategy":"UseIP"},"tag":"direct"},
+    {"protocol":"blackhole","settings":{"response":{"type":"http"}},"tag":"block"}
+  ],
+  "routing":{"domainStrategy":"IPIfNonMatch","rules":[
+    {"inboundTag":["mixed-in"],"port":53,"outboundTag":"dns-out","type":"field"},
+    {"inboundTag":["dns-in"],"outboundTag":"dns-out","type":"field"},
+    {"inboundTag":["remote-dns"],"outboundTag":"proxy","type":"field"},
+    {"inboundTag":["dns"],"outboundTag":"direct","type":"field"},
+    {"domain":["geosite:private"],"outboundTag":"direct","type":"field"},
+    {"ip":["geoip:private"],"outboundTag":"direct","type":"field"},
+    {"network":"udp","outboundTag":"block","type":"field"},
+    {"network":"tcp","outboundTag":"proxy","type":"field"}
+  ]},
+  "policy":{"levels":{"0":{"connIdle":300,"handshake":4,"uplinkOnly":1,"downlinkOnly":1}},"system":{"statsOutboundUplink":true,"statsOutboundDownlink":true}},
+  "stats":{}
+}`
+},
 
-/* =========================================
-   NORMAL VLESS CONFIG
-========================================= */
+{
+  type:"Trojan",
+  format:"json",
+  raw:`{
+  "remarks": "3. Trojan - IPv4 : 443",
+  "version": {"min":"26.2.6"},
+  "log":{"loglevel":"warning"},
+  "dns":{"servers":[{"address":"https://8.8.8.8/dns-query","tag":"remote-dns"}],"queryStrategy":"UseIP","tag":"dns"},
+  "inbounds":[
+    {"listen":"127.0.0.1","port":10808,"protocol":"mixed","settings":{"auth":"noauth","udp":true},"sniffing":{"destOverride":["http","tls"],"enabled":true,"routeOnly":true},"tag":"mixed-in"},
+    {"listen":"127.0.0.1","port":10853,"protocol":"dokodemo-door","settings":{"address":"1.1.1.1","network":"tcp,udp","port":53},"tag":"dns-in"}
+  ],
+  "outbounds":[
+    {"protocol":"trojan","settings":{"servers":[{"address":"188.114.97.1","port":443,"password":"8942a2614ee13e3b00623c16"}]},"streamSettings":{"network":"ws","wsSettings":{"host":"srv-e1c7ed-a241d4.prod-relay-2ffb0d.workers.dev","path":"/tr/v2IrNEX5cADCNyohqKiHxOTCC9tQbssW?ed=2560"},"security":"tls","tlsSettings":{"serverName":"SRv-E1C7eD-a241D4.PRoD-rElaY-2fFB0D.WOrKerS.dEV","fingerprint":"chrome","alpn":["http/1.1"]},"sockopt":{"domainStrategy":"UseIP","happyEyeballs":{"tryDelayMs":250,"prioritizeIPv6":false,"interleave":2,"maxConcurrentTry":4}}},"tag":"proxy"},
+    {"protocol":"dns","settings":{"rules":[{"action":"hijack"}]},"tag":"dns-out"},
+    {"protocol":"freedom","settings":{"domainStrategy":"UseIP"},"tag":"direct"},
+    {"protocol":"blackhole","settings":{"response":{"type":"http"}},"tag":"block"}
+  ],
+  "routing":{"domainStrategy":"IPIfNonMatch","rules":[
+    {"inboundTag":["mixed-in"],"port":53,"outboundTag":"dns-out","type":"field"},
+    {"inboundTag":["dns-in"],"outboundTag":"dns-out","type":"field"},
+    {"inboundTag":["remote-dns"],"outboundTag":"proxy","type":"field"},
+    {"inboundTag":["dns"],"outboundTag":"direct","type":"field"},
+    {"domain":["geosite:private"],"outboundTag":"direct","type":"field"},
+    {"ip":["geoip:private"],"outboundTag":"direct","type":"field"},
+    {"network":"udp","outboundTag":"block","type":"field"},
+    {"network":"tcp","outboundTag":"proxy","type":"field"}
+  ]},
+  "policy":{"levels":{"0":{"connIdle":300,"handshake":4,"uplinkOnly":1,"downlinkOnly":1}},"system":{"statsOutboundUplink":true,"statsOutboundDownlink":true}},
+  "stats":{}
+}`
+}
 
-const BASE_CONFIG =
-"vless://15a05f72-8e49-408e-8337-9c4d418f2d43@" +
-"104.21.5.155:443" +
-"?type=ws" +
-"&host=MSg-QUeue-140448-edg.royal-DiSk-882F.wORKErs.Dev" +
-"&path=%2F%3Fproxyip%3D37.152.182.54%26ed%3D2560" +
-"&security=tls" +
-"&sni=mSg-QUeUE-140448-edg.rOyaL-dISK-882F.woRkErS.DEv" +
-"&encryption=none";
+];
 
-
-/* =========================================
-   AMNEZIA CONFIG
-   در رابط کاربری نمایش داده نمی‌شود.
-========================================= */
+/* ================= AMNEZIA ================= */
 
 const AMNEZIA_CONFIG =
 `# Generated AmneziaWG Config
@@ -1792,1049 +1506,678 @@ PublicKey = bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=
 AllowedIPs = 0.0.0.0/0, ::/0
 Endpoint = 8.6.112.148:891`;
 
+/* ================= HELPERS ================= */
 
-/* =========================================
-   FIXED CONFIGS
-========================================= */
-
-const FIXED_CONFIGS = {
-
-  DE:[
-    "vless://be35b0db-50aa-4573-8d2a-e95624869ab9@103.21.244.12:443?path=%2F%3Fed%3D2560&security=tls&encryption=none&insecure=0&host=API-hUb-908324-edg.h9zL52eNuFUS.wOrkErS.dEv&type=ws&allowInsecure=0&sni=API-hUB-908324-eDg.H9ZL52ENuFUs.WoRkErS.dEV",
-
-    "vless://be35b0db-50aa-4573-8d2a-e95624869ab9@103.21.244.12:443?path=%2F%3Fed%3D2560&security=tls&encryption=none&insecure=0&host=APi-hub-908324-EDG.H9ZL52ENufUs.workerS.dev&type=ws&allowInsecure=0&sni=api-Hub-908324-Edg.h9Zl52enuFUS.WOrkErS.dEV"
-  ],
-
-  AE:[
-    "vless://be35b0db-50aa-4573-8d2a-e95624869ab9@api-hub-908324-edg.h9zl52enufus.workers.dev:443?path=%2F%3Fproxyip%3D20.174.15.226%26ed%3D2560&security=tls&encryption=none&insecure=0&host=APi-huB-908324-edG.H9zL52enUfus.wOrkERS.dEV&type=ws&allowInsecure=0&sni=API-hub-908324-EdG.H9zl52enUFUS.worKERS.deV",
-
-    "vless://be35b0db-50aa-4573-8d2a-e95624869ab9@172.67.13.12:443?path=%2F%3Fproxyip%3D20.174.15.226%26ed%3D2560&security=tls&encryption=none&insecure=0&host=aPI-HUb-908324-EDG.h9zl52EnuFUS.WORkERs.dev&type=ws&allowInsecure=0&sni=Api-hUB-908324-Edg.H9zl52enUfUs.worKeRS.DEv"
-  ],
-
-  JP:[
-    "vless://be35b0db-50aa-4573-8d2a-e95624869ab9@104.16.15.172:443?path=%2F%3Fed%3D2560&security=tls&encryption=none&insecure=0&host=APi-hub-908324-EDG.H9ZL52ENufUs.workerS.dev&type=ws&allowInsecure=0&sni=api-Hub-908324-EdG.h9Zl52enUfuS.WOrkErS.dEV#JP%F0%9F%87%AF%F0%9F%87%B51",
-
-    "vless://be35b0db-50aa-4573-8d2a-e95624869ab9@172.67.13.12:443?path=%2F%3Fed%3D2560&security=tls&encryption=none&insecure=0&host=aPI-Hub-908324-EdG.H9zL52EnufUS.WoRKerS.dEV&type=ws&allowInsecure=0&sni=API-huB-908324-eDg.H9Zl52EnUfus.WorKerS.dEV#JP%F0%9F%87%AF%F0%9F%87%B52"
-  ],
-
-  TR:[
-    "vless://be35b0db-50aa-4573-8d2a-e95624869ab9@api-hub-908324-edg.h9zl52enufus.workers.dev:443?path=%2F%3Fproxyip%3D185.219.134.25%26ed%3D2560&security=tls&encryption=none&insecure=0&host=api-HuB-908324-EdG.H9ZL52enufUS.wOrKErS.DeV&type=ws&allowInsecure=0&sni=Api-Hub-908324-EDG.H9ZL52enUFus.WoRKers.Dev#TR%F0%9F%87%B9%F0%9F%87%B71",
-
-    "vless://be35b0db-50aa-4573-8d2a-e95624869ab9@104.21.5.155:443?path=%2F%3Fproxyip%3D185.219.134.25%26ed%3D2560&security=tls&encryption=none&insecure=0&host=aPi-hUB-908324-eDG.h9zL52ENufUS.WOrKeRs.deV&type=ws&allowInsecure=0&sni=apI-Hub-908324-EDG.H9ZL52ENufus.wOrKERs.DEv#TR%F0%9F%87%B9%F0%9F%87%B72",
-
-    "vless://be35b0db-50aa-4573-8d2a-e95624869ab9@172.67.13.12:443?path=%2F%3Fproxyip%3D185.219.134.25%26ed%3D2560&security=tls&encryption=none&insecure=0&host=API-HUb-908324-EDG.H9zl52eNufUs.wOrkErS.dEV&type=ws&allowInsecure=0&sni=APi-hUB-908324-eDG.h9zl52eNUfUS.WORKErs.dEV#TR%F0%9F%87%B9%F0%9F%87%B73"
-  ]
-
-};
-
-
-const COUNTRY_NAMES = {
-  DE:"🇩🇪 آلمان",
-  AE:"🇦🇪 امارات",
-  JP:"🇯🇵 ژاپن",
-  TR:"🇹🇷 ترکیه"
-};
-
-
-let currentLanguage =
-  localStorage.getItem(LANGUAGE_KEY) || "";
-
-let toastTimer;
-
-
-/* =========================================
-   STORAGE
-========================================= */
+const $ = id => document.getElementById(id);
 
 function getConfigs(){
-
   try{
-
-    const data =
-      JSON.parse(
-        localStorage.getItem(STORAGE_KEY) || "[]"
-      );
-
-    return Array.isArray(data)
-      ? data
-      : [];
-
-  }catch(e){
-
+    return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  }catch{
     return [];
-
   }
-
 }
 
-
-function saveConfigs(data){
-
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(data)
-  );
-
+function saveConfigs(configs){
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(configs));
 }
 
+function getTotalCreated(){
+  return Number(localStorage.getItem(TOTAL_CREATED_KEY) || 0);
+}
 
-/* =========================================
-   SAFE HTML
-========================================= */
+function setTotalCreated(value){
+  localStorage.setItem(TOTAL_CREATED_KEY,String(value));
+}
 
 function escapeHTML(value){
-
   return String(value)
     .replaceAll("&","&amp;")
     .replaceAll("<","&lt;")
     .replaceAll(">","&gt;")
     .replaceAll('"',"&quot;")
     .replaceAll("'","&#039;");
-
 }
 
-
-/* =========================================
-   TOAST
-========================================= */
-
-function toast(message){
-
-  const el =
-    document.getElementById("toast");
-
-  el.textContent = message;
-
-  el.classList.add("show");
-
-  clearTimeout(toastTimer);
-
-  toastTimer =
-    setTimeout(()=>{
-      el.classList.remove("show");
-    },2300);
-
-}
-
-
-/* =========================================
-   COPY
-========================================= */
-
-async function copyText(text){
-
+function formatDate(date){
   try{
-
-    await navigator.clipboard.writeText(text);
-
-  }catch(e){
-
-    const area =
-      document.createElement("textarea");
-
-    area.value = text;
-
-    area.style.position = "fixed";
-    area.style.opacity = "0";
-
-    document.body.appendChild(area);
-
-    area.focus();
-    area.select();
-
-    try{
-      document.execCommand("copy");
-    }catch(err){}
-
-    area.remove();
-
-  }
-
-}
-
-
-/* =========================================
-   AMNEZIA COPY
-========================================= */
-
-function copyAmnezia(){
-
-  copyText(AMNEZIA_CONFIG);
-
-  toast(
-    currentLanguage === "en"
-      ? "AmneziaVPN configuration copied."
-      : "کانفیگ AmneziaVPN کپی شد."
-  );
-
-}
-
-
-/* =========================================
-   LANGUAGE
-========================================= */
-
-function chooseLanguage(lang){
-
-  currentLanguage = lang;
-
-  localStorage.setItem(
-    LANGUAGE_KEY,
-    lang
-  );
-
-  document.getElementById("languageStep")
-    .classList.add("hidden");
-
-  document.getElementById("nameStep")
-    .classList.remove("hidden");
-
-
-  if(lang === "en"){
-
-    document.documentElement.lang = "en";
-    document.documentElement.dir = "ltr";
-
-    document.getElementById("nameTitle")
-      .textContent = "Your name";
-
-    document.getElementById("nameDesc")
-      .textContent =
-      "Enter your name to continue.";
-
-    document.getElementById("userNameInput")
-      .placeholder =
-      "For example: Ali";
-
-    document.getElementById("nameContinue")
-      .textContent =
-      "Continue";
-
-  }else{
-
-    document.documentElement.lang = "fa";
-    document.documentElement.dir = "rtl";
-
-    document.getElementById("nameTitle")
-      .textContent =
-      "نام شما";
-
-    document.getElementById("nameDesc")
-      .textContent =
-      "برای ورود به پنل نام خود را وارد کنید.";
-
-    document.getElementById("userNameInput")
-      .placeholder =
-      "مثلاً علی";
-
-    document.getElementById("nameContinue")
-      .textContent =
-      "ادامه";
-
-  }
-
-}
-
-
-/* =========================================
-   NAME
-========================================= */
-
-function saveUserName(){
-
-  const input =
-    document.getElementById("userNameInput");
-
-  const name =
-    input.value.trim();
-
-  if(!name){
-
-    toast(
-      currentLanguage === "en"
-        ? "Please enter your name."
-        : "لطفاً نام خود را وارد کنید."
+    return new Date(date).toLocaleDateString(
+      localStorage.getItem(LANGUAGE_KEY)==="en" ? "en-US" : "fa-IR",
+      {month:"short",day:"numeric"}
     );
+  }catch{
+    return "";
+  }
+}
 
-    input.focus();
+/* ================= LANGUAGE ================= */
 
+let language = localStorage.getItem(LANGUAGE_KEY) || "";
+
+function setLanguage(lang){
+  language = lang;
+
+  localStorage.setItem(LANGUAGE_KEY,lang);
+
+  document.documentElement.lang = lang==="fa" ? "fa" : "en";
+  document.documentElement.dir = lang==="fa" ? "rtl" : "ltr";
+
+  document.querySelectorAll("[data-fa]").forEach(el=>{
+    el.textContent = lang==="fa"
+      ? el.dataset.fa
+      : el.dataset.en;
+  });
+}
+
+/* ================= INTRO ================= */
+
+function startIntro(){
+
+  const hasUser = localStorage.getItem(USER_KEY);
+  const rulesAccepted = localStorage.getItem(RULES_KEY);
+
+  if(language && hasUser && rulesAccepted==="1"){
+    showApp();
     return;
   }
 
-  localStorage.setItem(
-    USER_KEY,
-    name
-  );
+  $("intro").classList.remove("hidden");
 
-  document.getElementById("nameStep")
-    .classList.add("hidden");
-
-  document.getElementById("rulesStep")
-    .classList.remove("hidden");
-
+  if(!language){
+    renderLanguage();
+  }else if(!hasUser){
+    renderName();
+  }else if(rulesAccepted!=="1"){
+    renderRules();
+  }
 }
 
+function renderLanguage(){
 
-/* =========================================
-   ENTER
-========================================= */
+  $("introCard").innerHTML = `
+    <div class="logo">🕷️</div>
 
-function enterPanel(){
+    <h1>ＳｐａｅｄｒＮＧ</h1>
 
-  localStorage.setItem(
-    RULES_KEY,
-    "1"
-  );
+    <p>
+      زبان پنل را انتخاب کنید<br>
+      Choose your panel language
+    </p>
 
-  document.getElementById("intro")
-    .classList.add("hidden");
+    <div class="lang-buttons">
+      <button class="primary-btn" onclick="chooseLanguage('fa')">
+        🇮🇷 فارسی
+      </button>
 
-  document.getElementById("app")
-    .classList.remove("hidden");
-
-  updateUser();
-  renderAll();
-
+      <button class="secondary-btn" onclick="chooseLanguage('en')">
+        🇬🇧 English
+      </button>
+    </div>
+  `;
 }
 
+function chooseLanguage(lang){
+  setLanguage(lang);
+  renderName();
+}
 
-/* =========================================
-   BOOT
-========================================= */
+function renderName(){
 
-function boot(){
+  const fa = language==="fa";
 
-  const user =
-    localStorage.getItem(USER_KEY);
+  $("introCard").innerHTML = `
+    <div class="logo">👋</div>
 
-  const language =
-    localStorage.getItem(LANGUAGE_KEY);
+    <h1>
+      ${fa ? "اسمت چیه؟" : "What's your name?"}
+    </h1>
 
-  const rules =
-    localStorage.getItem(RULES_KEY);
+    <p>
+      ${fa
+        ? "برای شخصی‌سازی پنل، نام خودت را وارد کن."
+        : "Enter your name to personalize the panel."}
+    </p>
 
-  if(user && language && rules === "1"){
+    <input
+      id="nameInput"
+      maxlength="24"
+      autocomplete="off"
+      placeholder="${fa ? "مثلاً Ali" : "e.g. Ali"}"
+      style="
+        width:100%;
+        height:54px;
+        border-radius:16px;
+        border:1px solid var(--line);
+        background:rgba(255,255,255,.05);
+        color:white;
+        outline:none;
+        padding:0 16px;
+        text-align:center;
+        margin-bottom:12px;
+      "
+    >
 
-    currentLanguage = language;
+    <button class="primary-btn" style="width:100%" onclick="saveName()">
+      ${fa ? "ادامه ✨" : "Continue ✨"}
+    </button>
+  `;
 
-    document.documentElement.lang =
-      language === "en"
-        ? "en"
-        : "fa";
+  setTimeout(()=>$("nameInput")?.focus(),100);
+}
 
-    document.documentElement.dir =
-      language === "en"
-        ? "ltr"
-        : "rtl";
+function saveName(){
 
-    document.getElementById("intro")
-      .classList.add("hidden");
+  const input = $("nameInput");
+  const name = input?.value.trim();
 
-    document.getElementById("app")
-      .classList.remove("hidden");
-
-    updateUser();
-    renderAll();
-
+  if(!name){
+    showToast(language==="fa"
+      ? "لطفاً اسمت را وارد کن."
+      : "Please enter your name.");
+    return;
   }
 
+  localStorage.setItem(USER_KEY,name);
+
+  renderRules();
 }
 
+function renderRules(){
 
-/* =========================================
-   USER
-========================================= */
+  const fa = language==="fa";
 
-function updateUser(){
+  $("introCard").innerHTML = `
+    <div class="logo">✨</div>
 
-  const user =
-    localStorage.getItem(USER_KEY) ||
-    "کاربر";
+    <h1>
+      ${fa ? "قبل از ورود" : "Before you enter"}
+    </h1>
 
-  document.getElementById("welcomeText")
-    .textContent =
-    currentLanguage === "en"
-      ? "Hello " + user
-      : "سلام " + user;
+    <p style="text-align:right">
+      ${
+        fa
+        ? "این پنل به‌صورت رایگان ارائه شده است. لطفاً از کانفیگ‌ها برای فروش مجدد یا دریافت هزینه از دیگران استفاده نکنید. هدف پنل، استفاده شخصی و رایگان است."
+        : "This panel is provided for free. Please do not resell the configs or charge others for access. The panel is intended for personal and free use."
+      }
+    </p>
 
-  document.getElementById("userPill")
-    .textContent = user;
-
-  document.getElementById("drawerUser")
-    .textContent = user;
-
+    <button class="primary-btn" style="width:100%" onclick="acceptRules()">
+      ${fa ? "فهمیدم ✓" : "I understand ✓"}
+    </button>
+  `;
 }
 
-
-/* =========================================
-   PAGE
-========================================= */
-
-function showPage(name){
-
-  document.querySelectorAll(".page")
-    .forEach(page=>{
-      page.classList.remove("active");
-    });
-
-
-  const page =
-    document.getElementById(
-      "page-" + name
-    );
-
-  if(page){
-    page.classList.add("active");
-  }
-
-
-  document.querySelectorAll(".nav-btn")
-    .forEach(btn=>{
-      btn.classList.remove("active");
-    });
-
-
-  const nav =
-    document.getElementById(
-      "nav-" + name
-    );
-
-  if(nav){
-    nav.classList.add("active");
-  }
-
-
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
-
-  renderAll();
-
+function acceptRules(){
+  localStorage.setItem(RULES_KEY,"1");
+  showApp();
 }
 
+/* ================= APP ================= */
 
-/* =========================================
-   DRAWER
-========================================= */
+function showApp(){
 
-function openDrawer(){
+  $("intro").classList.add("hidden");
+  $("app").classList.remove("hidden");
 
-  document.getElementById("drawer")
-    .classList.add("open");
+  setLanguage(language);
 
+  const name = localStorage.getItem(USER_KEY) || "User";
+
+  $("helloText").textContent =
+    language==="fa"
+      ? `سلام ${name} 👋`
+      : `Hello ${name} 👋`;
+
+  $("userStat").textContent = name;
+
+  renderConfigs();
+  updateStats();
 }
 
-
-function closeDrawer(){
-
-  document.getElementById("drawer")
-    .classList.remove("open");
-
-}
-
-
-/* =========================================
-   CONFIG NAME
-========================================= */
-
-function buildConfigName(name){
-
-  return name.trim().slice(0,30) +
-    " SpaedrNG tm";
-
-}
-
-
-/* =========================================
-   NORMAL CONFIG
-========================================= */
+/* ================= CREATE ================= */
 
 function createConfig(){
 
-  const input =
-    document.getElementById("configName");
+  const totalCreated = getTotalCreated();
 
-  const name =
-    input.value.trim();
-
-  if(!name){
-
-    toast(
-      "لطفاً نام کانفیگ را وارد کنید."
+  if(totalCreated >= MAX_CONFIGS){
+    showToast(
+      language==="fa"
+        ? "سقف ۴ کانفیگ شما تکمیل شده است."
+        : "Your 4-config limit has been reached."
     );
-
-    input.focus();
-
     return;
   }
 
+  const userName = localStorage.getItem(USER_KEY) || "User";
 
-  const finalName =
-    buildConfigName(name);
+  let configs = getConfigs();
 
-
-  const item = {
-
-    id:Date.now(),
-
-    name:finalName,
-
-    config:
-      BASE_CONFIG +
-      "#" +
-      encodeURIComponent(finalName),
-
-    type:"normal",
-
-    country:"",
-
-    date:new Date()
-      .toLocaleString("fa-IR")
-
-  };
-
-
-  const data =
-    getConfigs();
-
-  data.unshift(item);
-
-  saveConfigs(data);
-
-  input.value = "";
-
-  renderAll();
-
-  toast("کانفیگ ساخته شد.");
-
-  setTimeout(()=>{
-    showPage("configs");
-  },350);
-
-}
-
-
-/* =========================================
-   FIXED
-========================================= */
-
-function createFixed(){
-
-  const country =
-    document.getElementById("fixedCountry")
-      .value;
-
-  const list =
-    FIXED_CONFIGS[country];
-
-
-  if(!list || !list.length){
-
-    toast("کانفیگ موجود نیست.");
-
-    return;
-  }
-
+  let nextIndex = Number(localStorage.getItem(NEXT_KEY) || 0);
 
   const selected =
-    list[
-      Math.floor(
-        Math.random() * list.length
-      )
-    ];
+    MAIN_CONFIGS[nextIndex % MAIN_CONFIGS.length];
 
+  localStorage.setItem(
+    NEXT_KEY,
+    String((nextIndex + 1) % MAIN_CONFIGS.length)
+  );
 
-  const user =
-    localStorage.getItem(USER_KEY) ||
-    "User";
+  const baseName = `SpaedrNG_${userName}`;
 
+  let name = baseName;
 
-  const finalName =
-    user +
-    " " +
-    COUNTRY_NAMES[country] +
-    " SpaedrNG tm";
+  let number = 2;
 
+  while(configs.some(x=>x.name===name)){
+    name = `${baseName} ${number}`;
+    number++;
+  }
 
   const item = {
+    id:crypto.randomUUID
+      ? crypto.randomUUID()
+      : Date.now().toString(36)+Math.random().toString(36).slice(2),
 
-    id:Date.now(),
-
-    name:finalName,
-
-    config:
-      selected +
-      "#" +
-      encodeURIComponent(finalName),
-
-    type:"fixed",
-
-    country:country,
-
-    date:new Date()
-      .toLocaleString("fa-IR")
-
+    name,
+    type:selected.type,
+    format:selected.format,
+    raw:selected.raw,
+    createdAt:new Date().toISOString()
   };
 
+  configs.unshift(item);
 
-  const data =
-    getConfigs();
+  saveConfigs(configs);
 
-  data.unshift(item);
+  setTotalCreated(totalCreated+1);
 
-  saveConfigs(data);
+  renderConfigs();
+  updateStats();
 
+  showToast(
+    language==="fa"
+      ? `✅ ${name} ساخته شد`
+      : `✅ ${name} created`
+  );
+}
 
-  document.getElementById("fixedCreated")
-    .innerHTML = `
+/* ================= CONFIG LIST ================= */
 
-      <div class="card">
+function renderConfigs(){
 
-        <div class="card-title">
-          ✅ کانفیگ ساخته شد
+  const list = $("configList");
+  const configs = getConfigs();
+
+  $("listCount").textContent =
+    language==="fa"
+      ? `${configs.length} مورد`
+      : `${configs.length} items`;
+
+  if(!configs.length){
+
+    list.innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">🕷️</div>
+
+        <div>
+          ${
+            language==="fa"
+              ? "هنوز کانفیگی ساخته نشده"
+              : "No config created yet"
+          }
         </div>
 
-        <div class="card-desc">
-          ${escapeHTML(finalName)}
-        </div>
-
-        <button
-          class="create-btn"
-          onclick="copyConfigById(${item.id})">
-          کپی کانفیگ
-        </button>
-
+        <small>
+          ${
+            language==="fa"
+              ? "اولین کانفیگت رو بساز ✨"
+              : "Create your first config ✨"
+          }
+        </small>
       </div>
-
     `;
 
+    return;
+  }
 
-  renderAll();
+  list.innerHTML = configs.map(config=>`
 
-  toast("کانفیگ آماده شد.");
-
-}
-
-
-/* =========================================
-   COUNTRY ICON
-========================================= */
-
-function countryIcon(country){
-
-  if(country === "JP")
-    return "🇯🇵";
-
-  if(country === "DE")
-    return "🇩🇪";
-
-  if(country === "AE")
-    return "🇦🇪";
-
-  if(country === "TR")
-    return "🇹🇷";
-
-  return "⚡";
-
-}
-
-
-/* =========================================
-   CONFIG ROW
-========================================= */
-
-function configRow(item,index){
-
-  return `
-
-    <div class="config-row">
+    <div class="config-card">
 
       <div class="config-icon">
-        ${countryIcon(item.country)}
+        ${config.type==="VLESS" ? "⚡" : "🛡️"}
       </div>
 
       <div class="config-info">
 
         <div class="config-name">
-          ${escapeHTML(item.name)}
+          ${escapeHTML(config.name)}
         </div>
 
         <div class="config-meta">
-          ${
-            item.type === "fixed"
-              ? "IP ثابت"
-              : "کانفیگ عادی"
-          }
-          · SpaedrNG
+
+          <span class="badge red">
+            ${escapeHTML(config.type)}
+          </span>
+
+          <span class="badge">
+            ${formatDate(config.createdAt)}
+          </span>
+
         </div>
 
       </div>
 
       <button
         class="copy-btn"
-        onclick="copyConfig(${index})">
-        کپی
+        onclick="copyConfig('${config.id}')"
+        title="Copy">
+        📋
+      </button>
+
+      <button
+        class="delete-btn"
+        onclick="deleteConfig('${config.id}')"
+        title="Delete">
+        ×
       </button>
 
     </div>
 
-  `;
-
+  `).join("");
 }
 
+/* ================= COPY ================= */
 
-/* =========================================
-   CONFIG LIST
-========================================= */
+async function copyConfig(id){
 
-function renderConfigs(){
+  const config = getConfigs().find(x=>x.id===id);
 
-  const container =
-    document.getElementById(
-      "configsList"
+  if(!config){
+    showToast(
+      language==="fa"
+        ? "کانفیگ پیدا نشد."
+        : "Config not found."
     );
-
-  if(!container) return;
-
-
-  const data =
-    getConfigs();
-
-
-  const search =
-    (
-      document.getElementById(
-        "configSearch"
-      )?.value || ""
-    )
-    .trim()
-    .toLowerCase();
-
-
-  const filtered =
-    data.filter(item=>
-      String(item.name)
-        .toLowerCase()
-        .includes(search)
-    );
-
-
-  document.getElementById(
-    "configCount"
-  ).textContent =
-    data.length;
-
-
-  if(!filtered.length){
-
-    container.innerHTML =
-      `<div class="empty">
-        هنوز کانفیگی ساخته نشده است.
-      </div>`;
-
     return;
   }
 
+  try{
 
-  container.innerHTML =
-    filtered
-      .map(item=>{
+    await navigator.clipboard.writeText(config.raw);
 
-        const index =
-          data.findIndex(
-            x=>x.id === item.id
-          );
-
-        return configRow(
-          item,
-          index
-        );
-
-      })
-      .join("");
-
-}
-
-
-/* =========================================
-   RECENT
-========================================= */
-
-function renderRecent(){
-
-  const container =
-    document.getElementById(
-      "recentConfigs"
+    showToast(
+      language==="fa"
+        ? "📋 کانفیگ کپی شد"
+        : "📋 Config copied"
     );
 
-  if(!container) return;
+  }catch{
 
-
-  const data =
-    getConfigs();
-
-
-  if(!data.length){
-
-    container.innerHTML =
-      `<div class="empty">
-        هنوز کانفیگی ساخته نشده است.
-      </div>`;
-
-    return;
+    showToast(
+      language==="fa"
+        ? "کپی انجام نشد."
+        : "Copy failed."
+    );
   }
-
-
-  container.innerHTML =
-    data
-      .slice(0,3)
-      .map(item=>{
-
-        const index =
-          data.findIndex(
-            x=>x.id === item.id
-          );
-
-        return configRow(
-          item,
-          index
-        );
-
-      })
-      .join("");
-
 }
 
-
-/* =========================================
-   COPY VLESS
-========================================= */
-
-function copyConfig(index){
-
-  const data =
-    getConfigs();
-
-  const item =
-    data[index];
-
-  if(!item) return;
-
-  copyText(item.config);
-
-  toast("کانفیگ کپی شد.");
-
-}
-
-
-function copyConfigById(id){
-
-  const item =
-    getConfigs()
-      .find(x=>x.id === id);
-
-  if(!item) return;
-
-  copyText(item.config);
-
-  toast("کانفیگ کپی شد.");
-
-}
-
-
-/* =========================================
-   DELETE
-========================================= */
+/* ================= DELETE ================= */
 
 function deleteConfig(id){
 
-  const data =
-    getConfigs()
-      .filter(x=>x.id !== id);
+  const configs = getConfigs().filter(x=>x.id!==id);
 
-  saveConfigs(data);
+  saveConfigs(configs);
 
-  renderAll();
+  renderConfigs();
+  updateStats();
 
-  toast("کانفیگ حذف شد.");
-
+  showToast(
+    language==="fa"
+      ? "کانفیگ حذف شد."
+      : "Config deleted."
+  );
 }
 
-
-/* =========================================
-   MANAGE
-========================================= */
-
-function renderManage(){
-
-  const container =
-    document.getElementById(
-      "manageList"
-    );
-
-  if(!container) return;
-
-
-  const data =
-    getConfigs();
-
-
-  if(!data.length){
-
-    container.innerHTML =
-      `<div class="empty">
-        کانفیگی برای مدیریت وجود ندارد.
-      </div>`;
-
-    return;
-  }
-
-
-  container.innerHTML =
-    data
-      .map(item=>`
-
-        <div class="config-row">
-
-          <div class="config-icon">
-            ${countryIcon(item.country)}
-          </div>
-
-          <div class="config-info">
-
-            <div class="config-name">
-              ${escapeHTML(item.name)}
-            </div>
-
-            <div class="config-meta">
-              ${escapeHTML(
-                item.date || ""
-              )}
-            </div>
-
-          </div>
-
-          <button
-            class="copy-btn"
-            onclick="deleteConfig(${item.id})">
-            حذف
-          </button>
-
-        </div>
-
-      `)
-      .join("");
-
-}
-
-
-/* =========================================
-   STATS
-========================================= */
+/* ================= STATS ================= */
 
 function updateStats(){
 
-  const data =
-    getConfigs();
+  const totalCreated = getTotalCreated();
 
+  $("usedCount").textContent =
+    `${Math.min(totalCreated,MAX_CONFIGS)}/${MAX_CONFIGS}`;
 
-  const fixed =
-    data.filter(
-      x=>x.type === "fixed"
+  $("remainingCount").textContent =
+    Math.max(0,MAX_CONFIGS-totalCreated);
+
+  const btn = $("createBtn");
+
+  if(totalCreated >= MAX_CONFIGS){
+
+    btn.disabled = true;
+
+    btn.textContent =
+      language==="fa"
+        ? "سقف تکمیل شد"
+        : "Limit reached";
+
+  }else{
+
+    btn.disabled = false;
+
+    btn.textContent =
+      language==="fa"
+        ? "+ ساخت"
+        : "+ Create";
+  }
+}
+
+/* ================= AMNEZIA ================= */
+
+async function copyAmnezia(){
+
+  try{
+
+    await navigator.clipboard.writeText(AMNEZIA_CONFIG);
+
+    showToast(
+      language==="fa"
+        ? "🛡️ کانفیگ Amnezia کپی شد"
+        : "🛡️ Amnezia config copied"
     );
 
+  }catch{
 
-  document.getElementById(
-    "statConfigs"
-  ).textContent =
-    data.length;
-
-
-  document.getElementById(
-    "statFixed"
-  ).textContent =
-    fixed.length;
-
+    showToast(
+      language==="fa"
+        ? "کپی انجام نشد."
+        : "Copy failed."
+    );
+  }
 }
 
+function showAmneziaInfo(){
 
-/* =========================================
-   TELEGRAM
-========================================= */
-
-function openTelegram(){
-
-  window.open(
-    TELEGRAM,
-    "_blank",
-    "noopener,noreferrer"
+  showModal(
+    language==="fa"
+      ? `
+        <h3>🛡️ استفاده از AmneziaVPN</h3>
+        <p>
+          برای استفاده از کانفیگ، برنامه
+          <b>Amnezia VPN</b>
+          را نصب کنید و کانفیگ کپی‌شده را داخل برنامه وارد کنید.
+        </p>
+      `
+      : `
+        <h3>🛡️ Using AmneziaVPN</h3>
+        <p>
+          Install <b>Amnezia VPN</b> and import the copied configuration into the application.
+        </p>
+      `
   );
-
 }
 
+/* ================= ABOUT ================= */
 
-function copyTelegram(){
+function showAbout(){
 
-  copyText(TELEGRAM);
+  showModal(
+    language==="fa"
+      ? `
+        <h3>🕷️ درباره ＳｐａｅｄｒＮＧ</h3>
+        <p>
+          یک پنل سبک و مدرن برای مدیریت کانفیگ‌های شخصی.
+          این نسخه با تمرکز روی سرعت، ظاهر ساده و استفاده راحت طراحی شده است.
+        </p>
 
-  toast(
-    "لینک کانال کپی شد."
+        <p>
+          هر کاربر در این نسخه حداکثر
+          <b>۴ کانفیگ</b>
+          می‌تواند دریافت کند.
+        </p>
+      `
+      : `
+        <h3>🕷️ About ＳｐａｅｄｒＮＧ</h3>
+        <p>
+          A lightweight and modern panel for managing personal configs.
+        </p>
+
+        <p>
+          Each user can create up to
+          <b>4 configs</b>
+          in this version.
+        </p>
+      `
   );
-
 }
 
+/* ================= MODAL ================= */
 
-/* =========================================
-   CLEAR
-========================================= */
+function showModal(html){
 
-function clearConfigs(){
+  $("modalCard").innerHTML = `
+    ${html}
 
-  if(!confirm(
-    "همه کانفیگ‌های ذخیره‌شده حذف شوند؟"
-  )){
+    <div class="modal-actions">
+      <button
+        class="primary-btn"
+        onclick="closeModal()">
+        ${language==="fa" ? "باشه" : "OK"}
+      </button>
+    </div>
+  `;
+
+  $("modal").classList.add("show");
+}
+
+function closeModal(event){
+
+  if(event && event.target!==$("modal")){
     return;
   }
 
-
-  localStorage.removeItem(
-    STORAGE_KEY
-  );
-
-
-  renderAll();
-
-  toast(
-    "کانفیگ‌ها پاک شدند."
-  );
-
+  $("modal").classList.remove("show");
 }
 
+/* ================= DRAWER ================= */
 
-/* =========================================
-   RENDER ALL
-========================================= */
-
-function renderAll(){
-
-  updateUser();
-  updateStats();
-  renderRecent();
-  renderConfigs();
-  renderManage();
-
+function openDrawer(){
+  $("drawerOverlay").classList.add("open");
 }
 
+function closeDrawer(event){
 
-/* =========================================
-   START
-========================================= */
+  if(event && event.target!==$("drawerOverlay")){
+    return;
+  }
 
-document.addEventListener(
-  "DOMContentLoaded",
-  boot
-);
+  $("drawerOverlay").classList.remove("open");
+}
+
+/* ================= NAVIGATION ================= */
+
+function scrollToCreate(){
+  $("createSection").scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+  });
+}
+
+function scrollToConfigs(){
+  $("configsSection").scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+  });
+}
+
+function scrollToFixed(){
+  $("fixedSection").scrollIntoView({
+    behavior:"smooth",
+    block:"center"
+  });
+}
+
+function scrollToAmnezia(){
+  $("amneziaSection").scrollIntoView({
+    behavior:"smooth",
+    block:"center"
+  });
+}
+
+function scrollToGuide(){
+  $("guideSection").scrollIntoView({
+    behavior:"smooth",
+    block:"center"
+  });
+}
+
+function goHome(){
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+}
+
+function activateNav(element){
+
+  document.querySelectorAll(".nav-item")
+    .forEach(x=>x.classList.remove("active"));
+
+  element.classList.add("active");
+}
+
+/* ================= TOAST ================= */
+
+let toastTimer;
+
+function showToast(message){
+
+  const toast = $("toast");
+
+  toast.textContent = message;
+  toast.classList.add("show");
+
+  clearTimeout(toastTimer);
+
+  toastTimer = setTimeout(()=>{
+    toast.classList.remove("show");
+  },2600);
+}
+
+/* ================= START ================= */
+
+startIntro();
+
+/* Enter key for name */
+
+document.addEventListener("keydown",event=>{
+  if(event.key==="Enter" && $("nameInput")){
+    saveName();
+  }
+});
 
 </script>
 
